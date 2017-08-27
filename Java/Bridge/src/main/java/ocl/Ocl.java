@@ -18,9 +18,9 @@ public class Ocl
 	public native Integer[] OclMapToIntArray(Integer[] data, String parameterDefinition, String mapLogic);
 	public native Integer[] OclMapToIntArray(Double[] data, String parameterDefinition, String mapLogic);
 
-	public native Integer[] OclMapToDoubleArray(Character[] data, String parameterDefinition, String mapLogic);
-	public native Integer[] OclMapToDoubleArray(Integer[] data, String parameterDefinition, String mapLogic);
-	public native Integer[] OclMapToDoubleArray(Double[] data, String parameterDefinition, String mapLogic);
+	public native Double[] OclMapToDoubleArray(Character[] data, String parameterDefinition, String mapLogic);
+	public native Double[] OclMapToDoubleArray(Integer[] data, String parameterDefinition, String mapLogic);
+	public native Double[] OclMapToDoubleArray(Double[] data, String parameterDefinition, String mapLogic);
 
 	//Sample
 	public native Integer[] OclSample(Integer[] data, boolean withReplacement, float fraction);
