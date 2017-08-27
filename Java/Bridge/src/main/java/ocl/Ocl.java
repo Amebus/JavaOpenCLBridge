@@ -23,12 +23,12 @@ public class Ocl
 	public native Double[] OclMapToDoubleArray(Double[] data, String parameterDefinition, String mapLogic);
 
 	//Sample
+	public native Character[] OclSample(Character[] data, boolean withReplacement, float fraction);
 	public native Integer[] OclSample(Integer[] data, boolean withReplacement, float fraction);
-	public native Double[] OclSample(Character[] data, boolean withReplacement, float fraction);
 	public native Double[] OclSample(Double[] data, boolean withReplacement, float fraction);
 
 
-	public native Double[] OclSample(Character[] data, boolean withReplacement, float fraction, int seed);
+	public native Character[] OclSample(Character[] data, boolean withReplacement, float fraction, int seed);
 	public native Integer[] OclSample(Integer[] data, boolean withReplacement, float fraction, int seed);
 	public native Double[] OclSample(Double[] data, boolean withReplacement, float fraction, int seed);
 
