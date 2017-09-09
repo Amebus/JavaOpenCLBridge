@@ -2,6 +2,10 @@ package ocl;
 
 public class Ocl
 {
+
+	public native void Open();
+	public native void Close();
+
 	//Transformations
 
 	//filter
@@ -38,9 +42,9 @@ public class Ocl
 	public native Double[] OclUnion(Double[] data, Double[] otherDataSet);
 
 	//Intersection
-	public native Integer[] OclIntersection(Character[] data, Character[] otherDataSet);
+	public native Character[] OclIntersection(Character[] data, Character[] otherDataSet);
 	public native Integer[] OclIntersection(Integer[] data, Integer[] otherDataSet);
-	public native Integer[] OclIntersection(Double[] data, Double[] otherDataSet);
+	public native Double[] OclIntersection(Double[] data, Double[] otherDataSet);
 
 
 	//Actions
@@ -52,17 +56,17 @@ public class Ocl
 
 	//TakeSample
 	public native Character[] OclTakeSample(Character[] data, boolean withReplacement, int num);
-	public native Character[] OclTakeSample(Integer[] data, boolean withReplacement, int num);
-	public native Character[] OclTakeSample(Double[] data, boolean withReplacement, int num);
+	public native Integer[] OclTakeSample(Integer[] data, boolean withReplacement, int num);
+	public native Double[] OclTakeSample(Double[] data, boolean withReplacement, int num);
 
 	public native Character[] OclTakeSample(Character[] data, boolean withReplacement, int num, int seed);
-	public native Character[] OclTakeSample(Integer[] data, boolean withReplacement, int num, int seed);
-	public native Character[] OclTakeSample(Double[] data, boolean withReplacement, int num, int seed);
+	public native Integer[] OclTakeSample(Integer[] data, boolean withReplacement, int num, int seed);
+	public native Double[] OclTakeSample(Double[] data, boolean withReplacement, int num, int seed);
 
 	//Reduce
 	public native Character OclReduce(Character[] data, String parameterDefinition, String reduceLogic);
-	public native Character OclReduce(Integer[] data, String parameterDefinition, String reduceLogic);
-	public native Character OclReduce(Double[] data, String parameterDefinition, String reduceLogic);
+	public native Integer OclReduce(Integer[] data, String parameterDefinition, String reduceLogic);
+	public native Double OclReduce(Double[] data, String parameterDefinition, String reduceLogic);
 
 	//Count
 	public Integer OclCount(Character[] data)
