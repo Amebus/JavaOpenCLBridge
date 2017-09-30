@@ -5,7 +5,7 @@
 #echo "done"
 
 echo "compiling..."
-g++ -fPIC -shared ../Cpp/Code/Ocl.cpp -o ../Cpp/Out/libOCL.so -lOpenCL -I$JAVA_HOME/include -I$JAVA_HOME/include/linux
+g++ -std=c++11 -fPIC -shared ../Cpp/Code/Ocl.cpp -o ../Cpp/Out/libOCL.so -lOpenCL -I$JAVA_HOME/include -I$JAVA_HOME/include/linux
 echo "done"
 
 echo "execstack..."

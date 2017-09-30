@@ -25,291 +25,299 @@ JNIEXPORT void JNICALL Java_ocl_Ocl_Close
 
 /*
  * Class:     ocl_Ocl
- * Method:    OclFilter
- * Signature: ([Ljava/lang/Character;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Character;
+ * Method:    OclMap
+ * Signature: ([ILjava/lang/String;)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclFilter___3Ljava_lang_Character_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
+  (JNIEnv *, jobject, jintArray, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclFilter
- * Signature: ([Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Integer;
+ * Signature: ([CLjava/lang/String;Ljava/lang/String;)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclFilter___3Ljava_lang_Integer_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclFilter___3CLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jcharArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclFilter
- * Signature: ([Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Double;
+ * Signature: ([ILjava/lang/String;Ljava/lang/String;)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclFilter___3Ljava_lang_Double_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclFilter___3ILjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jintArray, jstring, jstring);
+
+/*
+ * Class:     ocl_Ocl
+ * Method:    OclFilter
+ * Signature: ([DLjava/lang/String;Ljava/lang/String;)[D
+ */
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclFilter___3DLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jdoubleArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclMapToCharArray
- * Signature: ([Ljava/lang/Character;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Character;
+ * Signature: ([CLjava/lang/String;Ljava/lang/String;)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclMapToCharArray___3Ljava_lang_Character_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclMapToCharArray___3CLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jcharArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclMapToCharArray
- * Signature: ([Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Character;
+ * Signature: ([ILjava/lang/String;Ljava/lang/String;)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclMapToCharArray___3Ljava_lang_Integer_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclMapToCharArray___3ILjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jintArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclMapToCharArray
- * Signature: ([Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Character;
+ * Signature: ([DLjava/lang/String;Ljava/lang/String;)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclMapToCharArray___3Ljava_lang_Double_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclMapToCharArray___3DLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jdoubleArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclMapToIntArray
- * Signature: ([Ljava/lang/Character;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Integer;
+ * Signature: ([CLjava/lang/String;Ljava/lang/String;)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclMapToIntArray___3Ljava_lang_Character_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMapToIntArray___3CLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jcharArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclMapToIntArray
- * Signature: ([Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Integer;
+ * Signature: ([ILjava/lang/String;Ljava/lang/String;)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclMapToIntArray___3Ljava_lang_Integer_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMapToIntArray___3ILjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jintArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclMapToIntArray
- * Signature: ([Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Integer;
+ * Signature: ([DLjava/lang/String;Ljava/lang/String;)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclMapToIntArray___3Ljava_lang_Double_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMapToIntArray___3DLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jdoubleArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
- * Method:    OclMapToDoubleArray
- * Signature: ([Ljava/lang/Character;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Double;
+ * Method:    OclMapTodoubleArray
+ * Signature: ([CLjava/lang/String;Ljava/lang/String;)[D
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclMapToDoubleArray___3Ljava_lang_Character_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclMapTodoubleArray___3CLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jcharArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
- * Method:    OclMapToDoubleArray
- * Signature: ([Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Double;
+ * Method:    OclMapTodoubleArray
+ * Signature: ([ILjava/lang/String;Ljava/lang/String;)[D
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclMapToDoubleArray___3Ljava_lang_Integer_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclMapTodoubleArray___3ILjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jintArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
- * Method:    OclMapToDoubleArray
- * Signature: ([Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/Double;
+ * Method:    OclMapTodoubleArray
+ * Signature: ([DLjava/lang/String;Ljava/lang/String;)[D
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclMapToDoubleArray___3Ljava_lang_Double_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
-
-/*
- * Class:     ocl_Ocl
- * Method:    OclSample
- * Signature: ([Ljava/lang/Character;ZF)[Ljava/lang/Character;
- */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclSample___3Ljava_lang_Character_2ZF
-  (JNIEnv *, jobject, jobjectArray, jboolean, jfloat);
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclMapTodoubleArray___3DLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jdoubleArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclSample
- * Signature: ([Ljava/lang/Integer;ZF)[Ljava/lang/Integer;
+ * Signature: ([CZF)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclSample___3Ljava_lang_Integer_2ZF
-  (JNIEnv *, jobject, jobjectArray, jboolean, jfloat);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclSample___3CZF
+  (JNIEnv *, jobject, jcharArray, jboolean, jfloat);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclSample
- * Signature: ([Ljava/lang/Double;ZF)[Ljava/lang/Double;
+ * Signature: ([IZF)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclSample___3Ljava_lang_Double_2ZF
-  (JNIEnv *, jobject, jobjectArray, jboolean, jfloat);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclSample___3IZF
+  (JNIEnv *, jobject, jintArray, jboolean, jfloat);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclSample
- * Signature: ([Ljava/lang/Character;ZFI)[Ljava/lang/Character;
+ * Signature: ([DZF)[D
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclSample___3Ljava_lang_Character_2ZFI
-  (JNIEnv *, jobject, jobjectArray, jboolean, jfloat, jint);
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclSample___3DZF
+  (JNIEnv *, jobject, jdoubleArray, jboolean, jfloat);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclSample
- * Signature: ([Ljava/lang/Integer;ZFI)[Ljava/lang/Integer;
+ * Signature: ([CZFI)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclSample___3Ljava_lang_Integer_2ZFI
-  (JNIEnv *, jobject, jobjectArray, jboolean, jfloat, jint);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclSample___3CZFI
+  (JNIEnv *, jobject, jcharArray, jboolean, jfloat, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclSample
- * Signature: ([Ljava/lang/Double;ZFI)[Ljava/lang/Double;
+ * Signature: ([IZFI)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclSample___3Ljava_lang_Double_2ZFI
-  (JNIEnv *, jobject, jobjectArray, jboolean, jfloat, jint);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclSample___3IZFI
+  (JNIEnv *, jobject, jintArray, jboolean, jfloat, jint);
+
+/*
+ * Class:     ocl_Ocl
+ * Method:    OclSample
+ * Signature: ([DZFI)[D
+ */
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclSample___3DZFI
+  (JNIEnv *, jobject, jdoubleArray, jboolean, jfloat, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclUnion
- * Signature: ([Ljava/lang/Character;[Ljava/lang/Character;)[Ljava/lang/Character;
+ * Signature: ([C[C)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclUnion___3Ljava_lang_Character_2_3Ljava_lang_Character_2
-  (JNIEnv *, jobject, jobjectArray, jobjectArray);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclUnion___3C_3C
+  (JNIEnv *, jobject, jcharArray, jcharArray);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclUnion
- * Signature: ([Ljava/lang/Integer;[Ljava/lang/Integer;)[Ljava/lang/Integer;
+ * Signature: ([I[I)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclUnion___3Ljava_lang_Integer_2_3Ljava_lang_Integer_2
-  (JNIEnv *, jobject, jobjectArray, jobjectArray);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclUnion___3I_3I
+  (JNIEnv *, jobject, jintArray, jintArray);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclUnion
- * Signature: ([Ljava/lang/Double;[Ljava/lang/Double;)[Ljava/lang/Double;
+ * Signature: ([D[D)[D
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclUnion___3Ljava_lang_Double_2_3Ljava_lang_Double_2
-  (JNIEnv *, jobject, jobjectArray, jobjectArray);
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclUnion___3D_3D
+  (JNIEnv *, jobject, jdoubleArray, jdoubleArray);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclIntersection
- * Signature: ([Ljava/lang/Character;[Ljava/lang/Character;)[Ljava/lang/Character;
+ * Signature: ([C[C)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclIntersection___3Ljava_lang_Character_2_3Ljava_lang_Character_2
-  (JNIEnv *, jobject, jobjectArray, jobjectArray);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclIntersection___3C_3C
+  (JNIEnv *, jobject, jcharArray, jcharArray);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclIntersection
- * Signature: ([Ljava/lang/Integer;[Ljava/lang/Integer;)[Ljava/lang/Integer;
+ * Signature: ([I[I)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclIntersection___3Ljava_lang_Integer_2_3Ljava_lang_Integer_2
-  (JNIEnv *, jobject, jobjectArray, jobjectArray);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclIntersection___3I_3I
+  (JNIEnv *, jobject, jintArray, jintArray);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclIntersection
- * Signature: ([Ljava/lang/Double;[Ljava/lang/Double;)[Ljava/lang/Double;
+ * Signature: ([D[D)[D
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclIntersection___3Ljava_lang_Double_2_3Ljava_lang_Double_2
-  (JNIEnv *, jobject, jobjectArray, jobjectArray);
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclIntersection___3D_3D
+  (JNIEnv *, jobject, jdoubleArray, jdoubleArray);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclTake
- * Signature: ([Ljava/lang/Character;I)[Ljava/lang/Character;
+ * Signature: ([CI)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclTake___3Ljava_lang_Character_2I
-  (JNIEnv *, jobject, jobjectArray, jint);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclTake___3CI
+  (JNIEnv *, jobject, jcharArray, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclTake
- * Signature: ([Ljava/lang/Integer;I)[Ljava/lang/Integer;
+ * Signature: ([II)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclTake___3Ljava_lang_Integer_2I
-  (JNIEnv *, jobject, jobjectArray, jint);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTake___3II
+  (JNIEnv *, jobject, jintArray, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclTake
- * Signature: ([Ljava/lang/Double;I)[Ljava/lang/Double;
+ * Signature: ([DI)[D
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclTake___3Ljava_lang_Double_2I
-  (JNIEnv *, jobject, jobjectArray, jint);
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclTake___3DI
+  (JNIEnv *, jobject, jdoubleArray, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclTakeSample
- * Signature: ([Ljava/lang/Character;ZI)[Ljava/lang/Character;
+ * Signature: ([CZI)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclTakeSample___3Ljava_lang_Character_2ZI
-  (JNIEnv *, jobject, jobjectArray, jboolean, jint);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclTakeSample___3CZI
+  (JNIEnv *, jobject, jcharArray, jboolean, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclTakeSample
- * Signature: ([Ljava/lang/Integer;ZI)[Ljava/lang/Integer;
+ * Signature: ([IZI)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclTakeSample___3Ljava_lang_Integer_2ZI
-  (JNIEnv *, jobject, jobjectArray, jboolean, jint);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTakeSample___3IZI
+  (JNIEnv *, jobject, jintArray, jboolean, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclTakeSample
- * Signature: ([Ljava/lang/Double;ZI)[Ljava/lang/Double;
+ * Signature: ([DZI)[D
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclTakeSample___3Ljava_lang_Double_2ZI
-  (JNIEnv *, jobject, jobjectArray, jboolean, jint);
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclTakeSample___3DZI
+  (JNIEnv *, jobject, jdoubleArray, jboolean, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclTakeSample
- * Signature: ([Ljava/lang/Character;ZII)[Ljava/lang/Character;
+ * Signature: ([CZII)[C
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclTakeSample___3Ljava_lang_Character_2ZII
-  (JNIEnv *, jobject, jobjectArray, jboolean, jint, jint);
+JNIEXPORT jcharArray JNICALL Java_ocl_Ocl_OclTakeSample___3CZII
+  (JNIEnv *, jobject, jcharArray, jboolean, jint, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclTakeSample
- * Signature: ([Ljava/lang/Integer;ZII)[Ljava/lang/Integer;
+ * Signature: ([IZII)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclTakeSample___3Ljava_lang_Integer_2ZII
-  (JNIEnv *, jobject, jobjectArray, jboolean, jint, jint);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTakeSample___3IZII
+  (JNIEnv *, jobject, jintArray, jboolean, jint, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclTakeSample
- * Signature: ([Ljava/lang/Double;ZII)[Ljava/lang/Double;
+ * Signature: ([DZII)[D
  */
-JNIEXPORT jobjectArray JNICALL Java_ocl_Ocl_OclTakeSample___3Ljava_lang_Double_2ZII
-  (JNIEnv *, jobject, jobjectArray, jboolean, jint, jint);
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclTakeSample___3DZII
+  (JNIEnv *, jobject, jdoubleArray, jboolean, jint, jint);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclReduce
- * Signature: ([Ljava/lang/Character;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Character;
+ * Signature: ([CLjava/lang/String;Ljava/lang/String;)C
  */
-JNIEXPORT jobject JNICALL Java_ocl_Ocl_OclReduce___3Ljava_lang_Character_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jchar JNICALL Java_ocl_Ocl_OclReduce___3CLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jcharArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclReduce
- * Signature: ([Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Integer;
+ * Signature: ([ILjava/lang/String;Ljava/lang/String;)I
  */
-JNIEXPORT jobject JNICALL Java_ocl_Ocl_OclReduce___3Ljava_lang_Integer_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jint JNICALL Java_ocl_Ocl_OclReduce___3ILjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jintArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
  * Method:    OclReduce
- * Signature: ([Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Double;
+ * Signature: ([DLjava/lang/String;Ljava/lang/String;)D
  */
-JNIEXPORT jobject JNICALL Java_ocl_Ocl_OclReduce___3Ljava_lang_Double_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jobjectArray, jstring, jstring);
+JNIEXPORT jdouble JNICALL Java_ocl_Ocl_OclReduce___3DLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jdoubleArray, jstring, jstring);
 
 #ifdef __cplusplus
 }
