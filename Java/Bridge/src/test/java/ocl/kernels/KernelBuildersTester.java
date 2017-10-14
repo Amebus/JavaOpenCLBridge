@@ -1,14 +1,16 @@
 package ocl.kernels;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class KernelBuildersTester
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class KernelBuildersTester
 {
 
 	@Test
-	void kernelMapBuilds_ExecutionLogicNull_Error()
+	void kernelBuilds_ExecutionLogicNull_Error()
 	{
 		KernelBuilder builder = new KernelBuilder();
 
@@ -18,7 +20,7 @@ public class KernelBuildersTester
 	}
 
 	@Test
-	void kernelMapBuilds_ExecutionLogicEmpty_Error()
+	void kernelBuilds_ExecutionLogicEmpty_Error()
 	{
 		KernelBuilder builder = new KernelBuilder();
 
@@ -30,7 +32,7 @@ public class KernelBuildersTester
 	}
 
 	@Test
-	void kernelMapBuilds_ExecutionLogicWhiteSpace_Error()
+	void kernelBuilds_ExecutionLogicWhiteSpace_Error()
 	{
 		KernelBuilder builder = new KernelBuilder();
 
@@ -42,7 +44,7 @@ public class KernelBuildersTester
 	}
 
 	@Test
-	void kernelMapBuilds_ExecutionLogicDefined_Ok()
+	void kernelBuilds_ExecutionLogicDefined_Ok()
 	{
 		KernelBuilder builder = new KernelBuilder();
 
@@ -50,5 +52,7 @@ public class KernelBuildersTester
 
 		assertTrue(builder.buildMap().length() > 0);
 	}
+
+
 
 }

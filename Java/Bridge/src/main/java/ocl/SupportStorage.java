@@ -9,7 +9,7 @@ public class SupportStorage
 
 	public SupportStorage()
 	{
-		storedKernels = new HashSet<String>();
+		storedKernels = new HashSet<>();
 	}
 
 	public void addKernel(String kernelName)
@@ -22,4 +22,8 @@ public class SupportStorage
 		return storedKernels.contains(kernelName);
 	}
 
+	public void removeKernel(String kernelName)
+	{
+		storedKernels.remove(kernelName);
+	}
 }

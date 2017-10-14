@@ -56,11 +56,13 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
 	jintArray ret = env->NewIntArray(len);
 	try
 	{
-		std::string kernelCode=
-				"__kernel void map(global int* inputData)\n"
-				"{\n"
-				"    inputData[get_global_id(0)]*=10;\n"
-				"}\n";
+    	std::string kernelCode = std::string(env->GetStringUTFChars(kernelSource, NULL));
+
+		// std::string kernelCode=
+		// 		"__kernel void map(global int* inputData)\n"
+		// 		"{\n"
+		// 		"    inputData[get_global_id(0)]*=10;\n"
+		// 		"}\n";
 
 		cl::Program::Sources sources(1, std::make_pair(kernelCode.c_str(),kernelCode.length()+1));
 

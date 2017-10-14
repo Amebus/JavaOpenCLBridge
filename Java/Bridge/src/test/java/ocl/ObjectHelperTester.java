@@ -1,11 +1,13 @@
 package ocl;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import utils.ObjectHelper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ObjectHelperTester
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class ObjectHelperTester
 {
 
 	@Test

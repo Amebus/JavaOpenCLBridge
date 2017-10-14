@@ -16,12 +16,12 @@ public class KernelBuilder
 
 		static class Map
 		{
-			static final String INT_MAP_START = "__kernel void map(global int* _data)\n" +
+			static final String INT_MAP_START = "__kernel void map(global int* " + Vars.Data + ")\n" +
 												"{\n" +
-												"\tint _gId = get_global_id(0);" +
-												"\tint _r;" + "\n";
+												"\tint " + Vars.GlobalId + " = get_global_id(0);" +
+												"\tint " + Vars.MapMidResult + ";\n";
 
-			static final String MAP_ASSIGNATION = "\t" + "_data[_gId] = _r;" + "\n";
+			static final String MAP_ASSIGNATION = "\t" + Vars.Data + "[" + Vars.GlobalId + "] = " + Vars.MapMidResult + ";\n";
 			static final String MAP_END = "}\n";
 
 			static final int INT_MAP_LENGTH = INT_MAP_START.length() + MAP_ASSIGNATION.length() + MAP_END.length();
@@ -60,7 +60,7 @@ public class KernelBuilder
 
 	public String buildMap()
 	{
-		int length = getStringLength();
+		int length = getStringLength(Kernels.Map.INT_MAP_LENGTH);
 
 		mKernelBuilder = new StringBuilder(length);
 
@@ -79,9 +79,9 @@ public class KernelBuilder
 		return  mKernelBuilder.toString();
 	}
 
-	private int getStringLength()
+	private int getStringLength(int start)
 	{
-		int result = Kernels.Map.INT_MAP_LENGTH;
+		int result = start;
 
 		if(!ObjectHelper.isNullOrEmptyOrWhiteSpace(mParametersDefinition))
 		{
@@ -102,13 +102,13 @@ public class KernelBuilder
 			result += mPostExecutionLogic.length();
 		}
 
-		return result;
+		return result + 3;
 	}
 
 	private void addParametersDefinition()
 	{
 
-		if (mParametersDefinition != null)
+		if (!ObjectHelper.isNullOrEmptyOrWhiteSpace(mParametersDefinition))
 		{
 			mKernelBuilder.append(mParametersDefinition);
 			mKernelBuilder.append("\n");
@@ -117,24 +117,32 @@ public class KernelBuilder
 
 	private void addExecutionLogicDefinition()
 	{
-		if (ObjectHelper.isNullOrEmptyOrWhiteSpace(mExecutionLogic))
-		{
-			throw new IllegalArgumentException(Kernels.ErrorMessages.THE_EXECUTION_LOGIC_MUST_BE_DEFINED);
-		}
-		else
-		{
-			mKernelBuilder.append(mExecutionLogic);
-			mKernelBuilder.append("\n");
-		}
+		correctlyAddIfPassTest(mExecutionLogic, true);
 	}
 
 	private void addPostExecutionLogicDefinition()
 	{
-		if (mPostExecutionLogic != null)
-		{
-			mKernelBuilder.append(mPostExecutionLogic);
-			mKernelBuilder.append("\n");
-		}
+		correctlyAddIfPassTest(mPostExecutionLogic);
 	}
 
+	private void correctlyAddIfPassTest(String str)
+	{
+		correctlyAddIfPassTest(str, false);
+	}
+
+	private void correctlyAddIfPassTest(String str, boolean throwException)
+	{
+		if (ObjectHelper.isNullOrEmptyOrWhiteSpace(str))
+		{
+			if (throwException)
+				throw new IllegalArgumentException(Kernels.ErrorMessages.THE_EXECUTION_LOGIC_MUST_BE_DEFINED);
+			return;
+		}
+		mKernelBuilder.append(str);
+		if(!str.endsWith(";"))
+		{
+			mKernelBuilder.append(";");
+		}
+		mKernelBuilder.append("\n");
+	}
 }

@@ -7,6 +7,11 @@ public class Ocl
 {
 	private SupportStorage mStorage;
 
+	static class ErrorMessages
+	{
+		public static final String NO_KERNELS_FOUND_WITH_NAME = "No Kernels found with name: ";
+	}
+
 
 	public Ocl ()
 	{
@@ -14,12 +19,38 @@ public class Ocl
 		mStorage = new SupportStorage();
 	}
 
-	public native void Open();
-	public native void Close();
+
+	//Context
+	private native void Open();
+	private native void Close();
+
+	public void open() { Open(); }
+	public void close() { Close(); }
 
 	//Transformations
+	private native int[] OclMap(int[] data, @NotNull String kernelName, String kernel);
+
 	//Wrappers
-	public int[] OclMap(int[] data, @NotNull String kernelName, String parameterDefinition, String mapLogic, String postLogic)
+	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName)
+	{
+		if(!mStorage.containsKernel(kernelName))
+		{
+			throw new IllegalArgumentException(ErrorMessages.NO_KERNELS_FOUND_WITH_NAME + kernelName);
+		}
+		return oclMap(data, kernelName, "");
+	}
+
+	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String mapLogic)
+	{
+		return oclMap(data, kernelName, "", mapLogic, "");
+	}
+
+	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String parameterDefinition, @NotNull String mapLogic)
+	{
+		return oclMap(data, kernelName, parameterDefinition, mapLogic, "");
+	}
+
+	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String parameterDefinition, @NotNull String mapLogic, @NotNull String postLogic)
 	{
 		String kernel = null;
 		KernelBuilder builder = new KernelBuilder();
@@ -34,8 +65,6 @@ public class Ocl
 		}
 		return OclMap(data, kernelName, kernel);
 	}
-
-	private native int[] OclMap(int[] data, @NotNull String kernelName, String kernel);
 
 	//filter
 	public native char[] OclFilter(char[] data, String parameterDefinition, String filterLogic);
