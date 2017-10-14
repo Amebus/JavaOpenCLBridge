@@ -23,7 +23,7 @@ JNIEXPORT void JNICALL Java_ocl_Ocl_Open
 
 	defaultDevice = devices[0];
 
-	
+
 
 	// for (size_t i = 0; i < devices.size(); i++) {
 	// 	devices[i]
@@ -45,23 +45,19 @@ JNIEXPORT void JNICALL Java_ocl_Ocl_Close
 }
 
 JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
-  (JNIEnv *env, jobject obj, jintArray data, jstring kernelSource)
+  (JNIEnv *env, jobject obj, jintArray data, jstring kernelName, jstring kernelSource)
 {
+
+	int i, sum = 0;
+    int len = env->GetArrayLength(data);
+	size_t dataSize = sizeof(int)*len;
+	int *body = env->GetIntArrayElements(data, 0);
+	int *result = new int[len];
+	jintArray ret = env->NewIntArray(len);
 	try
 	{
-		int i, sum = 0;
-	    int len = env->GetArrayLength(data);
-		size_t dataSize = sizeof(int)*len;
-		int *body = env->GetIntArrayElements(data, 0);
-		int *result = new int[len];
-
-		std::cout << "/* Before */" << '\n';
-	    for (i=0; i<len; i++)
-		{
-	        std::cout << "index:" << i << " elem:" << body[i] << '\n';
-	    }
 		std::string kernelCode=
-				"__kernel void map(global const int* inputData)\n"
+				"__kernel void map(global int* inputData)\n"
 				"{\n"
 				"    inputData[get_global_id(0)]*=10;\n"
 				"}\n";
@@ -85,20 +81,15 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
 
 		commandQueue.enqueueReadBuffer(inputBuffer,CL_TRUE,0,dataSize,result);
 
+		env->SetIntArrayRegion(ret, 0, len, result);
 
-		std::cout << "/* After */" << '\n';
-	    for (i=0; i<len; i++)
-		{
-	        std::cout << "index:" << i << " elem:" << result[i] << std::endl;
-	    }
 	}
 	catch (cl::Error error)
 	{
 		std::cout << "Error" << std::endl;
 		std::cout << error.what() << "(" << error.err() << ")" << std::endl;
 	}
-
-	return NULL;
+	return ret;
 }
 
 

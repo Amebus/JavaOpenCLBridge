@@ -1,19 +1,41 @@
 package ocl;
 
+import com.sun.istack.internal.NotNull;
+import ocl.kernels.KernelBuilder;
+
 public class Ocl
 {
+	private SupportStorage mStorage;
+
 
 	public Ocl ()
 	{
 		System.loadLibrary("OCL");
+		mStorage = new SupportStorage();
 	}
 
 	public native void Open();
 	public native void Close();
 
 	//Transformations
+	//Wrappers
+	public int[] OclMap(int[] data, @NotNull String kernelName, String parameterDefinition, String mapLogic, String postLogic)
+	{
+		String kernel = null;
+		KernelBuilder builder = new KernelBuilder();
 
-	public native int[] OclMap(int[] data, String kernel);
+		if(!mStorage.containsKernel(kernelName))
+		{
+			kernel = builder.withLogic(mapLogic)
+					.withParameterDefinition(parameterDefinition)
+					.withPostExecution(postLogic)
+					.buildMap();
+			mStorage.addKernel(kernelName);
+		}
+		return OclMap(data, kernelName, kernel);
+	}
+
+	private native int[] OclMap(int[] data, @NotNull String kernelName, String kernel);
 
 	//filter
 	public native char[] OclFilter(char[] data, String parameterDefinition, String filterLogic);

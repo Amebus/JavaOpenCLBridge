@@ -26,10 +26,10 @@ JNIEXPORT void JNICALL Java_ocl_Ocl_Close
 /*
  * Class:     ocl_Ocl
  * Method:    OclMap
- * Signature: ([ILjava/lang/String;)[I
+ * Signature: ([ILjava/lang/String;Ljava/lang/String;)[I
  */
 JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
-  (JNIEnv *, jobject, jintArray, jstring);
+  (JNIEnv *, jobject, jintArray, jstring, jstring);
 
 /*
  * Class:     ocl_Ocl
