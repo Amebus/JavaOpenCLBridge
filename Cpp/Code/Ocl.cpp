@@ -5,6 +5,7 @@
 #include <CL/cl.hpp>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 
 
 std::vector<cl::Platform> platforms;
@@ -12,6 +13,7 @@ std::vector<cl::Device> devices;
 cl::Device defaultDevice;
 cl::Context context;
 cl::CommandQueue commandQueue;
+std::unordered_map<std::string, cl::Kernel> kernelsList;
 
 JNIEXPORT void JNICALL Java_ocl_Ocl_Open
   (JNIEnv *env, jobject obj)
@@ -54,23 +56,38 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
 	int *body = env->GetIntArrayElements(data, 0);
 	int *result = new int[len];
 	jintArray ret = env->NewIntArray(len);
+	const char *kName = env->GetStringUTFChars(kernelName, NULL);
+	const char *kSource;
+
 	try
 	{
-    	std::string kernelCode = std::string(env->GetStringUTFChars(kernelSource, NULL));
+		cl::Kernel map;
+		std::string kernelNameCpp = std::string(kName);
 
-		// std::string kernelCode=
-		// 		"__kernel void map(global int* inputData)\n"
-		// 		"{\n"
-		// 		"    inputData[get_global_id(0)]*=10;\n"
-		// 		"}\n";
+		std::unordered_map<std::string,cl::Kernel>::const_iterator iter = kernelsList.find(kernelNameCpp);
+		if(iter != kernelsList.end())
+		{
+			map = kernelsList[kernelNameCpp];
+			std::cout << kernelNameCpp << " Trovato!" << '\n';
+		}
+		else
+		{
+			std::cout << kernelNameCpp << " Non Trovato!" << '\n';
+			kSource = env->GetStringUTFChars(kernelSource, NULL);
+			std::string kernelCode = std::string(kSource);
 
-		cl::Program::Sources sources(1, std::make_pair(kernelCode.c_str(),kernelCode.length()+1));
+			cl::Program::Sources sources(1, std::make_pair(kernelCode.c_str(),kernelCode.length()+1));
 
-		cl::Program program(context,sources);
+			cl::Program program(context,sources);
 
-		program.build(devices);
+			program.build(devices);
 
-		cl::Kernel map(program, "map");
+			map = cl::Kernel(program, "map");
+
+			kernelsList[kernelNameCpp] = map;
+			env->ReleaseStringUTFChars(kernelSource, kSource);
+		}
+		env->ReleaseStringUTFChars(kernelName, kName);
 
 		cl::Buffer inputBuffer(context,CL_MEM_READ_WRITE,sizeof(int)*len);
 		commandQueue.enqueueWriteBuffer(inputBuffer,CL_TRUE,0,dataSize,body);

@@ -14,9 +14,7 @@ class KernelBuildersTester
 	{
 		KernelBuilder builder = new KernelBuilder();
 
-		Throwable exception = assertThrows(IllegalArgumentException.class, builder::buildMap);
-
-		assertEquals(KernelBuilder.Kernels.ErrorMessages.THE_EXECUTION_LOGIC_MUST_BE_DEFINED , exception.getMessage());
+		assertThrows(IllegalArgumentException.class, builder::buildMap);
 	}
 
 	@Test
@@ -26,9 +24,7 @@ class KernelBuildersTester
 
 		builder.withLogic("");
 
-		Throwable exception = assertThrows(IllegalArgumentException.class, builder::buildMap);
-
-		assertEquals(KernelBuilder.Kernels.ErrorMessages.THE_EXECUTION_LOGIC_MUST_BE_DEFINED , exception.getMessage());
+		assertThrows(IllegalArgumentException.class, builder::buildMap);
 	}
 
 	@Test
@@ -38,9 +34,7 @@ class KernelBuildersTester
 
 		builder.withLogic("      ");
 
-		Throwable exception = assertThrows(IllegalArgumentException.class, builder::buildMap);
-
-		assertEquals(KernelBuilder.Kernels.ErrorMessages.THE_EXECUTION_LOGIC_MUST_BE_DEFINED , exception.getMessage());
+		assertThrows(IllegalArgumentException.class, builder::buildMap);
 	}
 
 	@Test
