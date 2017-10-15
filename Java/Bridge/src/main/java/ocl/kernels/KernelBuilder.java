@@ -21,15 +21,15 @@ public class KernelBuilder
 		{
 			static final String MAP_START = "__kernel void ";
 
-			static final String INT_MAP_SIGNATURE = "(global int* " + Vars.Data + ")\n" +
+			static final String INT_MAP_SIGNATURE = "(__global int* " + Vars.Data + ")\n" +
 													"{\n" +
 													"\tint " + Vars.MapMidResult + ";\n";
 
-			static final String CHAR_MAP_SIGNATURE = "(global char* " + Vars.Data + ")\n" +
+			static final String CHAR_MAP_SIGNATURE = "(__global char* " + Vars.Data + ")\n" +
 													"{\n" +
 													"\tchar " + Vars.MapMidResult + ";\n";
 
-			static final String DOUBLE_MAP_SIGNATURE = "(global double* " + Vars.Data + ")\n" +
+			static final String DOUBLE_MAP_SIGNATURE = "(__global double* " + Vars.Data + ")\n" +
 													"{\n" +
 													"\tdouble " + Vars.MapMidResult + ";\n";
 

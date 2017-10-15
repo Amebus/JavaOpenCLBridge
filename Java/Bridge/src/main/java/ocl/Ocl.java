@@ -147,8 +147,13 @@ public class Ocl
 
 	//Take
 //	public native char[] OclTake(char[] data, int n);
-	public native int[] OclTake(int[] data, int n);
+	private native int[] OclTake(int[] data, int n);
 //	public native double[] OclTake(double[] data, int n);
+
+	public int[] oclTake(int[] data, int n)
+	{
+		return OclTake(data, n);
+	}
 
 	//TakeSample
 //	public native char[] OclTakeSample(char[] data, boolean withReplacement, int num);
