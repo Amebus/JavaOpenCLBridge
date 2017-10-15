@@ -12,32 +12,36 @@ public class KernelBuilder
 		static class ErrorMessages
 		{
 			static final String THE_EXECUTION_LOGIC_MUST_BE_DEFINED = "The execution logic must be defined";
+			static final String THE_KERNEL_NAME_MUST_BE_SPECIFIED = "The Kernel name must be specified";
 		}
 
 		static class Map
 		{
-			static final String INT_MAP_START = "__kernel void map(global int* " + Vars.Data + ")\n" +
-												"{\n" +
-												"\tint " + Vars.GlobalId + " = get_global_id(0);" +
-												"\tint " + Vars.MapMidResult + ";\n";
+			static final String MAP_START = "__kernel void ";
+
+			static final String INT_MAP_BODY = "(global int* " + Vars.Data + ")\n" +
+											   "{\n" +
+											   "\tint " + Vars.GlobalId + " = get_global_id(0);" +
+											   "\tint " + Vars.MapMidResult + ";\n";
 
 			static final String MAP_ASSIGNATION = "\t" + Vars.Data + "[" + Vars.GlobalId + "] = " + Vars.MapMidResult + ";\n";
 			static final String MAP_END = "}\n";
 
-			static final int INT_MAP_LENGTH = INT_MAP_START.length() + MAP_ASSIGNATION.length() + MAP_END.length();
+			static final int INT_MAP_LENGTH = MAP_START.length() + INT_MAP_BODY.length() + MAP_ASSIGNATION.length() + MAP_END.length();
 
 		}
 
 	}
 
 	private StringBuilder mKernelBuilder;
+	private String mKernelName;
 	private String mParametersDefinition;
 	private String mExecutionLogic;
 	private String mPostExecutionLogic;
 
-	public KernelBuilder()
+	public KernelBuilder(@NotNull String kernelName)
 	{
-
+		mKernelName = kernelName;
 	}
 
 	public KernelBuilder withParameterDefinition(String parameterDefinition)
@@ -60,11 +64,25 @@ public class KernelBuilder
 
 	public String buildMap()
 	{
+
+		if(ObjectHelper.isNullOrEmptyOrWhiteSpace(mKernelName))
+		{
+			throw new IllegalArgumentException(Kernels.ErrorMessages.THE_KERNEL_NAME_MUST_BE_SPECIFIED);
+		}
+
+		if(ObjectHelper.isNullOrEmptyOrWhiteSpace(mExecutionLogic))
+		{
+			throw new IllegalArgumentException(Kernels.ErrorMessages.THE_EXECUTION_LOGIC_MUST_BE_DEFINED);
+		}
+
 		int length = getStringLength(Kernels.Map.INT_MAP_LENGTH);
 
 		mKernelBuilder = new StringBuilder(length);
 
-		mKernelBuilder.append(Kernels.Map.INT_MAP_START);
+		mKernelBuilder.append(Kernels.Map.MAP_START);
+
+		mKernelBuilder.append(mKernelName);
+		mKernelBuilder.append(Kernels.Map.INT_MAP_BODY);
 
 		addParametersDefinition();
 
@@ -83,18 +101,11 @@ public class KernelBuilder
 	{
 		int result = start;
 
+		result += (mKernelName.length() + mExecutionLogic.length());
+
 		if(!ObjectHelper.isNullOrEmptyOrWhiteSpace(mParametersDefinition))
 		{
 			result += mParametersDefinition.length();
-		}
-
-		if(ObjectHelper.isNullOrEmptyOrWhiteSpace(mExecutionLogic))
-		{
-			throw new IllegalArgumentException(Kernels.ErrorMessages.THE_EXECUTION_LOGIC_MUST_BE_DEFINED);
-		}
-		else
-		{
-			result += mExecutionLogic.length();
 		}
 
 		if (!ObjectHelper.isNullOrEmptyOrWhiteSpace(mPostExecutionLogic))
@@ -102,22 +113,18 @@ public class KernelBuilder
 			result += mPostExecutionLogic.length();
 		}
 
+		//This is because the ; at th end of some statements could be forgot
 		return result + 3;
 	}
 
 	private void addParametersDefinition()
 	{
-
-		if (!ObjectHelper.isNullOrEmptyOrWhiteSpace(mParametersDefinition))
-		{
-			mKernelBuilder.append(mParametersDefinition);
-			mKernelBuilder.append("\n");
-		}
+		correctlyAddIfPassTest(mParametersDefinition);
 	}
 
 	private void addExecutionLogicDefinition()
 	{
-		correctlyAddIfPassTest(mExecutionLogic, true);
+		correctlyAddIfPassTest(mExecutionLogic);
 	}
 
 	private void addPostExecutionLogicDefinition()
@@ -127,22 +134,14 @@ public class KernelBuilder
 
 	private void correctlyAddIfPassTest(String str)
 	{
-		correctlyAddIfPassTest(str, false);
-	}
-
-	private void correctlyAddIfPassTest(String str, boolean throwException)
-	{
-		if (ObjectHelper.isNullOrEmptyOrWhiteSpace(str))
+		if(!ObjectHelper.isNullOrEmptyOrWhiteSpace(str))
 		{
-			if (throwException)
-				throw new IllegalArgumentException(Kernels.ErrorMessages.THE_EXECUTION_LOGIC_MUST_BE_DEFINED);
-			return;
+			mKernelBuilder.append(str);
+			if(!str.endsWith(";"))
+			{
+				mKernelBuilder.append(";");
+			}
+			mKernelBuilder.append("\n");
 		}
-		mKernelBuilder.append(str);
-		if(!str.endsWith(";"))
-		{
-			mKernelBuilder.append(";");
-		}
-		mKernelBuilder.append("\n");
 	}
 }

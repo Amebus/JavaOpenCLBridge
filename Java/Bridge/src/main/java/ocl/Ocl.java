@@ -53,7 +53,7 @@ public class Ocl
 	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String parameterDefinition, @NotNull String mapLogic, @NotNull String postLogic)
 	{
 		String kernel = null;
-		KernelBuilder builder = new KernelBuilder();
+		KernelBuilder builder = new KernelBuilder(kernelName);
 
 		if(!mStorage.containsKernel(kernelName))
 		{

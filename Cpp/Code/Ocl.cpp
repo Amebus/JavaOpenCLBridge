@@ -46,6 +46,36 @@ JNIEXPORT void JNICALL Java_ocl_Ocl_Close
 	context = NULL;
 }
 
+cl::Kernel GetKernel(JNIEnv *env, jstring kernelName, jstring kernelSource)
+{
+	const char *kName = env->GetStringUTFChars(kernelName, NULL);
+	const char *kSource;
+	std::string kernelNameCpp = std::string(kName);
+	cl::Kernel kernel;
+	std::unordered_map<std::string,cl::Kernel>::const_iterator iter = kernelsList.find(kernelNameCpp);
+	if(iter != kernelsList.end())
+	{
+		kernel = kernelsList[kernelNameCpp];
+	}
+	else
+	{
+		kSource = env->GetStringUTFChars(kernelSource, NULL);
+		std::string kernelCode = std::string(kSource);
+
+		cl::Program::Sources sources(1, std::make_pair(kernelCode.c_str(),kernelCode.length()+1));
+		cl::Program program(context,sources);
+
+		program.build(devices);
+		kernel = cl::Kernel(program, kName);
+
+		kernelsList[kernelNameCpp] = kernel;
+		env->ReleaseStringUTFChars(kernelSource, kSource);
+	}
+	env->ReleaseStringUTFChars(kernelName, kName);
+
+	return kernel;
+}
+
 JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
   (JNIEnv *env, jobject obj, jintArray data, jstring kernelName, jstring kernelSource)
 {
@@ -56,38 +86,10 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
 	int *body = env->GetIntArrayElements(data, 0);
 	int *result = new int[len];
 	jintArray ret = env->NewIntArray(len);
-	const char *kName = env->GetStringUTFChars(kernelName, NULL);
-	const char *kSource;
 
 	try
 	{
-		cl::Kernel map;
-		std::string kernelNameCpp = std::string(kName);
-
-		std::unordered_map<std::string,cl::Kernel>::const_iterator iter = kernelsList.find(kernelNameCpp);
-		if(iter != kernelsList.end())
-		{
-			map = kernelsList[kernelNameCpp];
-			std::cout << kernelNameCpp << " Trovato!" << '\n';
-		}
-		else
-		{
-			std::cout << kernelNameCpp << " Non Trovato!" << '\n';
-			kSource = env->GetStringUTFChars(kernelSource, NULL);
-			std::string kernelCode = std::string(kSource);
-
-			cl::Program::Sources sources(1, std::make_pair(kernelCode.c_str(),kernelCode.length()+1));
-
-			cl::Program program(context,sources);
-
-			program.build(devices);
-
-			map = cl::Kernel(program, "map");
-
-			kernelsList[kernelNameCpp] = map;
-			env->ReleaseStringUTFChars(kernelSource, kSource);
-		}
-		env->ReleaseStringUTFChars(kernelName, kName);
+		cl::Kernel map = GetKernel(env, kernelName, kernelSource);
 
 		cl::Buffer inputBuffer(context,CL_MEM_READ_WRITE,sizeof(int)*len);
 		commandQueue.enqueueWriteBuffer(inputBuffer,CL_TRUE,0,dataSize,body);

@@ -3,6 +3,8 @@ package ocl;
 import ocl.kernels.Vars;
 import org.junit.jupiter.api.*;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -107,7 +109,7 @@ class OclTester
 		for (int i = 0; i < data.length; i++) {
 			data[i]*=11;
 		}
-		assertFalse(data.equals(result));
+		assertFalse(Arrays.equals(data, result));
 	}
 
 	@Test
