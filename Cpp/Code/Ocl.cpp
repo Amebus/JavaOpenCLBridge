@@ -1,12 +1,15 @@
+
 #define __CL_ENABLE_EXCEPTIONS
 
+#define K_MAP 101
+
+
+#define K_TAKE 201
 
 #include "ocl_Ocl.h"
 #include <CL/cl.hpp>
 #include <iostream>
-#include <string>
 #include <unordered_map>
-
 
 std::vector<cl::Platform> platforms;
 std::vector<cl::Device> devices;
@@ -25,13 +28,6 @@ JNIEXPORT void JNICALL Java_ocl_Ocl_Open
 
 	defaultDevice = devices[0];
 
-
-
-	// for (size_t i = 0; i < devices.size(); i++) {
-	// 	devices[i]
-	// }
-
-	//Create a context for the devices
 	context = cl::Context(defaultDevice);
 
 	commandQueue = cl::CommandQueue(context, defaultDevice);
@@ -42,11 +38,28 @@ JNIEXPORT void JNICALL Java_ocl_Ocl_Close
   (JNIEnv *, jobject obj)
 {
 	commandQueue = NULL;
-
 	context = NULL;
 }
 
-cl::Kernel GetKernel(JNIEnv *env, jstring kernelName, jstring kernelSource)
+cl::Kernel CreateMapKernel(JNIEnv *env, std::string kernelNameCpp, jstring kernelSource)
+{
+	const char *kSource = env->GetStringUTFChars(kernelSource, NULL);
+	std::string kernelCode = std::string(kSource);
+
+	cl::Program::Sources sources(1, std::make_pair(kernelCode.c_str(),kernelCode.length()+1));
+	cl::Program program(context,sources);
+
+	program.build(devices);
+	cl::Kernel kernel = cl::Kernel(program, kernelNameCpp.c_str());
+
+	kernelsList[kernelNameCpp] = kernel;
+	env->ReleaseStringUTFChars(kernelSource, kSource);
+
+	return kernel;
+}
+
+
+cl::Kernel GetKernel(JNIEnv *env, jstring kernelName, jstring kernelSource, int kernelType)
 {
 	const char *kName = env->GetStringUTFChars(kernelName, NULL);
 	const char *kSource;
@@ -59,28 +72,23 @@ cl::Kernel GetKernel(JNIEnv *env, jstring kernelName, jstring kernelSource)
 	}
 	else
 	{
-		kSource = env->GetStringUTFChars(kernelSource, NULL);
-		std::string kernelCode = std::string(kSource);
-
-		cl::Program::Sources sources(1, std::make_pair(kernelCode.c_str(),kernelCode.length()+1));
-		cl::Program program(context,sources);
-
-		program.build(devices);
-		kernel = cl::Kernel(program, kName);
-
-		kernelsList[kernelNameCpp] = kernel;
-		env->ReleaseStringUTFChars(kernelSource, kSource);
+		switch (kernelType)
+		 {
+			case K_MAP:
+				kernel = CreateMapKernel(env, kernelNameCpp, kernelSource);
+				break;
+			case K_TAKE:
+				break;
+		}
 	}
 	env->ReleaseStringUTFChars(kernelName, kName);
 
 	return kernel;
 }
 
-JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap___3ILjava_lang_String_2Ljava_lang_String_2
   (JNIEnv *env, jobject obj, jintArray data, jstring kernelName, jstring kernelSource)
 {
-
-	int i, sum = 0;
     int len = env->GetArrayLength(data);
 	size_t dataSize = sizeof(int)*len;
 	int *body = env->GetIntArrayElements(data, 0);
@@ -89,9 +97,44 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
 
 	try
 	{
-		cl::Kernel map = GetKernel(env, kernelName, kernelSource);
+		cl::Kernel map = GetKernel(env, kernelName, kernelSource, K_MAP);
 
-		cl::Buffer inputBuffer(context,CL_MEM_READ_WRITE,sizeof(int)*len);
+		cl::Buffer inputBuffer(context, CL_MEM_READ_WRITE, dataSize);
+		commandQueue.enqueueWriteBuffer(inputBuffer, CL_TRUE, 0, dataSize, body);
+
+		map.setArg(0, inputBuffer);
+
+		cl::NDRange global(len);
+
+		commandQueue.enqueueNDRangeKernel(map, cl::NullRange, global, cl::NullRange);
+
+		commandQueue.enqueueReadBuffer(inputBuffer, CL_TRUE, 0, dataSize, result);
+
+		env->SetIntArrayRegion(ret, 0, len, result);
+		// env->ReleaseIntArrayElements(data, body);
+	}
+	catch (cl::Error error)
+	{
+		std::cout << "Error" << std::endl;
+		std::cout << error.what() << "(" << error.err() << ")" << std::endl;
+	}
+	return ret;
+}
+
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclMap___3DLjava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *env, jobject obj, jdoubleArray data, jstring kernelName, jstring kernelSource)
+{
+	int len = env->GetArrayLength(data);
+	size_t dataSize = sizeof(double)*len;
+	double *body = env->GetDoubleArrayElements(data, 0);
+	double *result = new double[len];
+	jdoubleArray ret = env->NewDoubleArray(len);
+
+	try
+	{
+		cl::Kernel map = GetKernel(env, kernelName, kernelSource, K_MAP);
+
+		cl::Buffer inputBuffer(context,CL_MEM_READ_WRITE,dataSize);
 		commandQueue.enqueueWriteBuffer(inputBuffer,CL_TRUE,0,dataSize,body);
 
 		map.setArg(0, inputBuffer);
@@ -102,8 +145,8 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
 
 		commandQueue.enqueueReadBuffer(inputBuffer,CL_TRUE,0,dataSize,result);
 
-		env->SetIntArrayRegion(ret, 0, len, result);
-
+		env->SetDoubleArrayRegion(ret, 0, len, result);
+		// env->ReleaseDoubleArrayElements(data, body);
 	}
 	catch (cl::Error error)
 	{
@@ -111,13 +154,17 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap
 		std::cout << error.what() << "(" << error.err() << ")" << std::endl;
 	}
 	return ret;
+
 }
 
-
-JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMapToIntArray___3ILjava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *env, jobject obj, jintArray intArray, jstring a, jstring b)
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTake
+  (JNIEnv *env, jobject obj, jintArray data, jint nToTake)
 {
-
+	int len = env->GetArrayLength(data);
+	size_t dataSize = sizeof(int)*len;
+	int *body = env->GetIntArrayElements(data, 0);
+	int *result = new int[len];
+	jintArray ret = env->NewIntArray(len);
 
 
 

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class OclTester
+class OclMapTester
 {
 
 	private Ocl context;
@@ -80,7 +80,7 @@ class OclTester
 	void oclSimpleSameNameMap_OK()
 	{
 
-		int[] data = new int[10];
+		int[] data = new int[10000];
 
 		for (int i = 0; i < data.length; i++) {
 			data[i] = i;
@@ -98,7 +98,7 @@ class OclTester
 	void oclSimpleSameNameMapDifferentResult_OK()
 	{
 
-		int[] data = new int[10];
+		int[] data = new int[10000];
 
 		for (int i = 0; i < data.length; i++) {
 			data[i] = i;
@@ -133,6 +133,33 @@ class OclTester
 				data[i]*=10;
 		}
 		assertArrayEquals(data, result);
+	}
+
+	@Test
+	void oclDoubleMap_OK()
+	{
+		String mapLogic = "if(" + Vars.GlobalId + "%2 == 0) " +
+						  Vars.MapMidResult + " = " + Vars.Data + "[" + Vars.GlobalId +"] * 10; " +
+						  "else " + Vars.MapMidResult + " = " + Vars.Data + "[" + Vars.GlobalId +"]";
+
+		double[] data = new double[10000];
+
+		for (int i = 0; i < data.length; i++) {
+			if (i%2 == 0)
+				data[i] = 0.15;
+			else
+				data[i] = 0.18;
+		}
+
+		double[] result = context.oclMap(data, "even_map_char_test", mapLogic);
+
+		for (int i = 0; i < data.length; i++) {
+			if (i%2 == 0)
+				data[i] *= 10;
+		}
+
+		assertArrayEquals(data, result);
+
 	}
 
 }
