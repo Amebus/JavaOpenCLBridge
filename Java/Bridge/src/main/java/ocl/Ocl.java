@@ -1,83 +1,141 @@
 package ocl;
 
+import com.sun.istack.internal.NotNull;
+import ocl.kernels.KernelBuilder;
+
 public class Ocl
 {
+	private SupportStorage mStorage;
 
-	public native void Open();
-	public native void Close();
+	static class ErrorMessages
+	{
+		public static final String NO_KERNELS_FOUND_WITH_NAME = "No Kernels found with name: ";
+	}
+
+
+	public Ocl ()
+	{
+		System.loadLibrary("OCL");
+		mStorage = new SupportStorage();
+	}
+
+
+	//Context
+	private native void Open();
+	private native void Close();
+
+	public void open() { Open(); }
+	public void close() { Close(); }
 
 	//Transformations
+	private native int[] OclMap(int[] data, @NotNull String kernelName, String kernel);
+
+	//Wrappers
+	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName)
+	{
+		if(!mStorage.containsKernel(kernelName))
+		{
+			throw new IllegalArgumentException(ErrorMessages.NO_KERNELS_FOUND_WITH_NAME + kernelName);
+		}
+		return oclMap(data, kernelName, "");
+	}
+
+	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String mapLogic)
+	{
+		return oclMap(data, kernelName, "", mapLogic, "");
+	}
+
+	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String parameterDefinition, @NotNull String mapLogic)
+	{
+		return oclMap(data, kernelName, parameterDefinition, mapLogic, "");
+	}
+
+	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String parameterDefinition, @NotNull String mapLogic, @NotNull String postLogic)
+	{
+		String kernel = null;
+		KernelBuilder builder = new KernelBuilder();
+
+		if(!mStorage.containsKernel(kernelName))
+		{
+			kernel = builder.withLogic(mapLogic)
+					.withParameterDefinition(parameterDefinition)
+					.withPostExecution(postLogic)
+					.buildMap();
+			mStorage.addKernel(kernelName);
+		}
+		return OclMap(data, kernelName, kernel);
+	}
 
 	//filter
-	public native Character[] OclFilter(Character[] data, String parameterDefinition, String filterLogic);
-	public native Integer[] OclFilter(Integer[] data, String parameterDefinition, String filterLogic);
-	public native Double[] OclFilter(Double[] data, String parameterDefinition, String filterLogic);
+	public native char[] OclFilter(char[] data, String parameterDefinition, String filterLogic);
+	public native int[] OclFilter(int[] data, String parameterDefinition, String filterLogic);
+	public native double[] OclFilter(double[] data, String parameterDefinition, String filterLogic);
 
 	//Map
-	public native Character[] OclMapToCharArray(Character[] data, String parameterDefinition, String mapLogic);
-	public native Character[] OclMapToCharArray(Integer[] data, String parameterDefinition, String mapLogic);
-	public native Character[] OclMapToCharArray(Double[] data, String parameterDefinition, String mapLogic);
+	public native char[] OclMapToCharArray(char[] data, String parameterDefinition, String mapLogic);
+	public native char[] OclMapToCharArray(int[] data, String parameterDefinition, String mapLogic);
+	public native char[] OclMapToCharArray(double[] data, String parameterDefinition, String mapLogic);
 
-	public native Integer[] OclMapToIntArray(Character[] data, String parameterDefinition, String mapLogic);
-	public native Integer[] OclMapToIntArray(Integer[] data, String parameterDefinition, String mapLogic);
-	public native Integer[] OclMapToIntArray(Double[] data, String parameterDefinition, String mapLogic);
+	public native int[] OclMapToIntArray(char[] data, String parameterDefinition, String mapLogic);
+	public native int[] OclMapToIntArray(int[] data, String parameterDefinition, String mapLogic);
+	public native int[] OclMapToIntArray(double[] data, String parameterDefinition, String mapLogic);
 
-	public native Double[] OclMapToDoubleArray(Character[] data, String parameterDefinition, String mapLogic);
-	public native Double[] OclMapToDoubleArray(Integer[] data, String parameterDefinition, String mapLogic);
-	public native Double[] OclMapToDoubleArray(Double[] data, String parameterDefinition, String mapLogic);
+	public native double[] OclMapTodoubleArray(char[] data, String parameterDefinition, String mapLogic);
+	public native double[] OclMapTodoubleArray(int[] data, String parameterDefinition, String mapLogic);
+	public native double[] OclMapTodoubleArray(double[] data, String parameterDefinition, String mapLogic);
 
 	//Sample
-	public native Character[] OclSample(Character[] data, boolean withReplacement, float fraction);
-	public native Integer[] OclSample(Integer[] data, boolean withReplacement, float fraction);
-	public native Double[] OclSample(Double[] data, boolean withReplacement, float fraction);
+	public native char[] OclSample(char[] data, boolean withReplacement, float fraction);
+	public native int[] OclSample(int[] data, boolean withReplacement, float fraction);
+	public native double[] OclSample(double[] data, boolean withReplacement, float fraction);
 
 
-	public native Character[] OclSample(Character[] data, boolean withReplacement, float fraction, int seed);
-	public native Integer[] OclSample(Integer[] data, boolean withReplacement, float fraction, int seed);
-	public native Double[] OclSample(Double[] data, boolean withReplacement, float fraction, int seed);
+	public native char[] OclSample(char[] data, boolean withReplacement, float fraction, int seed);
+	public native int[] OclSample(int[] data, boolean withReplacement, float fraction, int seed);
+	public native double[] OclSample(double[] data, boolean withReplacement, float fraction, int seed);
 
 	//Union
-	public native Character[] OclUnion(Character[] data, Character[] otherDataSet);
-	public native Integer[] OclUnion(Integer[] data, Integer[] otherDataSet);
-	public native Double[] OclUnion(Double[] data, Double[] otherDataSet);
+	public native char[] OclUnion(char[] data, char[] otherDataSet);
+	public native int[] OclUnion(int[] data, int[] otherDataSet);
+	public native double[] OclUnion(double[] data, double[] otherDataSet);
 
 	//Intersection
-	public native Character[] OclIntersection(Character[] data, Character[] otherDataSet);
-	public native Integer[] OclIntersection(Integer[] data, Integer[] otherDataSet);
-	public native Double[] OclIntersection(Double[] data, Double[] otherDataSet);
+	public native char[] OclIntersection(char[] data, char[] otherDataSet);
+	public native int[] OclIntersection(int[] data, int[] otherDataSet);
+	public native double[] OclIntersection(double[] data, double[] otherDataSet);
 
 
 	//Actions
 
 	//Take
-	public native Character[] OclTake(Character[] data, int n);
-	public native Integer[] OclTake(Integer[] data, int n);
-	public native Double[] OclTake(Double[] data, int n);
+	public native char[] OclTake(char[] data, int n);
+	public native int[] OclTake(int[] data, int n);
+	public native double[] OclTake(double[] data, int n);
 
 	//TakeSample
-	public native Character[] OclTakeSample(Character[] data, boolean withReplacement, int num);
-	public native Integer[] OclTakeSample(Integer[] data, boolean withReplacement, int num);
-	public native Double[] OclTakeSample(Double[] data, boolean withReplacement, int num);
+	public native char[] OclTakeSample(char[] data, boolean withReplacement, int num);
+	public native int[] OclTakeSample(int[] data, boolean withReplacement, int num);
+	public native double[] OclTakeSample(double[] data, boolean withReplacement, int num);
 
-	public native Character[] OclTakeSample(Character[] data, boolean withReplacement, int num, int seed);
-	public native Integer[] OclTakeSample(Integer[] data, boolean withReplacement, int num, int seed);
-	public native Double[] OclTakeSample(Double[] data, boolean withReplacement, int num, int seed);
+	public native char[] OclTakeSample(char[] data, boolean withReplacement, int num, int seed);
+	public native int[] OclTakeSample(int[] data, boolean withReplacement, int num, int seed);
+	public native double[] OclTakeSample(double[] data, boolean withReplacement, int num, int seed);
 
 	//Reduce
-	public native Character OclReduce(Character[] data, String parameterDefinition, String reduceLogic);
-	public native Integer OclReduce(Integer[] data, String parameterDefinition, String reduceLogic);
-	public native Double OclReduce(Double[] data, String parameterDefinition, String reduceLogic);
+	public native char OclReduce(char[] data, String parameterDefinition, String reduceLogic);
+	public native int OclReduce(int[] data, String parameterDefinition, String reduceLogic);
+	public native double OclReduce(double[] data, String parameterDefinition, String reduceLogic);
 
 	//Count
-	public Integer OclCount(Character[] data)
+	public int OclCount(char[] data)
 	{
 		return data.length;
 	}
-	public Integer OclCount(Integer[] data)
+	public int OclCount(int[] data)
 	{
 		return data.length;
 	}
-	public Integer OclCount(Double[] data)
+	public int OclCount(double[] data)
 	{
 		return data.length;
 	}
