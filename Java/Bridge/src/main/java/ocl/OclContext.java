@@ -2,7 +2,7 @@ package ocl;
 
 import com.sun.istack.internal.NotNull;
 import ocl.kernels.EKernelReturnType;
-import ocl.kernels.KernelBuilder;
+import ocl.kernels.Builders.MapKernelBuilder;
 
 public class OclContext extends Ocl
 {
@@ -39,18 +39,7 @@ public class OclContext extends Ocl
 
 	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition, @NotNull String postLogic)
 	{
-		String kernel = null;
-		KernelBuilder builder = new KernelBuilder(kernelName, EKernelReturnType.INT);
-
-		if(!mStorage.containsKernel(kernelName))
-		{
-			kernel = builder.withLogic(mapLogic)
-					.withParameterDefinition(parameterDefinition)
-					.withPostExecution(postLogic)
-					.buildMap();
-			mStorage.addKernel(kernelName);
-		}
-		return super.OclMap(data, kernelName, kernel);
+		return super.OclMap(data, kernelName, buildKernel(EKernelReturnType.INT, kernelName, mapLogic, parameterDefinition, postLogic));
 	}
 
 	public double[] oclMap(@NotNull double[] data, @NotNull String kernelName)
@@ -73,20 +62,24 @@ public class OclContext extends Ocl
 
 	public double[] oclMap(@NotNull double[] data, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition, @NotNull String postLogic)
 	{
-		String kernel = null;
-		KernelBuilder builder = new KernelBuilder(kernelName, EKernelReturnType.DOUBLE);
-
-		if(!mStorage.containsKernel(kernelName))
-		{
-			kernel = builder.withLogic(mapLogic)
-					.withParameterDefinition(parameterDefinition)
-					.withPostExecution(postLogic)
-					.buildMap();
-			mStorage.addKernel(kernelName);
-		}
-		return super.OclMap(data, kernelName, kernel);
+		return super.OclMap(data, kernelName, buildKernel(EKernelReturnType.DOUBLE, kernelName, mapLogic, parameterDefinition, postLogic));
 	}
 
+	public String buildKernel(@NotNull EKernelReturnType kernelReturnType, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition, @NotNull String postLogic)
+	{
+		String kernel = null;
+		if(!mStorage.containsKernel(kernelName))
+		{
+			kernel = new MapKernelBuilder(kernelName, kernelReturnType)
+					.withLogic(mapLogic)
+					.withParameterDefinition(parameterDefinition)
+					.withPostExecution(postLogic)
+					.build();
+
+			mStorage.addKernel(kernelName);
+		}
+		return kernel;
+	}
 
 	public int[] oclTake(int[] data, int n)
 	{
