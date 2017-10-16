@@ -4,12 +4,6 @@ import com.sun.istack.internal.NotNull;
 public abstract class Ocl
 {
 
-	static class ErrorMessages
-	{
-		public static final String NO_KERNELS_FOUND_WITH_NAME = "No Kernels found with name: ";
-	}
-
-
 	protected Ocl ()
 	{
 		System.loadLibrary("OCL");

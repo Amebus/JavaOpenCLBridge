@@ -7,6 +7,11 @@ import ocl.kernels.Builders.MapKernelBuilder;
 public class OclContext extends Ocl
 {
 
+	static class ErrorMessages
+	{
+		public static final String NO_KERNELS_FOUND_WITH_NAME = "No Kernels found with name: ";
+	}
+
 	private SupportStorage mStorage;
 
 	public OclContext()
@@ -22,7 +27,7 @@ public class OclContext extends Ocl
 	{
 		if(!mStorage.containsKernel(kernelName))
 		{
-			throw new IllegalArgumentException(Ocl.ErrorMessages.NO_KERNELS_FOUND_WITH_NAME + kernelName);
+			throw new IllegalArgumentException(ErrorMessages.NO_KERNELS_FOUND_WITH_NAME + kernelName);
 		}
 		return oclMap(data, kernelName, "");
 	}
@@ -65,7 +70,7 @@ public class OclContext extends Ocl
 		return super.OclMap(data, kernelName, buildKernel(EKernelReturnType.DOUBLE, kernelName, mapLogic, parameterDefinition, postLogic));
 	}
 
-	public String buildKernel(@NotNull EKernelReturnType kernelReturnType, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition, @NotNull String postLogic)
+	private String buildKernel(@NotNull EKernelReturnType kernelReturnType, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition, @NotNull String postLogic)
 	{
 		String kernel = null;
 		if(!mStorage.containsKernel(kernelName))
