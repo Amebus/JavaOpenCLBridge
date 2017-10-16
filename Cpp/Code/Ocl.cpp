@@ -41,7 +41,7 @@ JNIEXPORT void JNICALL Java_ocl_Ocl_Close
 	context = NULL;
 }
 
-cl::Kernel CreateMapKernel(JNIEnv *env, const char* kName, jstring kernelSource)
+cl::Kernel CreateStdKernel(JNIEnv *env, const char* kName, jstring kernelSource)
 {
 	const char *kSource = env->GetStringUTFChars(kernelSource, NULL);
 	std::string kernelCode = std::string(kSource);
@@ -55,18 +55,6 @@ cl::Kernel CreateMapKernel(JNIEnv *env, const char* kName, jstring kernelSource)
 	env->ReleaseStringUTFChars(kernelSource, kSource);
 
 	return kernel;
-}
-
-cl::Kernel CreateTakeKernel(JNIEnv *env, const char* kernelName, jstring kernelSource)
-{
-	const char *kSource = env->GetStringUTFChars(kernelSource, NULL);
-	std::string kernelCode = std::string(kSource);
-
-	cl::Program::Sources sources(1, std::make_pair(kernelCode.c_str(),kernelCode.length()+1));
-	cl::Program program(context,sources);
-
-	program.build(devices);
-	cl::Kernel kernel = cl::Kernel(program, kernelName);
 }
 
 cl::Kernel GetKernel(JNIEnv *env, jstring kernelName, jstring kernelSource, int kernelType)
@@ -84,11 +72,11 @@ cl::Kernel GetKernel(JNIEnv *env, jstring kernelName, jstring kernelSource, int 
 		switch (kernelType)
 		 {
 			case K_MAP:
-				kernel = CreateMapKernel(env, kName, kernelSource);
+				kernel = CreateStdKernel(env, kName, kernelSource);
 				kernelsList[kernelNameCpp] = kernel;
 				break;
 			case K_TAKE:
-				kernel = CreateTakeKernel(env, kName, kernelSource);
+				kernel = CreateStdKernel(env, kName, kernelSource);
 				kernelsList[kernelNameCpp] = kernel;
 				break;
 		}
@@ -180,31 +168,29 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTake
 
 	try
 	{
-		jstring kernelSource = env->NewStringUTF("__kernel void takeInt(__global int* _data, __global int* _result)"
-												"\n"
+		jstring kernelSource = env->NewStringUTF("__kernel void takeInt(__global int* _data, __global int* _result)\n"
 												"{\n"
-												"\tint _gId = get_global_id(0);"
+												"\tint _gId = get_global_id(0);\n"
 												"\t_result[_gId] = _data[_gId];"
 												"\n"
 												"}"
 												"\n");
 
+		cl::Kernel kernelTake = GetKernel(env, env->NewStringUTF("takeInt"), kernelSource, K_TAKE);
 
-		cl::Kernel take = GetKernel(env, env->NewStringUTF("takeInt"), kernelSource, K_TAKE);
+		cl::Buffer dataBuffer(context, CL_MEM_READ_ONLY, dataSize);
+		cl::Buffer resultBuffer(context, CL_MEM_WRITE_ONLY, resultSize);
 
-		cl::Buffer inputBuffer(context, CL_MEM_READ_ONLY, dataSize);
-		commandQueue.enqueueWriteBuffer(inputBuffer, CL_TRUE, 0, dataSize, body);
+		commandQueue.enqueueWriteBuffer(dataBuffer, CL_TRUE, 0, dataSize, body);
 
-		cl::Buffer outpuBuffer(context, CL_MEM_WRITE_ONLY, resultSize);
-
-		take.setArg(0, inputBuffer);
-		take.setArg(1, outpuBuffer);
+		kernelTake.setArg(0, dataBuffer);
+		kernelTake.setArg(1, resultBuffer);
 
 		cl::NDRange global(nToTake);
 
-		commandQueue.enqueueNDRangeKernel(take, cl::NullRange, global, cl::NullRange);
+		commandQueue.enqueueNDRangeKernel(kernelTake, cl::NullRange, global, cl::NullRange);
 
-		commandQueue.enqueueReadBuffer(outpuBuffer, CL_TRUE, 0, resultSize, result);
+		commandQueue.enqueueReadBuffer(resultBuffer, CL_TRUE, 0, resultSize, result);
 
 		env->SetIntArrayRegion(ret, 0, nToTake, result);
 		// env->ReleaseDoubleArrayElements(data, body);

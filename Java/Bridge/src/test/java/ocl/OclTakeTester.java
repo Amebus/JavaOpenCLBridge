@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OclTakeTester
 {
 
-	private Ocl context;
+	private OclContext context;
 
 	@BeforeAll
 	void setUp()
 	{
-		context = new Ocl();
+		context = new OclContext();
 		context.open();
 	}
 
@@ -29,7 +29,7 @@ public class OclTakeTester
 	}
 
 	@Test
-	void oclTake_OK()
+	void oclTake1000_OK()
 	{
 		int nToTake = 1000;
 		int[] data = new int[10000];
@@ -43,10 +43,27 @@ public class OclTakeTester
 
 		assertEquals(nToTake, result.length);
 
-		for (int i = 0; i < nToTake; i++)
-		{
-			dataToTake[i] = data[i];
+		System.arraycopy(data, 0, dataToTake, 0, nToTake);
+
+		assertArrayEquals(dataToTake, result);
+	}
+
+	@Test
+	void oclTake100_OK()
+	{
+		int nToTake = 100;
+		int[] data = new int[10000];
+		int[] dataToTake = new int[nToTake];
+
+		for (int i = 0; i < data.length; i++) {
+			data[i] = i;
 		}
+
+		int[] result = context.oclTake(data, nToTake);
+
+		assertEquals(nToTake, result.length);
+
+		System.arraycopy(data, 0, dataToTake, 0, nToTake);
 
 		assertArrayEquals(dataToTake, result);
 

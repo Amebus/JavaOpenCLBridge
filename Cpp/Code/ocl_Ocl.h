@@ -52,8 +52,8 @@ JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclMap___3DLjava_lang_String_2Ljava_
  * Method:    OclTake
  * Signature: ([II)[I
  */
-	JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTake
-	  (JNIEnv *, jobject, jintArray, jint);
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTake
+  (JNIEnv *, jobject, jintArray, jint);
 
 #ifdef __cplusplus
 }

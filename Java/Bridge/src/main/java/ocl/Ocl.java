@@ -1,12 +1,8 @@
 package ocl;
 
 import com.sun.istack.internal.NotNull;
-import ocl.kernels.EKernelReturnType;
-import ocl.kernels.KernelBuilder;
-
-public class Ocl
+public abstract class Ocl
 {
-	private SupportStorage mStorage;
 
 	static class ErrorMessages
 	{
@@ -14,95 +10,20 @@ public class Ocl
 	}
 
 
-	public Ocl ()
+	protected Ocl ()
 	{
 		System.loadLibrary("OCL");
-		mStorage = new SupportStorage();
 	}
 
 
 	//Context
-	private native void Open();
-	private native void Close();
-
-	public void open() { Open(); }
-	public void close() { Close(); }
+	protected final native void Open();
+	protected final native void Close();
 
 	//Transformations
-	private native byte[][] OclMap(byte[][] data, @NotNull String kernelName, @NotNull String kernel);
-	private native int[] OclMap(int[] data, @NotNull String kernelName, @NotNull String kernel);
-	private native double[] OclMap(double[] data, @NotNull String kernelName, @NotNull String kernel);
-
-
-	//Wrappers
-	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName)
-	{
-		if(!mStorage.containsKernel(kernelName))
-		{
-			throw new IllegalArgumentException(ErrorMessages.NO_KERNELS_FOUND_WITH_NAME + kernelName);
-		}
-		return oclMap(data, kernelName, "");
-	}
-
-	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String mapLogic)
-	{
-		return oclMap(data, kernelName, mapLogic, "");
-	}
-
-	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition)
-	{
-		return oclMap(data, kernelName, mapLogic, parameterDefinition,"");
-	}
-
-	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition, @NotNull String postLogic)
-	{
-		String kernel = null;
-		KernelBuilder builder = new KernelBuilder(kernelName, EKernelReturnType.INT);
-
-		if(!mStorage.containsKernel(kernelName))
-		{
-			kernel = builder.withLogic(mapLogic)
-					.withParameterDefinition(parameterDefinition)
-					.withPostExecution(postLogic)
-					.buildMap();
-			mStorage.addKernel(kernelName);
-		}
-		return OclMap(data, kernelName, kernel);
-	}
-
-	public double[] oclMap(@NotNull double[] data, @NotNull String kernelName)
-	{
-		if(!mStorage.containsKernel(kernelName))
-		{
-			throw new IllegalArgumentException(ErrorMessages.NO_KERNELS_FOUND_WITH_NAME + kernelName);
-		}
-		return oclMap(data, kernelName, "");
-	}
-
-	public double[] oclMap(@NotNull double[] data, @NotNull String kernelName, @NotNull String mapLogic)
-	{
-		return oclMap(data, kernelName, mapLogic, "");
-	}
-	public double[] oclMap(@NotNull double[] data, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition)
-	{
-		return oclMap(data, kernelName, mapLogic, parameterDefinition,"");
-	}
-
-	public double[] oclMap(@NotNull double[] data, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition, @NotNull String postLogic)
-	{
-		String kernel = null;
-		KernelBuilder builder = new KernelBuilder(kernelName, EKernelReturnType.DOUBLE);
-
-		if(!mStorage.containsKernel(kernelName))
-		{
-			kernel = builder.withLogic(mapLogic)
-					.withParameterDefinition(parameterDefinition)
-					.withPostExecution(postLogic)
-					.buildMap();
-			mStorage.addKernel(kernelName);
-		}
-		return OclMap(data, kernelName, kernel);
-	}
+	protected final native byte[][] OclMap(byte[][] data, @NotNull String kernelName, @NotNull String kernel);
+	protected final native int[] OclMap(int[] data, @NotNull String kernelName, @NotNull String kernel);
+	protected final native double[] OclMap(double[] data, @NotNull String kernelName, @NotNull String kernel);
 
 	//filter
 //	public native char[] OclFilter(char[] data, String parameterDefinition, String filterLogic);
@@ -118,9 +39,9 @@ public class Ocl
 //	public native int[] OclMapToIntArray(int[] data, String parameterDefinition, String mapLogic);
 //	public native int[] OclMapToIntArray(double[] data, String parameterDefinition, String mapLogic);
 //
-//	public native double[] OclMapTodoubleArray(char[] data, String parameterDefinition, String mapLogic);
-//	public native double[] OclMapTodoubleArray(int[] data, String parameterDefinition, String mapLogic);
-//	public native double[] OclMapTodoubleArray(double[] data, String parameterDefinition, String mapLogic);
+//	public native double[] OclMapToDoubleArray(char[] data, String parameterDefinition, String mapLogic);
+//	public native double[] OclMapToDoubleArray(int[] data, String parameterDefinition, String mapLogic);
+//	public native double[] OclMapToDoubleArray(double[] data, String parameterDefinition, String mapLogic);
 
 	//Sample
 //	public native char[] OclSample(char[] data, boolean withReplacement, float fraction);
@@ -147,13 +68,10 @@ public class Ocl
 
 	//Take
 //	public native char[] OclTake(char[] data, int n);
-	private native int[] OclTake(int[] data, int n);
+	protected final native int[] OclTake(int[] data, int n);
 //	public native double[] OclTake(double[] data, int n);
 
-	public int[] oclTake(int[] data, int n)
-	{
-		return OclTake(data, n);
-	}
+
 
 	//TakeSample
 //	public native char[] OclTakeSample(char[] data, boolean withReplacement, int num);

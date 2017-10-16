@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class OclMapTester
 {
 
-	private Ocl context;
+	private OclContext context;
 
 	@BeforeAll
 	void setUp()
 	{
-		context = new Ocl();
+		context = new OclContext();
 		context.open();
 	}
 
