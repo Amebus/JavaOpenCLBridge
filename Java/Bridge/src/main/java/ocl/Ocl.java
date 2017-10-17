@@ -63,7 +63,7 @@ public abstract class Ocl
 	//Take
 //	public native char[] OclTake(char[] data, int n);
 	protected final native int[] OclTake(int[] data, int n);
-//	public native double[] OclTake(double[] data, int n);
+	protected final native double[] OclTake(double[] data, int n);
 
 
 

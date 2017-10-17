@@ -1,15 +1,11 @@
 
 #define __CL_ENABLE_EXCEPTIONS
 
-#define K_MAP 101
-
-
-#define K_TAKE 201
-
 #include "ocl_Ocl.h"
-#include <CL/cl.hpp>
 #include <iostream>
+#include <CL/cl.hpp>
 #include <unordered_map>
+#include "DataTypes.cpp"
 
 std::vector<cl::Platform> platforms;
 std::vector<cl::Device> devices;
@@ -156,43 +152,23 @@ JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclMap___3DLjava_lang_String_2Ljava_
 	return ret;
 }
 
-JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTake
-  (JNIEnv *env, jobject obj, jintArray data, jint nToTake)
+void TryTake(cl::Kernel kernelTake, Take_t *takeParams)
 {
-	int len = env->GetArrayLength(data);
-	size_t dataSize = sizeof(int)*len;
-	size_t resultSize = sizeof(int)*nToTake;
-	int *body = env->GetIntArrayElements(data, 0);
-	int *result = new int[nToTake];
-	jintArray ret = env->NewIntArray(nToTake);
-
 	try
 	{
-		jstring kernelSource = env->NewStringUTF("__kernel void takeInt(__global int* _data, __global int* _result)\n"
-												"{\n"
-												"\tint _gId = get_global_id(0);\n"
-												"\t_result[_gId] = _data[_gId];"
-												"\n"
-												"}"
-												"\n");
+		cl::Buffer dataBuffer(context, CL_MEM_READ_ONLY, takeParams->dataSize);
+		cl::Buffer resultBuffer(context, CL_MEM_WRITE_ONLY, takeParams->resultSize);
 
-		cl::Kernel kernelTake = GetKernel(env, env->NewStringUTF("takeInt"), kernelSource, K_TAKE);
-
-		cl::Buffer dataBuffer(context, CL_MEM_READ_ONLY, dataSize);
-		cl::Buffer resultBuffer(context, CL_MEM_WRITE_ONLY, resultSize);
-
-		commandQueue.enqueueWriteBuffer(dataBuffer, CL_TRUE, 0, dataSize, body);
+		commandQueue.enqueueWriteBuffer(dataBuffer, CL_TRUE, 0, takeParams->dataSize, takeParams->data);
 
 		kernelTake.setArg(0, dataBuffer);
 		kernelTake.setArg(1, resultBuffer);
 
-		cl::NDRange global(nToTake);
+		cl::NDRange global(takeParams->nToTake);
 
 		commandQueue.enqueueNDRangeKernel(kernelTake, cl::NullRange, global, cl::NullRange);
 
-		commandQueue.enqueueReadBuffer(resultBuffer, CL_TRUE, 0, resultSize, result);
-
-		env->SetIntArrayRegion(ret, 0, nToTake, result);
+		commandQueue.enqueueReadBuffer(resultBuffer, CL_TRUE, 0, takeParams->resultSize, takeParams->result);
 		// env->ReleaseDoubleArrayElements(data, body);
 	}
 	catch (cl::Error error)
@@ -200,6 +176,64 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTake
 		std::cout << "Error" << std::endl;
 		std::cout << error.what() << "(" << error.err() << ")" << std::endl;
 	}
+}
+
+JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTake___3II
+  (JNIEnv *env, jobject obj, jintArray data, jint nToTake)
+{
+	Take_t params;
+	int len = env->GetArrayLength(data);
+	jintArray ret = env->NewIntArray(nToTake);
+
+	params.dataSize = sizeof(int)*len;
+	params.resultSize = sizeof(int)*nToTake;
+	params.data = env->GetIntArrayElements(data, 0);
+	params.result = new int[nToTake];
+	params.nToTake = nToTake;
+
+	jstring kernelSource = env->NewStringUTF("__kernel void takeInt(__global int* _data, __global int* _result)\n"
+											"{\n"
+											"\tint _gId = get_global_id(0);\n"
+											"\t_result[_gId] = _data[_gId];"
+											"\n"
+											"}"
+											"\n");
+
+	cl::Kernel kernelTake = GetKernel(env, env->NewStringUTF("takeInt"), kernelSource, K_TAKE);
+
+	TryTake(kernelTake, &params);
+
+	env->SetIntArrayRegion(ret, 0, params.nToTake, (int *)params.result);
+	return ret;
+
+}
+
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclTake___3DI
+  (JNIEnv *env, jobject obj, jdoubleArray data, jint nToTake)
+{
+	Take_t params;
+	int len = env->GetArrayLength(data);
+	jdoubleArray ret = env->NewDoubleArray(nToTake);
+
+	params.dataSize = sizeof(double)*len;
+	params.resultSize = sizeof(double)*nToTake;
+	params.data = env->GetDoubleArrayElements(data, 0);
+	params.result = new double[nToTake];
+	params.nToTake = nToTake;
+
+	jstring kernelSource = env->NewStringUTF("__kernel void takeDouble(__global double* _data, __global double* _result)\n"
+											"{\n"
+											"\tint _gId = get_global_id(0);\n"
+											"\t_result[_gId] = _data[_gId];"
+											"\n"
+											"}"
+											"\n");
+
+	cl::Kernel kernelTake = GetKernel(env, env->NewStringUTF("takeDouble"), kernelSource, K_TAKE);
+
+	TryTake(kernelTake, &params);
+
+	env->SetDoubleArrayRegion(ret, 0, params.nToTake, (double *)params.result);
 	return ret;
 
 }
