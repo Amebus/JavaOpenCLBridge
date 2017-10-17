@@ -49,8 +49,8 @@ public abstract class Ocl
 
 	//Union
 //	public native char[] OclUnion(char[] data, char[] otherDataSet);
-//	public native int[] OclUnion(int[] data, int[] otherDataSet);
-//	public native double[] OclUnion(double[] data, double[] otherDataSet);
+	protected final native int[] OclUnion(int[] data, int[] otherDataSet);
+	protected final native double[] OclUnion(double[] data, double[] otherDataSet);
 
 	//Intersection
 //	public native char[] OclIntersection(char[] data, char[] otherDataSet);

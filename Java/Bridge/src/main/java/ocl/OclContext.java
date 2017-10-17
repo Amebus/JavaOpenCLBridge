@@ -86,6 +86,19 @@ public class OclContext extends Ocl
 		return kernel;
 	}
 
+
+	public int[] oclUnion(int[] data, int[] otherDataSet)
+	{
+		return super.OclUnion(data, otherDataSet);
+	}
+
+	public double[] oclUnion(double[] data, double[] otherDataSet)
+	{
+		return super.OclUnion(data, otherDataSet);
+	}
+
+	//Actions
+
 	public int[] oclTake(int[] data, int n)
 	{
 		return super.OclTake(data, n);
@@ -95,4 +108,6 @@ public class OclContext extends Ocl
 	{
 		return super.OclTake(data, n);
 	}
+
+
 }
