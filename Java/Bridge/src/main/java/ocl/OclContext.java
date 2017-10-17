@@ -37,7 +37,7 @@ public class OclContext extends Ocl
 		return oclMap(data, kernelName, mapLogic, "");
 	}
 
-	public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition)
+		public int[] oclMap(@NotNull int[] data, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition)
 	{
 		return oclMap(data, kernelName, mapLogic, parameterDefinition,"");
 	}
@@ -86,8 +86,28 @@ public class OclContext extends Ocl
 		return kernel;
 	}
 
+
+	public int[] oclUnion(int[] data, int[] otherDataSet)
+	{
+		return super.OclUnion(data, otherDataSet);
+	}
+
+	public double[] oclUnion(double[] data, double[] otherDataSet)
+	{
+		return super.OclUnion(data, otherDataSet);
+	}
+
+	//Actions
+
 	public int[] oclTake(int[] data, int n)
 	{
 		return super.OclTake(data, n);
 	}
+
+	public double[] oclTake(double[] data, int n)
+	{
+		return super.OclTake(data, n);
+	}
+
+
 }
