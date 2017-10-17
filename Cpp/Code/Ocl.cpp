@@ -295,3 +295,44 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclUnion___3I_3I
 	env->SetIntArrayRegion(ret, 0, params.resultLength, (int *)params.result);
 	return ret;
 }
+
+JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclUnion___3D_3D
+  (JNIEnv *env, jobject jobj, jdoubleArray data, jdoubleArray otherData)
+{
+	Union_t params;
+	params.dataLength = env->GetArrayLength(data);
+	params.data = env->GetDoubleArrayElements(data, 0);
+	params.dataSize = DOUBLE_SIZE*params.dataLength;
+
+	params.otherDataLength = env->GetArrayLength(otherData);
+	params.otherData = env->GetDoubleArrayElements(otherData, 0);
+	params.otherDataSize = DOUBLE_SIZE*params.otherDataLength;
+
+	params.resultLength = params.dataLength + params.otherDataLength;
+	params.result = new double[params.resultLength];
+	params.resultSize = DOUBLE_SIZE*params.resultLength;
+
+	jdoubleArray ret = env->NewDoubleArray(params.resultLength);
+
+	jstring kernelSource = env->NewStringUTF("__kernel void unionDouble(__global double* _data, __global double* _otherData , __global double* _result, __private int _dataLength)\n"
+											"{\n"
+											"\tint _gId = get_global_id(0);\n"
+											"\tif (_gId < _dataLength)\n"
+											"\t{\n"
+											"\t\t_result[_gId] = _data[_gId];\n"
+											"\t}\n"
+											"\telse\n"
+											"\t{\n"
+											"\t\t_result[_gId] = _otherData[_gId - _dataLength];\n"
+											"\t}\n"
+											"\n"
+											"}\n"
+											"\n");
+
+	std::string kernelUnionName = CreateKernelIfNotExists(env, env->NewStringUTF("unionDouble"), kernelSource, K_UNION);
+
+	TryUnion(kernelUnionName, &params);
+
+	env->SetDoubleArrayRegion(ret, 0, params.resultLength, (double *)params.result);
+	return ret;
+}

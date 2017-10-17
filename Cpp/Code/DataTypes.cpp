@@ -1,10 +1,12 @@
+#include "ocl_Ocl.h"
 
 #define K_MAP 101
 #define K_UNION 102
 
 #define K_TAKE 201
 
-#include "ocl_Ocl.h"
+#define INT_SIZE sizeof(int)
+#define DOUBLE_SIZE sizeof(double)
 
 typedef struct
 {
