@@ -1,13 +1,15 @@
 #!/bin/bash
 
-#echo "compiling..."
-#g++ -fPIC -shared ../Cpp/Code/DataConverter.cpp ../Cpp/Code/IntArrayOCLCommandRunner.cpp ../Cpp/Code/CharArrayOCLCommandRunner.cpp ../Cpp/Code/DoubleArrayOCLCommandRunner.cpp -o ../Cpp/Out/libOCL.so -lOpenCL -I/home/federico/Java/jdk1.8.0_144/include -I/home/federico/Java/jdk1.8.0_144/include/linux
-#echo "done"
+#Sources directory
+SDir=../Cpp/Code/Sources
+OutFile=../Cpp/Out/libOCL.so
+
+#$SDir/OclKernelInfoBuilder.cpp
 
 echo "compiling..."
-g++ -std=c++11 -fPIC -shared ../Cpp/Code/Ocl.cpp ../Cpp/Code/DataTypes.cpp -o ../Cpp/Out/libOCL.so -lOpenCL -I$JAVA_HOME/include -I$JAVA_HOME/include/linux
+g++ -std=c++11 -fPIC -shared $SDir/Ocl.cpp $SDir/OclKernelInfo.cpp $SDir/OclExecutor.cpp $SDir/KernelParameters.cpp -o $OutFile -lOpenCL -I$JAVA_HOME/include -I$JAVA_HOME/include/linux
 echo "done"
 
 echo "execstack..."
-sudo execstack -c ../Cpp/Out/libOCL.so
+sudo execstack -c $OutFile
 echo "done"
