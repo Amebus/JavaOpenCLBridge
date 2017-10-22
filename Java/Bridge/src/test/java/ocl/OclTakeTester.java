@@ -50,7 +50,7 @@ public class OclTakeTester
 		assertArrayEquals(dataToTake, result);
 	}
 
-	@Test
+
 	void oclTakeInt100_OK()
 	{
 		int nToTake = 100;
@@ -71,7 +71,7 @@ public class OclTakeTester
 
 	}
 
-	@Test
+
 	void oclTakeDouble1000_OK()
 	{
 		int nToTake = 1000;
@@ -93,7 +93,7 @@ public class OclTakeTester
 		assertArrayEquals(dataToTake, result);
 	}
 
-	@Test
+
 	void oclTakeDouble100_OK()
 	{
 		int nToTake = 100;

@@ -1,9 +1,10 @@
 
-#include <iostream>
-#include <unordered_map>
-#include <CL/cl.hpp>
-#include <iostream>
+#define __CL_ENABLE_EXCEPTIONS
+
 #include "OclKernelInfo.h"
+#include <unordered_map>
+#include <iostream>
+#include <CL/cl.hpp>
 
 #ifndef OclExecutor_H
 #define OclExecutor_H

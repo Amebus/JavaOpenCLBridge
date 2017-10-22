@@ -1,8 +1,6 @@
 
-#define __CL_ENABLE_EXCEPTIONS
-
-#include <CL/cl.hpp>
 #include "../Headers/OclExecutor.h"
+// #include <CL/cl.hpp>
 
 const char* unionIntName = "unionInt";
 const char* unionIntSource = "__kernel void unionInt(__global int* _data, __global int* _otherData , __global int* _result, __private int _dataLength)\n"

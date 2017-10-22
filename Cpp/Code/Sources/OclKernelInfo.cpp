@@ -1,5 +1,4 @@
 
-#include <iostream>
 #include "../Headers/OclKernelInfo.h"
 
 exec::OclKernelInfo::OclKernelInfo (const char* name, int type, exec::OclKernelParameters* kParams)
