@@ -1,10 +1,11 @@
+#include "OclKernelParameters.h"
 
 #ifndef OclKernelInfo_H
 #define OclKernelInfo_H
 
-#include "KernelParameters.h"
-
-using namespace std;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 namespace exec
 {
@@ -18,23 +19,23 @@ class exec::OclKernelInfo
 		int kernelType;
 
 		const char* kName;
-		string kernelNameCpp;
+		std::string kernelNameCpp;
 		int kernelNameLength;
 
 		const char* kSource;
-		string kernelSourceCpp;
+		std::string kernelSourceCpp;
 		int kernelSourceLength;
 
-		exec::KernelParameters& params;
+		exec::OclKernelParameters* params;
 
 	public:
-		OclKernelInfo (const char*, int, exec::KernelParameters&);
+		OclKernelInfo (const char*, int, exec::OclKernelParameters*);
 		virtual ~OclKernelInfo ();
 
-		int GetKerneltype();
+		int GetKernelType();
 
 		const char* GetKernelName();
-		string GetKernelNameCpp();
+		std::string GetKernelNameCpp();
 		int GetKernelNameLength();
 
 		const char* GetKernelSource();
@@ -42,8 +43,11 @@ class exec::OclKernelInfo
 
 		void SetKernelSource(const char*);
 
-		exec::KernelParameters& GetKernelParams();
+		exec::OclKernelParameters* GetKernelParams();
 
 };
 
+#ifdef __cplusplus
+}
+#endif
 #endif // OclKernelInfo_H

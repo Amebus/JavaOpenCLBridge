@@ -1,14 +1,15 @@
-
-#ifndef KernelParameters_H
-#define KernelParameters_H
-
-#include <CL/cl.hpp>
-#include <iostream>
 #include <jni.h>
+#include <CL/cl.hpp>
+
+#ifndef OclKernelParameters_H
+#define OclKernelParameters_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 namespace exec
 {
-
 	#define K_MAP 101
 	#define K_UNION 102
 
@@ -17,8 +18,7 @@ namespace exec
 	#define INT_SIZE sizeof(int)
 	#define DOUBLE_SIZE sizeof(double)
 
-	// jdoubleArray data, jstring kernelName, jstring kernelSource
-	class KernelParameters
+	class OclKernelParameters
 	{
 		private:
 			void SetResultToDefault();
@@ -33,9 +33,8 @@ namespace exec
 			size_t resultSize;
 
 		public:
-			KernelParameters(JNIEnv *, jintArray);
-			KernelParameters(JNIEnv *, jdoubleArray);
-			virtual ~KernelParameters();
+			OclKernelParameters(JNIEnv *, jintArray);
+			OclKernelParameters(JNIEnv *, jdoubleArray);
 
 			int GetDataLength();
 			void* GetData();
@@ -48,14 +47,14 @@ namespace exec
 			void SetResult(void*);
 	};
 
-	class MapParameters : public KernelParameters
+	class MapParameters : public OclKernelParameters
 	{
 		public:
 			MapParameters(JNIEnv *, jintArray);
 			MapParameters(JNIEnv *, jdoubleArray);
 	};
 
-	class UnionParameters : public KernelParameters
+	class UnionParameters : public OclKernelParameters
 	{
 		protected:
 			int otherDataLength;
@@ -65,21 +64,22 @@ namespace exec
 		public:
 			UnionParameters(JNIEnv *, jintArray, jintArray);
 			UnionParameters(JNIEnv *, jdoubleArray, jdoubleArray);
-			virtual ~UnionParameters();
 
 			int GetOtherDataLength();
 			void* GetOtherData();
 			size_t GetOtherDataSize();
 	};
 
-	class TakeParameters : public KernelParameters
+	class TakeParameters : public OclKernelParameters
 	{
 		public:
 			TakeParameters(JNIEnv *, jintArray, int);
 			TakeParameters(JNIEnv *, jdoubleArray, int);
-			virtual ~TakeParameters();
 	};
 
-} /* DT */
+} /* exec */
 
+#ifdef __cplusplus
+}
+#endif
 #endif

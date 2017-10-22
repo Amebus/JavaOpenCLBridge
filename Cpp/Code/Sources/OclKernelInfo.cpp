@@ -2,13 +2,11 @@
 #include <iostream>
 #include "../Headers/OclKernelInfo.h"
 
-using namespace std;
-
-exec::OclKernelInfo::OclKernelInfo (const char* name, int type, exec::KernelParameters& kParams)
+exec::OclKernelInfo::OclKernelInfo (const char* name, int type, exec::OclKernelParameters* kParams)
 {
 	kName = name;
 	kernelType = type;
-	kernelNameCpp = string(kName);
+	kernelNameCpp = std::string(kName);
 	kernelNameLength = kernelNameCpp.length();
 	params = kParams;
 }
@@ -19,7 +17,7 @@ exec::OclKernelInfo::~OclKernelInfo()
 	// delete kSource;
 }
 
-int exec::OclKernelInfo::GetKerneltype()
+int exec::OclKernelInfo::GetKernelType()
 {
 	return kernelType;
 }
@@ -29,7 +27,7 @@ const char* exec::OclKernelInfo::GetKernelName()
 	return kSource;
 }
 
-string exec::OclKernelInfo::GetKernelNameCpp()
+std::string exec::OclKernelInfo::GetKernelNameCpp()
 {
 	return kernelNameCpp;
 }
@@ -52,10 +50,10 @@ int exec::OclKernelInfo::GetKernelSourceLength()
 void exec::OclKernelInfo::SetKernelSource(const char* source)
 {
 	kSource = source;
-	kernelSourceLength = string(kSource).length();
+	kernelSourceLength = std::string(kSource).length();
 }
 
-exec::KernelParameters& exec::OclKernelInfo::GetKernelParams()
+exec::OclKernelParameters* exec::OclKernelInfo::GetKernelParams()
 {
 	return params;
 }

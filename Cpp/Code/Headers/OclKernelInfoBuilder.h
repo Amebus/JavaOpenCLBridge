@@ -4,8 +4,6 @@
 
 #include "OclKernelInfo.h"
 
-using namespace std;
-
 namespace exec
 {
 	class OclKernelInfoBuilder;

@@ -6,14 +6,13 @@
 #include <unordered_map>
 #include "../Headers/ocl_Ocl.h"
 #include "../Headers/OclExecutor.h"
-#include "../Headers/KernelParameters.h"
 
-std::vector<cl::Platform> platforms;
-std::vector<cl::Device> devices;
-cl::Device defaultDevice;
-cl::Context context;
-cl::CommandQueue commandQueue;
-std::unordered_map<std::string, cl::Kernel> kernelsList;
+// std::vector<cl::Platform> platforms;
+// std::vector<cl::Device> devices;
+// cl::Device defaultDevice;
+// cl::Context context;
+// cl::CommandQueue commandQueue;
+// std::unordered_map<std::string, cl::Kernel> kernelsList;
 exec::OclExecutor executor;
 
 JNIEXPORT void JNICALL Java_ocl_Ocl_Open
@@ -77,7 +76,7 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap___3ILjava_lang_String_2Ljava_lan
 	exec::MapParameters mapParams(env, data);
 	const char *kName = env->GetStringUTFChars(kernelName, NULL);
 	const char *kSource = env->GetStringUTFChars(kernelSource, NULL);
-	exec::OclKernelInfo kInfo(kName, K_MAP, mapParams);
+	exec::OclKernelInfo kInfo(kName, K_MAP, &mapParams);
 	kInfo.SetKernelSource(kSource);
 
 	executor.Map(kInfo);
@@ -96,7 +95,7 @@ JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclMap___3DLjava_lang_String_2Ljava_
 	exec::MapParameters mapParams(env, data);
 	const char *kName = env->GetStringUTFChars(kernelName, NULL);
 	const char *kSource = env->GetStringUTFChars(kernelSource, NULL);
-	exec::OclKernelInfo kInfo(kName, K_MAP, mapParams);
+	exec::OclKernelInfo kInfo(kName, K_MAP, &mapParams);
 	kInfo.SetKernelSource(kSource);
 
 	executor.Map(kInfo);
@@ -112,8 +111,11 @@ JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclMap___3DLjava_lang_String_2Ljava_
 JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTake___3II
   (JNIEnv *env, jobject obj, jintArray data, jint nToTake)
 {
+
+	std::cout << "TakeInt" << '\n';
+
 	exec::TakeParameters takeParams(env, data, nToTake);
-	exec::OclKernelInfo kInfo("takeInt", K_TAKE, takeParams);
+	exec::OclKernelInfo kInfo("takeInt", K_TAKE, &takeParams);
 
 	executor.Take(kInfo);
 
@@ -127,7 +129,7 @@ JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclTake___3DI
   (JNIEnv *env, jobject obj, jdoubleArray data, jint nToTake)
 {
 	exec::TakeParameters takeParams(env, data, nToTake);
-	exec::OclKernelInfo kInfo("takeDouble", K_TAKE, takeParams);
+	exec::OclKernelInfo kInfo("takeDouble", K_TAKE, &takeParams);
 
 	executor.Take(kInfo);
 
@@ -140,7 +142,7 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclUnion___3I_3I
   (JNIEnv *env, jobject obj, jintArray data, jintArray otherData)
 {
 	exec::UnionParameters unionParams(env, data, otherData);
-	exec::OclKernelInfo kInfo("unionInt", K_TAKE, unionParams);
+	exec::OclKernelInfo kInfo("unionInt", K_TAKE, &unionParams);
 
 	executor.Union(kInfo);
 
@@ -154,7 +156,7 @@ JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclUnion___3D_3D
 {
 
 	exec::UnionParameters unionParams(env, data, otherData);
-	exec::OclKernelInfo kInfo("unionInt", K_TAKE, unionParams);
+	exec::OclKernelInfo kInfo("unionInt", K_TAKE, &unionParams);
 
 	executor.Union(kInfo);
 

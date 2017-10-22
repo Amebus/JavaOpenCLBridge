@@ -1,12 +1,58 @@
 
-#include <unordered_map>
+#define __CL_ENABLE_EXCEPTIONS
+
 #include <CL/cl.hpp>
-#include <iostream>
 #include "../Headers/OclExecutor.h"
-#include "../Headers/KernelParameters.h"
 
-using namespace std;
+const char* unionIntName = "unionInt";
+const char* unionIntSource = "__kernel void unionInt(__global int* _data, __global int* _otherData , __global int* _result, __private int _dataLength)\n"
+										"{\n"
+										"\tint _gId = get_global_id(0);\n"
+										"\tif (_gId < _dataLength)\n"
+										"\t{\n"
+										"\t\t_result[_gId] = _data[_gId];\n"
+										"\t}\n"
+										"\telse\n"
+										"\t{\n"
+										"\t\t_result[_gId] = _otherData[_gId - _dataLength];\n"
+										"\t}\n"
+										"\n"
+										"}\n"
+										"\n";
 
+const char* unionDoubleName = "unionDouble";
+const char* unionDoubleSource = "__kernel void unionDouble(__global double* _data, __global double* _otherData , __global double* _result, __private int _dataLength)\n"
+										"{\n"
+										"\tint _gId = get_global_id(0);\n"
+										"\tif (_gId < _dataLength)\n"
+										"\t{\n"
+										"\t\t_result[_gId] = _data[_gId];\n"
+										"\t}\n"
+										"\telse\n"
+										"\t{\n"
+										"\t\t_result[_gId] = _otherData[_gId - _dataLength];\n"
+										"\t}\n"
+										"\n"
+										"}\n"
+										"\n";
+
+const char* takeIntName = "takeInt";
+const char* takeIntSource = "__kernel void takeInt(__global int* _data, __global int* _result)\n"
+										"{\n"
+										"\tint _gId = get_global_id(0);\n"
+										"\t_result[_gId] = _data[_gId];"
+										"\n"
+										"}"
+										"\n";
+
+const char* takeDoubleName = "takeDouble";
+const char* takeDoubleSource = "__kernel void takeDouble(__global double* _data, __global double* _result)\n"
+										"{\n"
+										"\tint _gId = get_global_id(0);\n"
+										"\t_result[_gId] = _data[_gId];"
+										"\n"
+										"}"
+										"\n";
 
 exec::OclExecutor::OclExecutor ()
 {
@@ -42,13 +88,13 @@ void exec::OclExecutor::CreateStdKernel(OclKernelInfo& kInfo)
 	kernelsList[kInfo.GetKernelNameCpp()] = cl::Kernel(program, kInfo.GetKernelName());
 }
 
-string exec::OclExecutor::CreateKernelIfNotExists(OclKernelInfo& kInfo)
+std::string exec::OclExecutor::CreateKernelIfNotExists(OclKernelInfo& kInfo)
 {
 	std::string kernelNameCpp = kInfo.GetKernelNameCpp();
 	std::unordered_map<std::string,cl::Kernel>::const_iterator iter = kernelsList.find(kernelNameCpp);
 	if(iter == kernelsList.end())
 	{
-		switch (kInfo.GetKerneltype())
+		switch (kInfo.GetKernelType())
 		{
 			case K_MAP:
 			case K_TAKE:
@@ -65,28 +111,28 @@ void exec::OclExecutor::Map(OclKernelInfo& kInfo)
 {
 	try
 	{
-		exec::MapParameters& mapParams = kInfo.GetKernelParams()
+		exec::MapParameters* mapParams = (exec::MapParameters*) kInfo.GetKernelParams();
 
-		void* result = mapParams.GetResult();
+		void* result = mapParams->GetResult();
 
 		cl::Kernel kernelMap = kernelsList[CreateKernelIfNotExists(kInfo)];
 
-		cl::Buffer inputBuffer(context, CL_MEM_READ_WRITE, );
-		commandQueue.enqueueWriteBuffer(inputBuffer, CL_TRUE, 0, mapParams.GetDataSize(), mapParams.GetData());
+		cl::Buffer inputBuffer(context, CL_MEM_READ_WRITE, mapParams->GetDataSize());
+		commandQueue.enqueueWriteBuffer(inputBuffer, CL_TRUE, 0, mapParams->GetDataSize(), mapParams->GetData());
 
 		kernelMap.setArg(0, inputBuffer);
 
-		cl::NDRange global(mapParams.GetDataLength());
+		cl::NDRange global(mapParams->GetDataLength());
 
 		commandQueue.enqueueNDRangeKernel(kernelMap, cl::NullRange, global, cl::NullRange);
 
-		commandQueue.enqueueReadBuffer(inputBuffer, CL_TRUE, 0, mapParams.GetResultSize(), result);
+		commandQueue.enqueueReadBuffer(inputBuffer, CL_TRUE, 0, mapParams->GetResultSize(), result);
 
 		// env->ReleaseIntArrayElements(data, body);
 	}
 	catch (cl::Error error)
 	{
-		PrintClError(error);
+		this->PrintClError(error);
 	}
 }
 
@@ -94,33 +140,33 @@ void exec::OclExecutor::Union(OclKernelInfo& kInfo)
 {
 	try
 	{
-		exec::UnionParameters& unionParams = kInfo.GetKernelParams()
-		void* result = unionParams.GetResult();
+		exec::UnionParameters* unionParams = (exec::UnionParameters*) kInfo.GetKernelParams();
+		void* result = unionParams->GetResult();
 
 		cl::Kernel kernelUnion = kernelsList[CreateKernelIfNotExists(kInfo)];
 
-		cl::Buffer dataBuffer(context, CL_MEM_READ_ONLY, unionParams.GetDataSize());
-		cl::Buffer otherDataBuffer(context, CL_MEM_READ_ONLY, unionParams.GetOtherDataSize());
-		cl::Buffer resultBuffer(context, CL_MEM_WRITE_ONLY, unionParams.GetResultSize());
+		cl::Buffer dataBuffer(context, CL_MEM_READ_ONLY, unionParams->GetDataSize());
+		cl::Buffer otherDataBuffer(context, CL_MEM_READ_ONLY, unionParams->GetOtherDataSize());
+		cl::Buffer resultBuffer(context, CL_MEM_WRITE_ONLY, unionParams->GetResultSize());
 
-		commandQueue.enqueueWriteBuffer(dataBuffer, CL_TRUE, 0, unionParams.GetDataSize(), unionParams.GetData()));
-		commandQueue.enqueueWriteBuffer(otherDataBuffer, CL_TRUE, 0, unionParams.GetOtherDataSize(), unionParams.GetOtherData());
+		commandQueue.enqueueWriteBuffer(dataBuffer, CL_TRUE, 0, unionParams->GetDataSize(), unionParams->GetData());
+		commandQueue.enqueueWriteBuffer(otherDataBuffer, CL_TRUE, 0, unionParams->GetOtherDataSize(), unionParams->GetOtherData());
 
 		kernelUnion.setArg(0, dataBuffer);
 		kernelUnion.setArg(1, otherDataBuffer);
 		kernelUnion.setArg(2, resultBuffer);
-		kernelUnion.setArg(3, unionParams.GetDataLength());
+		kernelUnion.setArg(3, unionParams->GetDataLength());
 
-		cl::NDRange global(unionParams.GetResultLength());
+		cl::NDRange global(unionParams->GetResultLength());
 
 		commandQueue.enqueueNDRangeKernel(kernelUnion, cl::NullRange, global, cl::NullRange);
 
-		commandQueue.enqueueReadBuffer(resultBuffer, CL_TRUE, 0, unionParams.GetResultSize(), result);
+		commandQueue.enqueueReadBuffer(resultBuffer, CL_TRUE, 0, unionParams->GetResultSize(), result);
 		// env->ReleaseDoubleArrayElements(data, body);
 	}
 	catch (cl::Error error)
 	{
-		PrintClError(error);
+		this->PrintClError(error);
 	}
 }
 
@@ -128,28 +174,28 @@ void exec::OclExecutor::Take(OclKernelInfo& kInfo)
 {
 	try
 	{
-		exec::TakeParameters& takeParams = kInfo.GetKernelParams()
-		void* result = takeParams.GetResult();
+		exec::TakeParameters* takeParams = (exec::TakeParameters*) kInfo.GetKernelParams();
+		void* result = takeParams->GetResult();
 
 		cl::Kernel kernelTake = kernelsList[CreateKernelIfNotExists(kInfo)];
 
-		cl::Buffer dataBuffer(context, CL_MEM_READ_ONLY, takeParams.GetDataSize());
-		cl::Buffer resultBuffer(context, CL_MEM_WRITE_ONLY, takeParams.GetResultSize());
+		cl::Buffer dataBuffer(context, CL_MEM_READ_ONLY, takeParams->GetDataSize());
+		cl::Buffer resultBuffer(context, CL_MEM_WRITE_ONLY, takeParams->GetResultSize());
 
-		commandQueue.enqueueWriteBuffer(dataBuffer, CL_TRUE, 0, takeParams.GetDataSize(), takeParams.GetData()));
+		commandQueue.enqueueWriteBuffer(dataBuffer, CL_TRUE, 0, takeParams->GetDataSize(), takeParams->GetData());
 
 		kernelTake.setArg(0, dataBuffer);
 		kernelTake.setArg(1, resultBuffer);
 
-		cl::NDRange global(takeParams.GetResultLength());
+		cl::NDRange global(takeParams->GetResultLength());
 
 		commandQueue.enqueueNDRangeKernel(kernelTake, cl::NullRange, global, cl::NullRange);
 
-		commandQueue.enqueueReadBuffer(resultBuffer, CL_TRUE, 0, takeParams.GetResultSize(), result);
+		commandQueue.enqueueReadBuffer(resultBuffer, CL_TRUE, 0, takeParams->GetResultSize(), result);
 		// env->ReleaseDoubleArrayElements(data, body);
 	}
 	catch (cl::Error error)
 	{
-		PrintClError(error);
+		this->PrintClError(error);
 	}
 }
