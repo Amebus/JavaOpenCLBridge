@@ -8,13 +8,14 @@ SDir=../Cpp/Code/Sources
 OutFile=../Cpp/Out/libOCL.so
 
 #$SDir/OclKernelInfoBuilder.cpp
+#$SDir/OclKernelInfo.cpp
 
 clear
 
 #-Wl,-no-undefined
 
 echo "compiling..."
-g++ -std=c++11 -fPIC -shared $SDir/Ocl.cpp $SDir/OclExecutor.cpp -o $OutFile -lOpenCL -I$JAVA_HOME/include -I$JAVA_HOME/include/linux
+g++ -std=c++11 -fPIC -shared $SDir/Ocl.cpp  -o $OutFile -lOpenCL -I$JAVA_HOME/include -I$JAVA_HOME/include/linux
 echo "done"
 
 echo "execstack..."
