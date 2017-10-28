@@ -270,7 +270,6 @@ void PrintKInfo(OclKernelInfo_t* kInfo)
 
 void CreateStdKernel(OclKernelInfo_t* kInfo)
 {
-
 	cl::Program::Sources sources(1, std::make_pair( kInfo->kSource, kInfo->kernelSourceLength+1));
 	cl::Program program(context, sources);
 
@@ -281,7 +280,6 @@ void CreateStdKernel(OclKernelInfo_t* kInfo)
 std::string CreateKernelIfNotExists(OclKernelInfo_t* kInfo)
 {
 	std::string kernelNameCpp = kInfo->kernelNameCpp;
-	std::cout << kInfo->kernelNameCpp << '\n';
 	std::unordered_map<std::string,cl::Kernel>::const_iterator iter = kernelsList.find(kernelNameCpp);
 	if(iter == kernelsList.end())
 	{
@@ -302,8 +300,6 @@ void Map(OclKernelInfo_t* kInfo)
 {
 	try
 	{
-		PrintKInfo(kInfo);
-
 		MapParameters_t* mapParams = (MapParameters_t*) kInfo->kParams;
 
 		cl::Kernel kernelMap = kernelsList[CreateKernelIfNotExists(kInfo)];
@@ -394,20 +390,9 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap___3ILjava_lang_String_2Ljava_lan
 {
 	const char *kName = env->GetStringUTFChars(kernelName, NULL);
 	const char *kSource = env->GetStringUTFChars(kernelSource, NULL);
-
-	std::cout << "kName:" << kName << '\n';
-	std::cout << "kSource" << "\n" << kSource << '\n';
-
 	MapParameters_t* mapParams = CreateMapParams(env, data, INT_TYPE);
-	std::cout << "mapParams" << '\n';
-
 	OclKernelInfo_t* kInfo = CreateKernelInfo(kName, K_MAP, mapParams);
-
-	std::cout << "kernelInfo" << '\n';
-
 	SetKernelSource(kInfo, kSource);
-
-	PrintKInfo(kInfo);
 
 	Map(kInfo);
 
@@ -416,7 +401,6 @@ JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap___3ILjava_lang_String_2Ljava_lan
 
 	jintArray ret = env->NewIntArray(mapParams->result->length);
 	env->SetIntArrayRegion(ret, 0, mapParams->result->length, (int *)mapParams->result->data);
-
 	return ret;
 }
 
