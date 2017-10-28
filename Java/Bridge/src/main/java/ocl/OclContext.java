@@ -72,7 +72,7 @@ public class OclContext extends Ocl
 
 	private String buildKernel(@NotNull EKernelReturnType kernelReturnType, @NotNull String kernelName, @NotNull String mapLogic, @NotNull String parameterDefinition, @NotNull String postLogic)
 	{
-		String kernel = null;
+		String kernel = "";
 		if(!mStorage.containsKernel(kernelName))
 		{
 			kernel = new MapKernelBuilder(kernelName, kernelReturnType)

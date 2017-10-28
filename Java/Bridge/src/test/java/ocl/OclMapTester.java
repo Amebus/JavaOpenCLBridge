@@ -73,7 +73,7 @@ class OclMapTester
 
 		Throwable exception = assertThrows(IllegalArgumentException.class, () -> context.oclMap(data, "kernel_that_does_not_exists"));
 
-		assertEquals(Ocl.ErrorMessages.NO_KERNELS_FOUND_WITH_NAME + kernelName, exception.getMessage());
+		assertEquals(OclContext.ErrorMessages.NO_KERNELS_FOUND_WITH_NAME + kernelName, exception.getMessage());
 	}
 
 	@Test
