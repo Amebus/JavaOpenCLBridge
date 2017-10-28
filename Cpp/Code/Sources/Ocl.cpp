@@ -1,9 +1,6 @@
 
 #define __CL_ENABLE_EXCEPTIONS
 #include "../Headers/ocl_Ocl.h"
-// #include "OclKernelParameters.cpp"
-// #include "OclKernelInfo.cpp"
-// #include "OclExecutor.cpp"
 #include <CL/cl.hpp>
 #include <iostream>
 #include <unordered_map>
