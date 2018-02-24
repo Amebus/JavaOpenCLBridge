@@ -2,7 +2,8 @@ package ocl.kernels.Builders;
 
 import com.sun.istack.internal.NotNull;
 import ocl.kernels.EKernelReturnType;
-import utils.ObjectHelper;
+
+import ObjectHelper.ObjectHelper;
 
 public abstract class BaseKernelBuilder
 {

@@ -245,7 +245,7 @@ JNIEXPORT void JNICALL Java_ocl_Ocl_Open
 }
 
 JNIEXPORT void JNICALL Java_ocl_Ocl_Close
-  (JNIEnv *, jobject obj)
+  (JNIEnv *env, jobject obj)
 {
 }
 
@@ -291,6 +291,90 @@ std::string CreateKernelIfNotExists(OclKernelInfo_t* kInfo)
 	}
 
 	return kernelNameCpp;
+}
+
+void ReleaseJStringResources(JNIEnv *env, jstring kernelName, jstring kernelSource, OclKernelInfo_t* kInfo)
+{
+	env->ReleaseStringUTFChars(kernelName, kInfo->kName);
+	env->ReleaseStringUTFChars(kernelSource, kInfo->kSource);
+}
+
+OclKernelInfo_t* CreateKernelInfoFromJavaSource (JNIEnv *env, jstring kernelName, jstring kernelSource, void* data, int kernelType, int dataType)
+{
+	const char *kName = env->GetStringUTFChars(kernelName, NULL);
+	const char *kSource = env->GetStringUTFChars(kernelSource, NULL);
+
+	OclKernelInfo_t* kInfo;
+
+	switch (kernelType)
+	{
+		case K_MAP:
+			MapParameters_t* mapParams = CreateMapParams(env, data, dataType);
+			kInfo = CreateKernelInfo(kName, kernelType, mapParams);
+			break;
+	}
+
+	SetKernelSource(kInfo, kSource);
+	return kInfo;
+}
+
+void* GetResult(JNIEnv *env, OclKernelInfo_t* kInfo, int kernelType, int dataType)
+{
+	void* retValue;
+
+	if(kernelType == K_MAP)
+	{
+		MapParameters_t* mapParams = (MapParameters_t*) kInfo->kParams;
+
+		if (dataType == INT_TYPE)
+		{
+			jintArray ret = env->NewIntArray(mapParams->result->length);
+			env->SetIntArrayRegion(ret, 0, mapParams->result->length, (int *)mapParams->result->data);
+			retValue = ret;
+		}
+		else
+		{
+			jdoubleArray ret = env->NewDoubleArray(mapParams->result->length);
+			env->SetDoubleArrayRegion(ret, 0, mapParams->result->length, (double *)mapParams->result->data);
+			retValue = ret;
+		}
+	}
+	else if (kernelType == K_UNION)
+	{
+		UnionParameters_t* unionParams = (UnionParameters_t*) kInfo->kParams;
+
+		if (dataType == INT_TYPE)
+		{
+			jintArray ret = env->NewIntArray(unionParams->result->length);
+			env->SetIntArrayRegion(ret, 0, unionParams->result->length, (int *)unionParams->result->data);
+			retValue = ret;
+		}
+		else
+		{
+			jdoubleArray ret = env->NewDoubleArray(unionParams->result->length);
+			env->SetDoubleArrayRegion(ret, 0, unionParams->result->length, (double *)unionParams->result->data);
+			retValue = ret;
+		}
+	}
+	else if (kernelType == K_TAKE)
+	{
+		TakeParameters_t* takeParams = (TakeParameters_t*) kInfo->kParams;
+
+		if (dataType == INT_TYPE)
+		{
+			jintArray ret = env->NewIntArray(takeParams->result->length);
+			env->SetIntArrayRegion(ret, 0, takeParams->result->length, (int *)takeParams->result->data);
+			retValue = ret;
+		}
+		else
+		{
+			jdoubleArray ret = env->NewDoubleArray(takeParams->result->length);
+			env->SetDoubleArrayRegion(ret, 0, takeParams->result->length, (double *)takeParams->result->data);
+			retValue = ret;
+		}
+	}
+
+	return retValue;
 }
 
 void Map(OclKernelInfo_t* kInfo)
@@ -385,94 +469,84 @@ void Take(OclKernelInfo_t* kInfo)
 JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclMap___3ILjava_lang_String_2Ljava_lang_String_2
   (JNIEnv *env, jobject obj, jintArray data, jstring kernelName, jstring kernelSource)
 {
-	const char *kName = env->GetStringUTFChars(kernelName, NULL);
-	const char *kSource = env->GetStringUTFChars(kernelSource, NULL);
-	MapParameters_t* mapParams = CreateMapParams(env, data, INT_TYPE);
-	OclKernelInfo_t* kInfo = CreateKernelInfo(kName, K_MAP, mapParams);
-	SetKernelSource(kInfo, kSource);
+	int kernelType = K_MAP;
+	int dataType = INT_TYPE;
+	OclKernelInfo_t* kInfo = CreateKernelInfoFromJavaSource(env, kernelName, kernelSource, data, kernelType, dataType);
 
 	Map(kInfo);
 
-	env->ReleaseStringUTFChars(kernelName, kName);
-	env->ReleaseStringUTFChars(kernelSource, kSource);
-
-	jintArray ret = env->NewIntArray(mapParams->result->length);
-	env->SetIntArrayRegion(ret, 0, mapParams->result->length, (int *)mapParams->result->data);
-	return ret;
+	ReleaseJStringResources(env, kernelName, kernelSource, kInfo);
+	return (jintArray) GetResult(env, kInfo, kernelType, dataType);
 }
 
 JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclMap___3DLjava_lang_String_2Ljava_lang_String_2
   (JNIEnv *env, jobject obj, jdoubleArray data, jstring kernelName, jstring kernelSource)
 {
-	const char *kName = env->GetStringUTFChars(kernelName, NULL);
-	const char *kSource = env->GetStringUTFChars(kernelSource, NULL);
-	MapParameters_t* mapParams = CreateMapParams(env, data, DOUBLE_TYPE);
-	OclKernelInfo_t* kInfo = CreateKernelInfo(kName, K_MAP, mapParams);
-	SetKernelSource(kInfo, kSource);
+	int kernelType = K_MAP;
+	int dataType = DOUBLE_TYPE;
+	OclKernelInfo_t* kInfo = CreateKernelInfoFromJavaSource(env, kernelName, kernelSource, data, kernelType, dataType);
 
 	Map(kInfo);
 
-	env->ReleaseStringUTFChars(kernelName, kName);
-	env->ReleaseStringUTFChars(kernelSource, kSource);
-
-	jdoubleArray ret = env->NewDoubleArray(mapParams->result->length);
-	env->SetDoubleArrayRegion(ret, 0, mapParams->result->length, (double *)mapParams->result->data);
-	return ret;
+	ReleaseJStringResources(env, kernelName, kernelSource, kInfo);
+	return (jdoubleArray) GetResult(env, kInfo, kernelType, dataType);
 }
 
 JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclTake___3II
   (JNIEnv *env, jobject obj, jintArray data, jint nToTake)
 {
-	TakeParameters_t* takeParams = CreateTakeParams(env, data, nToTake, INT_TYPE);
-	OclKernelInfo_t* kInfo = CreateKernelInfo(takeIntName, K_TAKE, takeParams);
+	int kernelType = K_TAKE;
+	int dataType = INT_TYPE;
+
+	TakeParameters_t* takeParams = CreateTakeParams(env, data, nToTake, dataType);
+	OclKernelInfo_t* kInfo = CreateKernelInfo(takeIntName, kernelType, takeParams);
 	SetKernelSource(kInfo, takeIntSource);
 
 	Take(kInfo);
 
-	jintArray ret = env->NewIntArray(nToTake);
-	env->SetIntArrayRegion(ret, 0, takeParams->result->length, (int *)takeParams->result->data);
-	return ret;
-
+	return (jintArray) GetResult(env, kInfo, kernelType, dataType);
 }
 
 JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclTake___3DI
   (JNIEnv *env, jobject obj, jdoubleArray data, jint nToTake)
 {
-	TakeParameters_t* takeParams = CreateTakeParams(env, data, nToTake, DOUBLE_TYPE);
-	OclKernelInfo_t* kInfo = CreateKernelInfo(takeDoubleName, K_TAKE, takeParams);
+	int kernelType = K_TAKE;
+	int dataType = DOUBLE_TYPE;
+
+	TakeParameters_t* takeParams = CreateTakeParams(env, data, nToTake, dataType);
+	OclKernelInfo_t* kInfo = CreateKernelInfo(takeDoubleName, kernelType, takeParams);
 	SetKernelSource(kInfo, takeDoubleSource);
 
 	Take(kInfo);
 
-	jdoubleArray ret = env->NewDoubleArray(nToTake);
-	env->SetDoubleArrayRegion(ret, 0, takeParams->result->length, (double *)takeParams->result->data);
-	return ret;
+	return (jdoubleArray) GetResult(env, kInfo, kernelType, dataType);
 }
 
 JNIEXPORT jintArray JNICALL Java_ocl_Ocl_OclUnion___3I_3I
   (JNIEnv *env, jobject obj, jintArray data, jintArray otherData)
 {
-	UnionParameters_t* unionParams = CreateUnionParams(env, data, otherData, INT_TYPE);
-	OclKernelInfo_t* kInfo = CreateKernelInfo(unionIntName, K_TAKE, unionParams);
+	int kernelType = K_UNION;
+	int dataType = DOUBLE_TYPE;
+
+	UnionParameters_t* unionParams = CreateUnionParams(env, data, otherData, dataType);
+	OclKernelInfo_t* kInfo = CreateKernelInfo(unionIntName, kernelType, unionParams);
 	SetKernelSource(kInfo, unionIntSource);
 
 	Union(kInfo);
 
-	jintArray ret = env->NewIntArray(unionParams->result->length);
-	env->SetIntArrayRegion(ret, 0, unionParams->result->length, (int *)unionParams->result->data);
-	return ret;
+	return (jintArray) GetResult(env, kInfo, kernelType, dataType);
 }
 
 JNIEXPORT jdoubleArray JNICALL Java_ocl_Ocl_OclUnion___3D_3D
   (JNIEnv *env, jobject jobj, jdoubleArray data, jdoubleArray otherData)
 {
-	UnionParameters_t* unionParams = CreateUnionParams(env, data, otherData, DOUBLE_TYPE);
-	OclKernelInfo_t* kInfo = CreateKernelInfo(unionDoubleName, K_TAKE, unionParams);
+	int kernelType = K_UNION;
+	int dataType = DOUBLE_TYPE;
+	UnionParameters_t* unionParams = CreateUnionParams(env, data, otherData, dataType);
+	OclKernelInfo_t* kInfo = CreateKernelInfo(unionDoubleName, kernelType, unionParams);
 	SetKernelSource(kInfo, unionDoubleSource);
 
 	Union(kInfo);
 
-	jdoubleArray ret = env->NewDoubleArray(unionParams->result->length);
-	env->SetDoubleArrayRegion(ret, 0, unionParams->result->length, (double *)unionParams->result->data);
-	return ret;
+	return (jdoubleArray) GetResult(env, kInfo, kernelType, dataType);
 }
