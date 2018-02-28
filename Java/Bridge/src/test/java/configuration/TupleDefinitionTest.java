@@ -24,6 +24,36 @@ class TupleDefinitionTest
 		return loadSettings(prmDirective).getSettings();
 	}
 
+	private JavaTType getJavaTInteger()
+	{
+		return new JavaTType.Builder(TType.ConfigTypes.INTEGER).build();
+	}
+
+	private JavaTType getJavaTDouble()
+	{
+		return new JavaTType.Builder(TType.ConfigTypes.DOUBLE).build();
+	}
+
+	private JavaTType getJavaTString()
+	{
+		return new JavaTType.Builder(TType.ConfigTypes.STRING).build();
+	}
+
+	private CTType getCTInteger()
+	{
+		return new CTType.Builder(TType.ConfigTypes.INTEGER).build();
+	}
+
+	private CTType getCTDouble()
+	{
+		return new CTType.Builder(TType.ConfigTypes.DOUBLE).build();
+	}
+
+	private CTType getCTString()
+	{
+		return new CTType.Builder(TType.ConfigTypes.STRING).build();
+	}
+
 	@Test
 	void TupleDefinition_Equals_Ok()
 	{
@@ -64,7 +94,7 @@ class TupleDefinitionTest
 
 		wvDefinitions.forEach( x -> assertEquals(x.hashCode(), x.hashCode()));
 
-		wvDefinitions.forEach( x -> assertEquals(x.hashCode(),new TupleDefinition(x).hashCode()));
+		wvDefinitions.forEach( x -> assertEquals(x.hashCode(), new TupleDefinition(x).hashCode()));
 
 		Iterator<TupleDefinition> wvIterator = wvDefinitions.iterator();
 
@@ -111,17 +141,17 @@ class TupleDefinitionTest
 		assertTrue(expectedCount == wvTupleDefinition.getArity());
 		assertEquals("tupleOne", wvTupleDefinition.getName());
 
-		final String[] expectedString =
+		final TType[] expectedTypes =
 				{
-					TupleDefinition.Types.Java.INTEGER,
-					TupleDefinition.Types.Java.STRING,
-					TupleDefinition.Types.Java.DOUBLE,
-					TupleDefinition.Types.Java.CHAR
+					getJavaTInteger(),
+					getJavaTString(),
+					getJavaTDouble(),
+					getJavaTInteger()
 				};
 
 		wvTupleDefinition.forEach( x ->
 								   {
-									   	assertEquals(expectedString[actualCount[0]], x);
+									   	assertEquals(expectedTypes[actualCount[0]], x);
 										actualCount[0]++;
 								   });
 
@@ -129,13 +159,13 @@ class TupleDefinitionTest
 
 		expectedCount = 1;
 		actualCount[0] = 0;
-		expectedString[0] = TupleDefinition.Types.Java.DOUBLE;
+		expectedTypes[0] = getJavaTDouble();
 
 
 		wvTupleDefinition = wvTupleIterator.next();
 		wvTupleDefinition.forEach( x ->
 								   {
-									   assertEquals(expectedString[actualCount[0]], x);
+									   assertEquals(expectedTypes[actualCount[0]], x);
 									   actualCount[0]++;
 								   });
 
@@ -162,17 +192,17 @@ class TupleDefinitionTest
 		assertTrue(expectedCount == wvTupleDefinition.getArity());
 		assertEquals("tupleOne", wvTupleDefinition.getName());
 
-		final String[] expectedString =
+		final TType[] expectedTypes =
 				{
-						TupleDefinition.Types.Java.CHAR,
-						TupleDefinition.Types.Java.DOUBLE,
-						TupleDefinition.Types.Java.STRING,
-						TupleDefinition.Types.Java.INTEGER
+						getJavaTInteger(),
+						getJavaTDouble(),
+						getJavaTString(),
+						getJavaTInteger()
 				};
 
 		wvTupleDefinition.reverseIterator().forEachRemaining( x ->
 								   {
-									   assertEquals(expectedString[actualCount[0]], x);
+									   assertEquals(expectedTypes[actualCount[0]], x);
 									   actualCount[0]++;
 								   });
 
@@ -180,13 +210,13 @@ class TupleDefinitionTest
 
 		expectedCount = 1;
 		actualCount[0] = 0;
-		expectedString[0] = TupleDefinition.Types.Java.DOUBLE;
+		expectedTypes[0] = getJavaTDouble();
 
 
 		wvTupleDefinition = wvTupleIterator.next();
 		wvTupleDefinition.reverseIterator().forEachRemaining( x ->
 								   {
-									   assertEquals(expectedString[actualCount[0]], x);
+									   assertEquals(expectedTypes[actualCount[0]], x);
 									   actualCount[0]++;
 								   });
 
@@ -213,17 +243,17 @@ class TupleDefinitionTest
 		assertTrue(expectedCount == wvTupleDefinition.getArity());
 		assertEquals("tupleOne", wvTupleDefinition.getName());
 
-		final String[] expectedString =
+		final TType[] expectedTypes =
 				{
-						TupleDefinition.Types.C.INTEGER,
-						TupleDefinition.Types.C.STRING,
-						TupleDefinition.Types.C.DOUBLE,
-						TupleDefinition.Types.C.CHAR
+						getCTInteger(),
+						getCTString(),
+						getCTDouble(),
+						getCTInteger()
 				};
 
 		wvTupleDefinition.cIterator().forEachRemaining( x ->
 								   {
-									   assertEquals(expectedString[actualCount[0]], x);
+									   assertEquals(expectedTypes[actualCount[0]], x);
 									   actualCount[0]++;
 								   });
 
@@ -231,13 +261,13 @@ class TupleDefinitionTest
 
 		expectedCount = 1;
 		actualCount[0] = 0;
-		expectedString[0] = TupleDefinition.Types.C.DOUBLE;
+		expectedTypes[0] = getCTDouble();
 
 
 		wvTupleDefinition = wvTupleIterator.next();
 		wvTupleDefinition.cIterator().forEachRemaining( x ->
 								   {
-									   assertEquals(expectedString[actualCount[0]], x);
+									   assertEquals(expectedTypes[actualCount[0]], x);
 									   actualCount[0]++;
 								   });
 
@@ -264,17 +294,17 @@ class TupleDefinitionTest
 		assertTrue(expectedCount == wvTupleDefinition.getArity());
 		assertEquals("tupleOne", wvTupleDefinition.getName());
 
-		final String[] expectedString =
+		final TType[] expectedTypes =
 				{
-						TupleDefinition.Types.C.CHAR,
-						TupleDefinition.Types.C.DOUBLE,
-						TupleDefinition.Types.C.STRING,
-						TupleDefinition.Types.C.INTEGER
+						getCTInteger(),
+						getCTDouble(),
+						getCTString(),
+						getCTInteger()
 				};
 
 		wvTupleDefinition.cReverseIterator().forEachRemaining( x ->
 															  {
-																  assertEquals(expectedString[actualCount[0]], x);
+																  assertEquals(expectedTypes[actualCount[0]], x);
 																  actualCount[0]++;
 															  });
 
@@ -282,13 +312,13 @@ class TupleDefinitionTest
 
 		expectedCount = 1;
 		actualCount[0] = 0;
-		expectedString[0] = TupleDefinition.Types.C.DOUBLE;
+		expectedTypes[0] = getCTDouble();
 
 
 		wvTupleDefinition = wvTupleIterator.next();
 		wvTupleDefinition.cReverseIterator().forEachRemaining( x ->
 															  {
-																  assertEquals(expectedString[actualCount[0]], x);
+																  assertEquals(expectedTypes[actualCount[0]], x);
 																  actualCount[0]++;
 															  });
 

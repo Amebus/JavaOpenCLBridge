@@ -10,26 +10,33 @@ public class CTType extends TType
 		static final String STRING = "char*";
 	}
 
-	public CTType(String prmType, int prmByteDimension, int prmMaxByteDimension)
+	private CTType(String prmType, int prmByteDimension, int prmMaxByteDimension)
 	{
-		super(computeType(prmType), prmByteDimension, prmMaxByteDimension);
+		super(prmType, prmByteDimension, prmMaxByteDimension);
 	}
 
-	public CTType(CTType prmCTType)
+	public static class Builder extends TTypeBuilder
 	{
-		super(prmCTType);
-	}
+		public Builder(String prmType)
+		{
+			super(prmType);
+		}
 
-	private static String computeType(String prmType)
-	{
-		if (isInteger(prmType))
-			return CTypes.INTEGER;
-		else if (isDouble(prmType))
-			return CTypes.DOUBLE;
-		else if (isString(prmType))
-			return CTypes.STRING;
+		public Builder(TType prmType)
+		{
+			super(prmType);
+		}
 
-		throw new IllegalArgumentException("Error with var type " + prmType
-										   +". The var type must be one between: int|integer or char|character or double or string");
+		public CTType build()
+		{
+			String wvType;
+			if (isInteger(getType()))
+				wvType = CTypes.INTEGER;
+			else if (isDouble(getType()))
+				wvType = CTypes.DOUBLE;
+			else
+				wvType = CTypes.STRING;
+			return new CTType(wvType, getByteDimension(), getMaxByteDimension());
+		}
 	}
 }

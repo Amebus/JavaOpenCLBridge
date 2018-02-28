@@ -10,26 +10,33 @@ public class JavaTType extends TType
 		static final String STRING = "String";
 	}
 
-	public JavaTType(String prmType, int prmByteDimension, int prmMaxByteDimension)
+	private JavaTType(String prmType, int prmByteDimension, int prmMaxByteDimension)
 	{
-		super(computeType(prmType), prmByteDimension, prmMaxByteDimension);
+		super(prmType, prmByteDimension, prmMaxByteDimension);
 	}
 
-	public JavaTType(JavaTType prmJavaTType)
+	public static class Builder extends TTypeBuilder
 	{
-		super(prmJavaTType);
-	}
+		public Builder(String prmType)
+		{
+			super(prmType);
+		}
 
-	private static String computeType(String prmType)
-	{
-		if (isInteger(prmType))
-			return JavaTypes.INTEGER;
-		else if (isDouble(prmType))
-			return JavaTypes.DOUBLE;
-		else if (isString(prmType))
-			return JavaTypes.STRING;
+		public Builder(TType prmType)
+		{
+			super(prmType);
+		}
 
-		throw new IllegalArgumentException("Error with var type " + prmType
-										   +". The var type must be one between: int|integer or char|character or double or string");
+		public JavaTType build()
+		{
+			String wvType;
+			if (isInteger(getType()))
+				wvType = JavaTypes.INTEGER;
+			else if (isDouble(getType()))
+				wvType = JavaTypes.DOUBLE;
+			else
+				wvType = JavaTypes.STRING;
+			return new JavaTType(wvType, getByteDimension(), getMaxByteDimension());
+		}
 	}
 }

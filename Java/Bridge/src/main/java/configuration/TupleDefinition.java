@@ -13,38 +13,6 @@ import java.util.*;
 
 public class TupleDefinition implements Iterable<TType>
 {
-
-	public static class Types
-	{
-
-		private static class Config
-		{
-			static final String INT = "int";
-			static final String INTEGER = "integer";
-			static final String CHAR = "char";
-			static final String CHARACTER = "character";
-			static final String DOUBLE = "double";
-			static final String CSTRING = "char*";
-			static final String STRING = "string";
-		}
-
-		public static class Java
-		{
-			static final String INTEGER = "Integer";
-			static final String DOUBLE = "Double";
-			static final String CHAR = "Character";
-			static final String STRING = "String";
-		}
-
-		public static class C
-		{
-			static final String INTEGER = "int";
-			static final String DOUBLE = "double";
-			static final String CHAR = "char";
-			static final String STRING = "char*";
-		}
-	}
-
 	private static class Keys
 	{
 		private static final String T = "t";
@@ -67,7 +35,7 @@ public class TupleDefinition implements Iterable<TType>
 
 	public TupleDefinition()
 	{
-		mArity = -1;
+		mArity = 0;
 	}
 
 	public TupleDefinition(TupleDefinition prmDefinition)
@@ -75,6 +43,9 @@ public class TupleDefinition implements Iterable<TType>
 		this();
 		mName = prmDefinition.getName();
 		mTypesMap = new HashMap<>(prmDefinition.mTypesMap);
+		mVarDefinitionMap = new HashMap<>(prmDefinition.mVarDefinitionMap);
+		mArity = prmDefinition.mArity;
+		computeHashCode();
 	}
 
 	@PostDeserialize
@@ -84,22 +55,27 @@ public class TupleDefinition implements Iterable<TType>
 		Set<String> wvKeySet = new HashSet<>(mTypesMap.keySet());
 		wvKeySet.forEach( x ->
 						  {
-							if(wvExpression.matches(x))
-							{
-								String wvTempString = x.substring(1);
-								int wvValue = Integer.parseInt(wvTempString);
-								if( 0 < wvValue && wvValue <= T_LIMIT)
-								{
-									return;
-								}
-							}
-							mTypesMap.remove(x);
+							  if(wvExpression.matches(x))
+							  {
+								  String wvTempString = x.substring(1);
+								  int wvValue = Integer.parseInt(wvTempString);
+								  if( 0 < wvValue && wvValue <= T_LIMIT)
+								  {
+									  return;
+								  }
+							  }
+							  mTypesMap.remove(x);
 						  });
 
 		mArity = mTypesMap.size();
 
 		mTypesMap.forEach( (k,v) -> mVarDefinitionMap.put(k, new TupleVarDefinition(v)));
 
+		computeHashCode();
+	}
+
+	private void computeHashCode()
+	{
 		HashCodeBuilder wvBuilder = new HashCodeBuilder();
 		reverseIterator().forEachRemaining(wvBuilder::append);
 		mHashCode = wvBuilder
@@ -165,7 +141,8 @@ public class TupleDefinition implements Iterable<TType>
 	 */
 	public TType getJavaT(int prmIndex)
 	{
-		return getT(prmIndex).getJavaT();
+		TupleVarDefinition wvT = getT(prmIndex);
+		return wvT == null ? null : wvT.getJavaT();
 	}
 
 	public TupleVarDefinition getT(int prmIndex)
@@ -185,7 +162,8 @@ public class TupleDefinition implements Iterable<TType>
 	 */
 	public TType getCT(int prmIndex)
 	{
-		return getT(prmIndex).getCT();
+		TupleVarDefinition wvT = getT(prmIndex);
+		return wvT == null ? null : wvT.getCT();
 	}
 
 	private String getKey(int prmIndex)

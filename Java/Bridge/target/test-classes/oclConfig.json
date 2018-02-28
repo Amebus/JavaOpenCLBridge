@@ -8,7 +8,7 @@
       "t1": "int",
       "t2": "string",
       "t3": "double",
-      "t4": "char"
+      "t4": "int"
     }}, {
     "name": "tupleTwo",
     "types": {
