@@ -1,0 +1,16 @@
+{
+  "oclSettings" : {
+
+  },
+  "tuples": [{
+    "name": "tupleOne",
+    "types": {
+      "t1": "int",
+      "t2": "string",
+      "t3": "double",
+      "t4": "int"
+    }}, {
+    "name": "tupleTwo",
+    "types": {
+      "t1": "double"
+}}]}
