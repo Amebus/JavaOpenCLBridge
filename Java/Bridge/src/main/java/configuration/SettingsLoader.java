@@ -10,8 +10,13 @@ import java.io.FileReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class SettingsLoader
+public final class SettingsLoader
 {
+
+	private SettingsLoader()
+	{
+
+	}
 
 	public static final String CONFIG_FILE_NAME = "oclConfig.json";
 
