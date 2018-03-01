@@ -9,11 +9,11 @@ public abstract class TType
 
 	public static class ConfigTypes
 	{
-		static final String INT = "int";
-		static final String INTEGER = "integer";
-		static final String DOUBLE = "double";
-		static final String CSTRING = "char*";
-		static final String STRING = "string";
+		public static final String INT = "int";
+		public static final String INTEGER = "integer";
+		public static final String DOUBLE = "double";
+		public static final String CSTRING = "char*";
+		public static final String STRING = "string";
 
 		private static final String REGEX_STRING = "(" + CSTRING + "|" + STRING + ")(" + COLUMN + "\\d+)?";
 		static final RegularExpression EXPRESSION = new RegularExpression(REGEX_STRING, "i");
@@ -24,17 +24,17 @@ public abstract class TType
 	private int mByteDimension;
 	private int mMaxByteDimension;
 
-	public TType(String prmType, int prmByteDimension, int prmMaxByteDimension)
+	protected TType(String prmType, int prmByteDimension, int prmMaxByteDimension)
 	{
 		mType = prmType;
 		mByteDimension = prmByteDimension;
 		mMaxByteDimension = prmMaxByteDimension;
 	}
 
-	public TType(TType prmTType)
-	{
-		this(prmTType.getT(), prmTType.getByteDimension(), prmTType.getMaxByteDimension());
-	}
+	// protected TType(TType prmTType)
+	// {
+	// 	this(prmTType.getT(), prmTType.getByteDimension(), prmTType.getMaxByteDimension());
+	// }
 
 	public String getT()
 	{
@@ -106,6 +106,7 @@ public abstract class TType
 		private int mByteDimension;
 		private int mMaxByteDimension;
 
+
 		public TTypeBuilder(String prmType)
 		{
 			mByteDimension = 0;
@@ -155,7 +156,7 @@ public abstract class TType
 
 			if (wvStrings.length > 1)
 			{
-				mMaxByteDimension = Integer.parseInt(wvStrings[2]);
+				mMaxByteDimension = Integer.parseInt(wvStrings[1]);
 			}
 			mType = wvStrings[0];
 		}

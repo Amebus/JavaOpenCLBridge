@@ -8,51 +8,11 @@ import testHelpers.LoadSettingsDirective;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static testHelpers.SettingsWrapper.loadSettings;
+import static testHelpers.TTypesGetter.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TupleDefinitionTest
 {
-
-	private Settings getSettings()
-	{
-		return loadSettings().getSettings();
-	}
-
-	private Settings getSettings(LoadSettingsDirective prmDirective)
-	{
-		return loadSettings(prmDirective).getSettings();
-	}
-
-	private JavaTType getJavaTInteger()
-	{
-		return new JavaTType.Builder(TType.ConfigTypes.INTEGER).build();
-	}
-
-	private JavaTType getJavaTDouble()
-	{
-		return new JavaTType.Builder(TType.ConfigTypes.DOUBLE).build();
-	}
-
-	private JavaTType getJavaTString()
-	{
-		return new JavaTType.Builder(TType.ConfigTypes.STRING).build();
-	}
-
-	private CTType getCTInteger()
-	{
-		return new CTType.Builder(TType.ConfigTypes.INTEGER).build();
-	}
-
-	private CTType getCTDouble()
-	{
-		return new CTType.Builder(TType.ConfigTypes.DOUBLE).build();
-	}
-
-	private CTType getCTString()
-	{
-		return new CTType.Builder(TType.ConfigTypes.STRING).build();
-	}
 
 	@Test
 	void TupleDefinition_Equals_Ok()

@@ -42,18 +42,21 @@
     100%
   </span>
   <span class="absValue">
-    (20/ 20)
+    (19/ 19)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    98.1%
   </span>
   <span class="absValue">
-    (79/ 79)
+    (53/ 54)
   </span>
 </td>
 </tr>
+  <tr>
+    <td class="name">TupleDefinition$1</td>
+  </tr>
   <tr>
     <td class="name">TupleDefinition$CTIterator</td>
 <td class="coverageStat">
@@ -107,7 +110,7 @@
     100%
   </span>
   <span class="absValue">
-    (7/ 7)
+    (5/ 5)
   </span>
 </td>
   </tr>
@@ -183,7 +186,7 @@
     100%
   </span>
   <span class="absValue">
-    (7/ 7)
+    (5/ 5)
   </span>
 </td>
   </tr>
@@ -206,98 +209,22 @@
   </span>
 </td>
   </tr>
-  <tr>
-    <td class="name">TupleDefinition$Types</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/ 1)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/ 1)
-  </span>
-</td>
-  </tr>
-  <tr>
-    <td class="name">TupleDefinition$Types$C</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/ 1)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/ 1)
-  </span>
-</td>
-  </tr>
-  <tr>
-    <td class="name">TupleDefinition$Types$Config</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/ 1)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/ 1)
-  </span>
-</td>
-  </tr>
-  <tr>
-    <td class="name">TupleDefinition$Types$Java</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/ 1)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/ 1)
-  </span>
-</td>
-  </tr>
 <tr>
   <td class="name"><strong>total</strong></td>
 <td class="coverageStat">
   <span class="percent">
-    88.1%
+    97.3%
   </span>
   <span class="absValue">
-    (37/ 42)
+    (36/ 37)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    95.3%
+    97.3%
   </span>
   <span class="absValue">
-    (102/ 107)
+    (72/ 74)
   </span>
 </td>
 </tr>
@@ -312,344 +239,284 @@
 <i>3</i>&nbsp;import com.google.gson.annotations.Expose;
 <i>4</i>&nbsp;import com.google.gson.annotations.SerializedName;
 <i>5</i>&nbsp;
-<i>6</i>&nbsp;import org.apache.commons.lang.builder.EqualsBuilder;
-<i>7</i>&nbsp;import org.apache.commons.lang.builder.HashCodeBuilder;
-<i>8</i>&nbsp;
-<i>9</i>&nbsp;
-<i>10</i>&nbsp;import java.util.*;
-<i>11</i>&nbsp;import java.util.stream.Collectors;
-<i>12</i>&nbsp;
-<b class="fc"><i>13</i>&nbsp;public class TupleDefinition implements Iterable&lt;String&gt;</b>
-<i>14</i>&nbsp;{
-<i>15</i>&nbsp;
-<b class="nc"><i>16</i>&nbsp;	public static class Types</b>
+<i>6</i>&nbsp;import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
+<i>7</i>&nbsp;import io.gsonfire.annotations.PostDeserialize;
+<i>8</i>&nbsp;import org.apache.commons.lang.builder.EqualsBuilder;
+<i>9</i>&nbsp;import org.apache.commons.lang.builder.HashCodeBuilder;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.util.*;
+<i>13</i>&nbsp;
+<b class="fc"><i>14</i>&nbsp;public class TupleDefinition implements Iterable&lt;TType&gt;</b>
+<i>15</i>&nbsp;{
+<b class="nc"><i>16</i>&nbsp;	private static class Keys</b>
 <i>17</i>&nbsp;	{
-<i>18</i>&nbsp;
-<b class="nc"><i>19</i>&nbsp;		private static class Config</b>
-<i>20</i>&nbsp;		{
-<i>21</i>&nbsp;			static final String INT = &quot;int&quot;;
-<i>22</i>&nbsp;			static final String INTEGER = &quot;integer&quot;;
-<i>23</i>&nbsp;			static final String CHAR = &quot;char&quot;;
-<i>24</i>&nbsp;			static final String CHARACTER = &quot;character&quot;;
-<i>25</i>&nbsp;			static final String DOUBLE = &quot;double&quot;;
-<i>26</i>&nbsp;			static final String CSTRING = &quot;char*&quot;;
-<i>27</i>&nbsp;			static final String STRING = &quot;string&quot;;
-<i>28</i>&nbsp;		}
-<i>29</i>&nbsp;
-<b class="nc"><i>30</i>&nbsp;		public static class Java</b>
-<i>31</i>&nbsp;		{
-<i>32</i>&nbsp;			static final String INTEGER = &quot;Integer&quot;;
-<i>33</i>&nbsp;			static final String DOUBLE = &quot;Double&quot;;
-<i>34</i>&nbsp;			static final String CHAR = &quot;Character&quot;;
-<i>35</i>&nbsp;			static final String STRING = &quot;String&quot;;
-<i>36</i>&nbsp;		}
-<i>37</i>&nbsp;
-<b class="nc"><i>38</i>&nbsp;		public static class C</b>
-<i>39</i>&nbsp;		{
-<i>40</i>&nbsp;			static final String INTEGER = &quot;int&quot;;
-<i>41</i>&nbsp;			static final String DOUBLE = &quot;double&quot;;
-<i>42</i>&nbsp;			static final String CHAR = &quot;char&quot;;
-<i>43</i>&nbsp;			static final String STRING = &quot;char*&quot;;
-<i>44</i>&nbsp;		}
-<i>45</i>&nbsp;	}
-<i>46</i>&nbsp;
-<b class="nc"><i>47</i>&nbsp;	private static class Keys</b>
-<i>48</i>&nbsp;	{
-<i>49</i>&nbsp;		private static final String T = &quot;t&quot;;
+<i>18</i>&nbsp;		private static final String T = &quot;t&quot;;
+<i>19</i>&nbsp;	}
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;	public static final transient int T_LIMIT = 22;
+<i>22</i>&nbsp;	private transient int mHashCode;
+<i>23</i>&nbsp;	private transient int mArity;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;	@SerializedName(&quot;name&quot;)
+<i>26</i>&nbsp;	@Expose
+<i>27</i>&nbsp;	private String mName;
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;	@SerializedName(&quot;types&quot;)</b>
+<i>30</i>&nbsp;	@Expose
+<i>31</i>&nbsp;	private Map&lt;String, String&gt; mTypesMap = new HashMap&lt;&gt;();
+<i>32</i>&nbsp;
+<b class="fc"><i>33</i>&nbsp;	private transient Map&lt;String, TupleVarDefinition&gt; mVarDefinitionMap = new HashMap&lt;&gt;();</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;	public TupleDefinition()
+<b class="fc"><i>37</i>&nbsp;	{</b>
+<b class="fc"><i>38</i>&nbsp;		mArity = 0;</b>
+<i>39</i>&nbsp;	}
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;	public TupleDefinition(TupleDefinition prmDefinition)
+<i>42</i>&nbsp;	{
+<b class="fc"><i>43</i>&nbsp;		this();</b>
+<b class="fc"><i>44</i>&nbsp;		mName = prmDefinition.getName();</b>
+<b class="fc"><i>45</i>&nbsp;		mTypesMap = new HashMap&lt;&gt;(prmDefinition.mTypesMap);</b>
+<b class="fc"><i>46</i>&nbsp;		mVarDefinitionMap = new HashMap&lt;&gt;(prmDefinition.mVarDefinitionMap);</b>
+<b class="fc"><i>47</i>&nbsp;		mArity = prmDefinition.mArity;</b>
+<i>48</i>&nbsp;
+<b class="fc"><i>49</i>&nbsp;		computeHashCode();</b>
 <i>50</i>&nbsp;	}
 <i>51</i>&nbsp;
-<i>52</i>&nbsp;	public static final transient int T_LIMIT = 22;
-<i>53</i>&nbsp;	private transient boolean mWasHashCodeComputed;
-<i>54</i>&nbsp;	private transient int mHashCode;
-<i>55</i>&nbsp;	private transient int mArity;
-<i>56</i>&nbsp;
-<i>57</i>&nbsp;	@SerializedName(&quot;name&quot;)
-<i>58</i>&nbsp;	@Expose
-<i>59</i>&nbsp;	private String mName;
-<i>60</i>&nbsp;
-<b class="fc"><i>61</i>&nbsp;	@SerializedName(&quot;types&quot;)</b>
-<i>62</i>&nbsp;	@Expose
-<i>63</i>&nbsp;	private Map&lt;String, String&gt; mTypes = new HashMap&lt;&gt;();
-<i>64</i>&nbsp;
-<i>65</i>&nbsp;	public TupleDefinition()
-<b class="fc"><i>66</i>&nbsp;	{</b>
-<b class="fc"><i>67</i>&nbsp;		mWasHashCodeComputed = false;</b>
-<b class="fc"><i>68</i>&nbsp;		mArity = -1;</b>
-<b class="fc"><i>69</i>&nbsp;	}</b>
+<i>52</i>&nbsp;	@PostDeserialize
+<i>53</i>&nbsp;	public void postDeserialize()
+<i>54</i>&nbsp;	{
+<b class="fc"><i>55</i>&nbsp;		final RegularExpression wvExpression = new RegularExpression(&quot;t\\d+&quot;);</b>
+<b class="fc"><i>56</i>&nbsp;		Set&lt;String&gt; wvKeySet = new HashSet&lt;&gt;(mTypesMap.keySet());</b>
+<b class="fc"><i>57</i>&nbsp;		wvKeySet.forEach( x -&gt;</b>
+<i>58</i>&nbsp;						  {
+<b class="pc"><i>59</i>&nbsp;							  if(wvExpression.matches(x))</b>
+<i>60</i>&nbsp;							  {
+<b class="fc"><i>61</i>&nbsp;								  String wvTempString = x.substring(1);</b>
+<b class="fc"><i>62</i>&nbsp;								  int wvValue = Integer.parseInt(wvTempString);</b>
+<b class="pc"><i>63</i>&nbsp;								  if( 0 &lt; wvValue &amp;&amp; wvValue &lt;= T_LIMIT)</b>
+<i>64</i>&nbsp;								  {
+<i>65</i>&nbsp;									  return;
+<i>66</i>&nbsp;								  }
+<i>67</i>&nbsp;							  }
+<b class="nc"><i>68</i>&nbsp;							  mTypesMap.remove(x);</b>
+<i>69</i>&nbsp;						  });
 <i>70</i>&nbsp;
-<i>71</i>&nbsp;	public TupleDefinition(TupleDefinition prmDefinition)
-<i>72</i>&nbsp;	{
-<b class="fc"><i>73</i>&nbsp;		this();</b>
-<b class="fc"><i>74</i>&nbsp;		mName = prmDefinition.getName();</b>
-<b class="fc"><i>75</i>&nbsp;		mTypes = new HashMap&lt;&gt;(prmDefinition.mTypes);</b>
-<b class="fc"><i>76</i>&nbsp;	}</b>
+<b class="fc"><i>71</i>&nbsp;		mArity = mTypesMap.size();</b>
+<i>72</i>&nbsp;
+<b class="fc"><i>73</i>&nbsp;		mTypesMap.forEach( (k,v) -&gt; mVarDefinitionMap.put(k, new TupleVarDefinition(v)));</b>
+<i>74</i>&nbsp;
+<b class="fc"><i>75</i>&nbsp;		computeHashCode();</b>
+<i>76</i>&nbsp;	}
 <i>77</i>&nbsp;
-<i>78</i>&nbsp;	public String getName()
+<i>78</i>&nbsp;	private void computeHashCode()
 <i>79</i>&nbsp;	{
-<b class="fc"><i>80</i>&nbsp;		return mName;</b>
-<i>81</i>&nbsp;	}
-<i>82</i>&nbsp;
-<i>83</i>&nbsp;	/**
-<i>84</i>&nbsp;	 * Return the tuple arity
-<i>85</i>&nbsp;	 * @return an int representing the arity of the tuple
-<i>86</i>&nbsp;	 */
-<i>87</i>&nbsp;	public Integer getArity()
+<b class="fc"><i>80</i>&nbsp;		HashCodeBuilder wvBuilder = new HashCodeBuilder();</b>
+<b class="fc"><i>81</i>&nbsp;		reverseIterator().forEachRemaining(wvBuilder::append);</b>
+<b class="fc"><i>82</i>&nbsp;		mHashCode = wvBuilder</b>
+<b class="fc"><i>83</i>&nbsp;				.append(getName())</b>
+<b class="fc"><i>84</i>&nbsp;				.toHashCode();</b>
+<i>85</i>&nbsp;	}
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;	public String getName()
 <i>88</i>&nbsp;	{
-<b class="fc"><i>89</i>&nbsp;		if (mArity == -1)</b>
-<i>90</i>&nbsp;		{
-<b class="fc"><i>91</i>&nbsp;			final int[] wvArity = {0};</b>
-<b class="fc"><i>92</i>&nbsp;			iterator().forEachRemaining( x -&gt;  wvArity[0]++);</b>
-<b class="fc"><i>93</i>&nbsp;			mArity = wvArity[0];</b>
-<i>94</i>&nbsp;		}
-<b class="fc"><i>95</i>&nbsp;		return mArity;</b>
-<i>96</i>&nbsp;	}
-<i>97</i>&nbsp;
-<i>98</i>&nbsp;	@Override
-<i>99</i>&nbsp;	public int hashCode()
-<i>100</i>&nbsp;	{
-<b class="fc"><i>101</i>&nbsp;		if (!mWasHashCodeComputed)</b>
-<i>102</i>&nbsp;		{
-<b class="fc"><i>103</i>&nbsp;			mWasHashCodeComputed = true;</b>
-<b class="fc"><i>104</i>&nbsp;			HashCodeBuilder wvBuilder = new HashCodeBuilder();</b>
-<b class="fc"><i>105</i>&nbsp;			reverseIterator().forEachRemaining(wvBuilder::append);</b>
-<b class="fc"><i>106</i>&nbsp;			mHashCode = wvBuilder</b>
-<b class="fc"><i>107</i>&nbsp;					.append(getName())</b>
-<b class="fc"><i>108</i>&nbsp;					.toHashCode();</b>
-<i>109</i>&nbsp;		}
-<b class="fc"><i>110</i>&nbsp;		return mHashCode;</b>
-<i>111</i>&nbsp;	}
-<i>112</i>&nbsp;
-<i>113</i>&nbsp;	@Override
-<i>114</i>&nbsp;	public boolean equals(Object other)
-<i>115</i>&nbsp;	{
-<b class="fc"><i>116</i>&nbsp;		if (other == null)</b>
-<i>117</i>&nbsp;		{
-<b class="fc"><i>118</i>&nbsp;			return false;</b>
-<i>119</i>&nbsp;		}
-<b class="fc"><i>120</i>&nbsp;		if (other == this)</b>
-<i>121</i>&nbsp;		{
-<b class="fc"><i>122</i>&nbsp;			return true;</b>
-<i>123</i>&nbsp;		}
-<b class="fc"><i>124</i>&nbsp;		if (!(other instanceof TupleDefinition))</b>
+<b class="fc"><i>89</i>&nbsp;		return mName;</b>
+<i>90</i>&nbsp;	}
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;	/**
+<i>93</i>&nbsp;	 * Return the tuple arity
+<i>94</i>&nbsp;	 * @return an int representing the arity of the tuple
+<i>95</i>&nbsp;	 */
+<i>96</i>&nbsp;	public Integer getArity()
+<i>97</i>&nbsp;	{
+<b class="fc"><i>98</i>&nbsp;		return mArity;</b>
+<i>99</i>&nbsp;	}
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;	@Override
+<i>102</i>&nbsp;	public int hashCode()
+<i>103</i>&nbsp;	{
+<b class="fc"><i>104</i>&nbsp;		return mHashCode;</b>
+<i>105</i>&nbsp;	}
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;	@Override
+<i>108</i>&nbsp;	public boolean equals(Object other)
+<i>109</i>&nbsp;	{
+<b class="fc"><i>110</i>&nbsp;		if (other == null)</b>
+<i>111</i>&nbsp;		{
+<b class="fc"><i>112</i>&nbsp;			return false;</b>
+<i>113</i>&nbsp;		}
+<b class="fc"><i>114</i>&nbsp;		if (other == this)</b>
+<i>115</i>&nbsp;		{
+<b class="fc"><i>116</i>&nbsp;			return true;</b>
+<i>117</i>&nbsp;		}
+<b class="fc"><i>118</i>&nbsp;		if (!(other instanceof TupleDefinition))</b>
+<i>119</i>&nbsp;		{
+<b class="fc"><i>120</i>&nbsp;			return false;</b>
+<i>121</i>&nbsp;		}
+<b class="fc"><i>122</i>&nbsp;		TupleDefinition rhs = ((TupleDefinition) other);</b>
+<i>123</i>&nbsp;
+<b class="fc"><i>124</i>&nbsp;		if (!getArity().equals(rhs.getArity()))</b>
 <i>125</i>&nbsp;		{
 <b class="fc"><i>126</i>&nbsp;			return false;</b>
 <i>127</i>&nbsp;		}
-<b class="fc"><i>128</i>&nbsp;		TupleDefinition rhs = ((TupleDefinition) other);</b>
-<i>129</i>&nbsp;
-<b class="fc"><i>130</i>&nbsp;		if (!getArity().equals(rhs.getArity()))</b>
-<i>131</i>&nbsp;		{
-<b class="fc"><i>132</i>&nbsp;			return false;</b>
-<i>133</i>&nbsp;		}
+<i>128</i>&nbsp;
+<b class="fc"><i>129</i>&nbsp;		EqualsBuilder wvBuilder = new EqualsBuilder();</b>
+<i>130</i>&nbsp;
+<b class="fc"><i>131</i>&nbsp;		Iterator&lt;TType&gt; wvRhsIterator = rhs.iterator();</b>
+<i>132</i>&nbsp;
+<b class="fc"><i>133</i>&nbsp;		forEach( (x) -&gt; wvBuilder.append(x, wvRhsIterator.next()));</b>
 <i>134</i>&nbsp;
-<b class="fc"><i>135</i>&nbsp;		EqualsBuilder wvBuilder = new EqualsBuilder();</b>
-<i>136</i>&nbsp;
-<b class="fc"><i>137</i>&nbsp;		Iterator&lt;String&gt; wvRhsIterator = rhs.iterator();</b>
-<i>138</i>&nbsp;
-<b class="fc"><i>139</i>&nbsp;		forEach( (x) -&gt; wvBuilder.append(x, wvRhsIterator.next()));</b>
-<i>140</i>&nbsp;
-<b class="fc"><i>141</i>&nbsp;		return wvBuilder.append(getName(), rhs.getName()).isEquals();</b>
-<i>142</i>&nbsp;	}
-<i>143</i>&nbsp;
-<i>144</i>&nbsp;	private boolean isInteger (String prmT)
-<i>145</i>&nbsp;	{
-<b class="fc"><i>146</i>&nbsp;		if (prmT == null)</b>
-<b class="fc"><i>147</i>&nbsp;			return false;</b>
-<b class="fc"><i>148</i>&nbsp;		prmT = prmT.toLowerCase();</b>
-<b class="fc"><i>149</i>&nbsp;		return prmT.equals(Types.Config.INT) || prmT.equals(Types.Config.INTEGER);</b>
-<i>150</i>&nbsp;	}
-<i>151</i>&nbsp;
-<i>152</i>&nbsp;	private boolean isDouble (String prmT)
-<i>153</i>&nbsp;	{
-<b class="fc"><i>154</i>&nbsp;		if (prmT == null)</b>
-<b class="fc"><i>155</i>&nbsp;			return false;</b>
-<b class="fc"><i>156</i>&nbsp;		return prmT.toLowerCase().equals(Types.Config.DOUBLE);</b>
+<b class="fc"><i>135</i>&nbsp;		return wvBuilder.append(getName(), rhs.getName()).isEquals();</b>
+<i>136</i>&nbsp;	}
+<i>137</i>&nbsp;
+<i>138</i>&nbsp;	/**
+<i>139</i>&nbsp;	 * Return the Java equivalent type
+<i>140</i>&nbsp;	 * @param prmIndex T index
+<i>141</i>&nbsp;	 * @return String representing the Java type name
+<i>142</i>&nbsp;	 */
+<i>143</i>&nbsp;	public TType getJavaT(int prmIndex)
+<i>144</i>&nbsp;	{
+<b class="fc"><i>145</i>&nbsp;		TupleVarDefinition wvT = getT(prmIndex);</b>
+<b class="fc"><i>146</i>&nbsp;		return wvT == null ? null : wvT.getJavaT();</b>
+<i>147</i>&nbsp;	}
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;	public TupleVarDefinition getT(int prmIndex)
+<i>150</i>&nbsp;	{
+<b class="fc"><i>151</i>&nbsp;		return getT(getKey(prmIndex));</b>
+<i>152</i>&nbsp;	}
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;	private TupleVarDefinition getT(String prmKey)
+<i>155</i>&nbsp;	{
+<b class="fc"><i>156</i>&nbsp;		return mVarDefinitionMap.get(prmKey);</b>
 <i>157</i>&nbsp;	}
 <i>158</i>&nbsp;
-<i>159</i>&nbsp;	private boolean isChar (String prmT)
-<i>160</i>&nbsp;	{
-<b class="fc"><i>161</i>&nbsp;		if (prmT == null)</b>
-<b class="fc"><i>162</i>&nbsp;			return false;</b>
-<b class="fc"><i>163</i>&nbsp;		prmT = prmT.toLowerCase();</b>
-<b class="fc"><i>164</i>&nbsp;		return prmT.equals(Types.Config.CHAR) || prmT.equals(Types.Config.CHARACTER);</b>
-<i>165</i>&nbsp;	}
-<i>166</i>&nbsp;
-<i>167</i>&nbsp;	private boolean isString (String prmT)
-<i>168</i>&nbsp;	{
-<b class="fc"><i>169</i>&nbsp;		if (prmT == null)</b>
-<b class="fc"><i>170</i>&nbsp;			return false;</b>
-<b class="fc"><i>171</i>&nbsp;		prmT = prmT.toLowerCase();</b>
-<b class="fc"><i>172</i>&nbsp;		return prmT.equals(Types.Config.CSTRING) || prmT.equals(Types.Config.STRING);</b>
+<i>159</i>&nbsp;	/**
+<i>160</i>&nbsp;	 * Return the C equivalent type
+<i>161</i>&nbsp;	 * @param prmIndex T index
+<i>162</i>&nbsp;	 * @return String representing the C type name
+<i>163</i>&nbsp;	 */
+<i>164</i>&nbsp;	public TType getCT(int prmIndex)
+<i>165</i>&nbsp;	{
+<b class="fc"><i>166</i>&nbsp;		TupleVarDefinition wvT = getT(prmIndex);</b>
+<b class="fc"><i>167</i>&nbsp;		return wvT == null ? null : wvT.getCT();</b>
+<i>168</i>&nbsp;	}
+<i>169</i>&nbsp;
+<i>170</i>&nbsp;	private String getKey(int prmIndex)
+<i>171</i>&nbsp;	{
+<b class="fc"><i>172</i>&nbsp;		return Keys.T + prmIndex;</b>
 <i>173</i>&nbsp;	}
 <i>174</i>&nbsp;
-<i>175</i>&nbsp;	public String getT(int prmIndex)
-<i>176</i>&nbsp;	{
-<b class="fc"><i>177</i>&nbsp;		return getT(getKey(prmIndex));</b>
-<i>178</i>&nbsp;	}
-<i>179</i>&nbsp;
-<i>180</i>&nbsp;	private String getT(String prmKey)
-<i>181</i>&nbsp;	{
-<b class="fc"><i>182</i>&nbsp;		return mTypes.get(prmKey);</b>
-<i>183</i>&nbsp;	}
-<i>184</i>&nbsp;
-<i>185</i>&nbsp;	/**
-<i>186</i>&nbsp;	 * Return the Java equivalent type
-<i>187</i>&nbsp;	 * @param prmIndex T index
-<i>188</i>&nbsp;	 * @return String representing the Java type name
-<i>189</i>&nbsp;	 */
-<i>190</i>&nbsp;	public String getJavaT(int prmIndex)
-<i>191</i>&nbsp;	{
-<b class="fc"><i>192</i>&nbsp;		String wvT = getT(prmIndex);</b>
-<b class="fc"><i>193</i>&nbsp;		if (isInteger(wvT))</b>
-<b class="fc"><i>194</i>&nbsp;			wvT = Types.Java.INTEGER;</b>
-<b class="fc"><i>195</i>&nbsp;		else if (isDouble(wvT))</b>
-<b class="fc"><i>196</i>&nbsp;			wvT = Types.Java.DOUBLE;</b>
-<b class="fc"><i>197</i>&nbsp;		else if (isChar(wvT))</b>
-<b class="fc"><i>198</i>&nbsp;			wvT = Types.Java.CHAR;</b>
-<b class="fc"><i>199</i>&nbsp;		else if (isString(wvT))</b>
-<b class="fc"><i>200</i>&nbsp;			wvT = Types.Java.STRING;</b>
-<i>201</i>&nbsp;
-<b class="fc"><i>202</i>&nbsp;		return wvT;</b>
+<i>175</i>&nbsp;	@Override
+<i>176</i>&nbsp;	public Iterator&lt;TType&gt; iterator()
+<i>177</i>&nbsp;	{
+<b class="fc"><i>178</i>&nbsp;		return new JavaTIterator();</b>
+<i>179</i>&nbsp;	}
+<i>180</i>&nbsp;
+<i>181</i>&nbsp;	public Iterator&lt;TType&gt; reverseIterator ()
+<i>182</i>&nbsp;	{
+<b class="fc"><i>183</i>&nbsp;		return new JavaTReverseIterator();</b>
+<i>184</i>&nbsp;	}
+<i>185</i>&nbsp;
+<i>186</i>&nbsp;	public Iterator&lt;TType&gt; cIterator ()
+<i>187</i>&nbsp;	{
+<b class="fc"><i>188</i>&nbsp;		return new CTIterator();</b>
+<i>189</i>&nbsp;	}
+<i>190</i>&nbsp;
+<i>191</i>&nbsp;	public Iterator&lt;TType&gt; cReverseIterator ()
+<i>192</i>&nbsp;	{
+<b class="fc"><i>193</i>&nbsp;		return new CTReverseIterator();</b>
+<i>194</i>&nbsp;	}
+<i>195</i>&nbsp;
+<b class="fc"><i>196</i>&nbsp;	public class JavaTIterator extends ForwardTIterator</b>
+<i>197</i>&nbsp;	{
+<i>198</i>&nbsp;		@Override
+<i>199</i>&nbsp;		public TType next()
+<i>200</i>&nbsp;		{
+<b class="fc"><i>201</i>&nbsp;			return getJavaT(advanceCurrentIndex());</b>
+<i>202</i>&nbsp;		}
 <i>203</i>&nbsp;	}
 <i>204</i>&nbsp;
-<i>205</i>&nbsp;	/**
-<i>206</i>&nbsp;	 * Return the C equivalent type
-<i>207</i>&nbsp;	 * @param prmIndex T index
-<i>208</i>&nbsp;	 * @return String representing the C type name
-<i>209</i>&nbsp;	 */
-<i>210</i>&nbsp;	public String getCT(int prmIndex)
-<i>211</i>&nbsp;	{
-<b class="fc"><i>212</i>&nbsp;		String wvT = getT(prmIndex);</b>
-<b class="fc"><i>213</i>&nbsp;		if (isInteger(wvT))</b>
-<b class="fc"><i>214</i>&nbsp;			wvT = Types.C.INTEGER;</b>
-<b class="fc"><i>215</i>&nbsp;		else if (isDouble(wvT))</b>
-<b class="fc"><i>216</i>&nbsp;			wvT = Types.C.DOUBLE;</b>
-<b class="fc"><i>217</i>&nbsp;		else if (isChar(wvT))</b>
-<b class="fc"><i>218</i>&nbsp;			wvT = Types.C.CHAR;</b>
-<b class="fc"><i>219</i>&nbsp;		else if (isString(wvT))</b>
-<b class="fc"><i>220</i>&nbsp;			wvT = Types.C.STRING;</b>
-<i>221</i>&nbsp;
-<b class="fc"><i>222</i>&nbsp;		return wvT;</b>
-<i>223</i>&nbsp;	}
-<i>224</i>&nbsp;
-<i>225</i>&nbsp;	private String getKey(int prmIndex)
-<i>226</i>&nbsp;	{
-<b class="fc"><i>227</i>&nbsp;		return Keys.T + prmIndex;</b>
-<i>228</i>&nbsp;	}
-<i>229</i>&nbsp;
-<i>230</i>&nbsp;	@Override
-<i>231</i>&nbsp;	public Iterator&lt;String&gt; iterator()
-<i>232</i>&nbsp;	{
-<b class="fc"><i>233</i>&nbsp;		return new JavaTIterator();</b>
-<i>234</i>&nbsp;	}
-<i>235</i>&nbsp;
-<i>236</i>&nbsp;	public Iterator&lt;String&gt; reverseIterator ()
-<i>237</i>&nbsp;	{
-<b class="fc"><i>238</i>&nbsp;		return new JavaTReverseIterator();</b>
-<i>239</i>&nbsp;	}
-<i>240</i>&nbsp;
-<i>241</i>&nbsp;	public Iterator&lt;String&gt; cIterator ()
-<i>242</i>&nbsp;	{
-<b class="fc"><i>243</i>&nbsp;		return new CTIterator();</b>
-<i>244</i>&nbsp;	}
-<i>245</i>&nbsp;
-<i>246</i>&nbsp;	public Iterator&lt;String&gt; cReverseIterator ()
-<i>247</i>&nbsp;	{
-<b class="fc"><i>248</i>&nbsp;		return new CTReverseIterator();</b>
-<i>249</i>&nbsp;	}
-<i>250</i>&nbsp;
-<b class="fc"><i>251</i>&nbsp;	public class JavaTIterator extends ForwardTIterator</b>
-<i>252</i>&nbsp;	{
-<i>253</i>&nbsp;		@Override
-<i>254</i>&nbsp;		public String next()
-<i>255</i>&nbsp;		{
-<b class="fc"><i>256</i>&nbsp;			return getJavaT(advanceCurrentIndex());</b>
-<i>257</i>&nbsp;		}
-<i>258</i>&nbsp;	}
-<i>259</i>&nbsp;
-<b class="fc"><i>260</i>&nbsp;	public class JavaTReverseIterator extends ReverseTIterator</b>
-<i>261</i>&nbsp;	{
-<i>262</i>&nbsp;		@Override
-<i>263</i>&nbsp;		public String next()
-<i>264</i>&nbsp;		{
-<b class="fc"><i>265</i>&nbsp;			return getJavaT(advanceCurrentIndex());</b>
-<i>266</i>&nbsp;		}
-<i>267</i>&nbsp;	}
-<i>268</i>&nbsp;
-<b class="fc"><i>269</i>&nbsp;	public class CTIterator extends ForwardTIterator</b>
-<i>270</i>&nbsp;	{
+<b class="fc"><i>205</i>&nbsp;	public class JavaTReverseIterator extends ReverseTIterator</b>
+<i>206</i>&nbsp;	{
+<i>207</i>&nbsp;		@Override
+<i>208</i>&nbsp;		public TType next()
+<i>209</i>&nbsp;		{
+<b class="fc"><i>210</i>&nbsp;			return getJavaT(advanceCurrentIndex());</b>
+<i>211</i>&nbsp;		}
+<i>212</i>&nbsp;	}
+<i>213</i>&nbsp;
+<b class="fc"><i>214</i>&nbsp;	public class CTIterator extends ForwardTIterator</b>
+<i>215</i>&nbsp;	{
+<i>216</i>&nbsp;		@Override
+<i>217</i>&nbsp;		public TType next()
+<i>218</i>&nbsp;		{
+<b class="fc"><i>219</i>&nbsp;			return getCT(advanceCurrentIndex());</b>
+<i>220</i>&nbsp;		}
+<i>221</i>&nbsp;	}
+<i>222</i>&nbsp;
+<b class="fc"><i>223</i>&nbsp;	public class CTReverseIterator extends ReverseTIterator</b>
+<i>224</i>&nbsp;	{
+<i>225</i>&nbsp;		@Override
+<i>226</i>&nbsp;		public TType next()
+<i>227</i>&nbsp;		{
+<b class="fc"><i>228</i>&nbsp;			return getCT(advanceCurrentIndex());</b>
+<i>229</i>&nbsp;		}
+<i>230</i>&nbsp;	}
+<i>231</i>&nbsp;
+<b class="fc"><i>232</i>&nbsp;	public abstract class TIterator implements Iterator&lt;TType&gt;</b>
+<i>233</i>&nbsp;	{
+<i>234</i>&nbsp;		protected abstract int advanceCurrentIndex();
+<i>235</i>&nbsp;	}
+<i>236</i>&nbsp;
+<b class="fc"><i>237</i>&nbsp;	public abstract class ForwardTIterator extends TIterator</b>
+<i>238</i>&nbsp;	{
+<i>239</i>&nbsp;		private int mCurrentIndex;
+<i>240</i>&nbsp;		private ForwardTIterator()
+<b class="fc"><i>241</i>&nbsp;		{</b>
+<b class="fc"><i>242</i>&nbsp;			mCurrentIndex = 1;</b>
+<i>243</i>&nbsp;		}
+<i>244</i>&nbsp;
+<i>245</i>&nbsp;		protected int advanceCurrentIndex()
+<i>246</i>&nbsp;		{
+<b class="fc"><i>247</i>&nbsp;			return mCurrentIndex++;</b>
+<i>248</i>&nbsp;		}
+<i>249</i>&nbsp;
+<i>250</i>&nbsp;		@Override
+<i>251</i>&nbsp;		public boolean hasNext()
+<i>252</i>&nbsp;		{
+<b class="pc"><i>253</i>&nbsp;			return mCurrentIndex &lt;= getArity() &amp;&amp; mCurrentIndex &lt;= T_LIMIT;</b>
+<i>254</i>&nbsp;		}
+<i>255</i>&nbsp;	}
+<i>256</i>&nbsp;
+<b class="fc"><i>257</i>&nbsp;	public abstract class ReverseTIterator extends TIterator</b>
+<i>258</i>&nbsp;	{
+<i>259</i>&nbsp;		private int mCurrentIndex;
+<i>260</i>&nbsp;
+<i>261</i>&nbsp;		private ReverseTIterator()
+<b class="fc"><i>262</i>&nbsp;		{</b>
+<b class="fc"><i>263</i>&nbsp;			mCurrentIndex = mVarDefinitionMap.size();</b>
+<i>264</i>&nbsp;		}
+<i>265</i>&nbsp;
+<i>266</i>&nbsp;		protected int advanceCurrentIndex()
+<i>267</i>&nbsp;		{
+<b class="fc"><i>268</i>&nbsp;			return mCurrentIndex--;</b>
+<i>269</i>&nbsp;		}
+<i>270</i>&nbsp;
 <i>271</i>&nbsp;		@Override
-<i>272</i>&nbsp;		public String next()
+<i>272</i>&nbsp;		public boolean hasNext()
 <i>273</i>&nbsp;		{
-<b class="fc"><i>274</i>&nbsp;			return getCT(advanceCurrentIndex());</b>
+<b class="fc"><i>274</i>&nbsp;			return mCurrentIndex &gt; 0;</b>
 <i>275</i>&nbsp;		}
 <i>276</i>&nbsp;	}
-<i>277</i>&nbsp;
-<b class="fc"><i>278</i>&nbsp;	public class CTReverseIterator extends ReverseTIterator</b>
-<i>279</i>&nbsp;	{
-<i>280</i>&nbsp;		@Override
-<i>281</i>&nbsp;		public String next()
-<i>282</i>&nbsp;		{
-<b class="fc"><i>283</i>&nbsp;			return getCT(advanceCurrentIndex());</b>
-<i>284</i>&nbsp;		}
-<i>285</i>&nbsp;	}
-<i>286</i>&nbsp;
-<b class="fc"><i>287</i>&nbsp;	public abstract class TIterator implements Iterator&lt;String&gt;</b>
-<i>288</i>&nbsp;	{
-<i>289</i>&nbsp;		protected abstract int advanceCurrentIndex();
-<i>290</i>&nbsp;	}
-<i>291</i>&nbsp;
-<b class="fc"><i>292</i>&nbsp;	public abstract class ForwardTIterator extends TIterator</b>
-<i>293</i>&nbsp;	{
-<i>294</i>&nbsp;		private int mCurrentIndex;
-<i>295</i>&nbsp;		private Collection&lt;String&gt; mValues;
-<i>296</i>&nbsp;
-<i>297</i>&nbsp;		private ForwardTIterator()
-<b class="fc"><i>298</i>&nbsp;		{</b>
-<b class="fc"><i>299</i>&nbsp;			mCurrentIndex = 1;</b>
-<b class="fc"><i>300</i>&nbsp;			mValues = mTypes.keySet().stream().filter( x -&gt; x.startsWith(Keys.T)).collect(Collectors.toList());</b>
-<b class="fc"><i>301</i>&nbsp;		}</b>
-<i>302</i>&nbsp;
-<i>303</i>&nbsp;		protected int advanceCurrentIndex()
-<i>304</i>&nbsp;		{
-<b class="fc"><i>305</i>&nbsp;			return mCurrentIndex++;</b>
-<i>306</i>&nbsp;		}
-<i>307</i>&nbsp;
-<i>308</i>&nbsp;		@Override
-<i>309</i>&nbsp;		public boolean hasNext()
-<i>310</i>&nbsp;		{
-<b class="fc"><i>311</i>&nbsp;			return mCurrentIndex &lt;= mValues.size() &amp;&amp; mCurrentIndex &lt;= T_LIMIT;</b>
-<i>312</i>&nbsp;		}
-<i>313</i>&nbsp;	}
-<i>314</i>&nbsp;
-<b class="fc"><i>315</i>&nbsp;	public abstract class ReverseTIterator extends TIterator</b>
-<i>316</i>&nbsp;	{
-<i>317</i>&nbsp;		private int mCurrentIndex;
-<i>318</i>&nbsp;		private Collection&lt;String&gt; mValues;
-<i>319</i>&nbsp;
-<i>320</i>&nbsp;		private ReverseTIterator()
-<b class="fc"><i>321</i>&nbsp;		{</b>
-<b class="fc"><i>322</i>&nbsp;			mValues = mTypes.keySet().stream().filter( x -&gt; x.startsWith(Keys.T)).collect(Collectors.toList());</b>
-<b class="fc"><i>323</i>&nbsp;			mCurrentIndex = T_LIMIT &gt; mValues.size() ? mValues.size() : T_LIMIT;</b>
-<b class="fc"><i>324</i>&nbsp;		}</b>
-<i>325</i>&nbsp;
-<i>326</i>&nbsp;		protected int advanceCurrentIndex()
-<i>327</i>&nbsp;		{
-<b class="fc"><i>328</i>&nbsp;			return mCurrentIndex--;</b>
-<i>329</i>&nbsp;		}
-<i>330</i>&nbsp;
-<i>331</i>&nbsp;		@Override
-<i>332</i>&nbsp;		public boolean hasNext()
-<i>333</i>&nbsp;		{
-<b class="fc"><i>334</i>&nbsp;			return mCurrentIndex &gt; 0;</b>
-<i>335</i>&nbsp;		}
-<i>336</i>&nbsp;	}
-<i>337</i>&nbsp;}
+<i>277</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-02-26 09:51</div>
+    <div style="float:right;">generated on 2018-03-01 22:31</div>
 </div>
 </body>
 </html>

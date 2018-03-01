@@ -58,10 +58,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    87.5%
+    90%
   </span>
   <span class="absValue">
-    (7/ 8)
+    (9/ 10)
   </span>
 </td>
 </tr>
@@ -76,47 +76,55 @@
 <i>2</i>&nbsp;
 <i>3</i>&nbsp;import com.google.gson.Gson;
 <i>4</i>&nbsp;import com.google.gson.GsonBuilder;
-<i>5</i>&nbsp;
-<i>6</i>&nbsp;import java.io.File;
-<i>7</i>&nbsp;import java.io.FileNotFoundException;
-<i>8</i>&nbsp;import java.io.FileReader;
-<i>9</i>&nbsp;import java.nio.file.Path;
-<i>10</i>&nbsp;import java.nio.file.Paths;
-<i>11</i>&nbsp;
-<b class="nc"><i>12</i>&nbsp;public class SettingsLoader</b>
-<i>13</i>&nbsp;{
-<i>14</i>&nbsp;
-<i>15</i>&nbsp;	public static final String CONFIG_FILE_NAME = &quot;oclConfig.json&quot;;
-<i>16</i>&nbsp;
-<i>17</i>&nbsp;	public static Settings loadSettings(String prmConfigFileDirectory) throws FileNotFoundException
-<i>18</i>&nbsp;	{
-<b class="fc"><i>19</i>&nbsp;		return loadSettings(prmConfigFileDirectory, CONFIG_FILE_NAME);</b>
-<i>20</i>&nbsp;	}
-<i>21</i>&nbsp;
-<i>22</i>&nbsp;	public static Settings loadSettings(String prmConfigFileDirectory, String prmFileName) throws FileNotFoundException
-<i>23</i>&nbsp;	{
-<b class="fc"><i>24</i>&nbsp;		return loadSettings(Paths.get(prmConfigFileDirectory).normalize().resolve(prmFileName).toAbsolutePath());</b>
-<i>25</i>&nbsp;	}
-<i>26</i>&nbsp;
-<i>27</i>&nbsp;	public static Settings loadSettings(Path prmPathToConfigFile) throws FileNotFoundException
-<i>28</i>&nbsp;	{
-<b class="fc"><i>29</i>&nbsp;		return loadSettings(prmPathToConfigFile.toFile());</b>
-<i>30</i>&nbsp;	}
-<i>31</i>&nbsp;
-<i>32</i>&nbsp;	public static Settings loadSettings(File prmConfigFile) throws FileNotFoundException
-<i>33</i>&nbsp;	{
-<b class="fc"><i>34</i>&nbsp;		FileReader wvReader = new FileReader(prmConfigFile);</b>
-<b class="fc"><i>35</i>&nbsp;		Gson wvJsonSerializer = new GsonBuilder()</b>
-<b class="fc"><i>36</i>&nbsp;				.create();</b>
-<b class="fc"><i>37</i>&nbsp;		return wvJsonSerializer.fromJson(wvReader, Settings.class);</b>
-<i>38</i>&nbsp;	}
-<i>39</i>&nbsp;}
+<i>5</i>&nbsp;import io.gsonfire.GsonFireBuilder;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.io.File;
+<i>8</i>&nbsp;import java.io.FileNotFoundException;
+<i>9</i>&nbsp;import java.io.FileReader;
+<i>10</i>&nbsp;import java.nio.file.Path;
+<i>11</i>&nbsp;import java.nio.file.Paths;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;public final class SettingsLoader
+<i>14</i>&nbsp;{
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;	private SettingsLoader()
+<b class="nc"><i>17</i>&nbsp;	{</b>
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;	}
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;	public static final String CONFIG_FILE_NAME = &quot;oclConfig.json&quot;;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;	public static Settings loadSettings(String prmConfigFileDirectory) throws FileNotFoundException
+<i>24</i>&nbsp;	{
+<b class="fc"><i>25</i>&nbsp;		return loadSettings(prmConfigFileDirectory, CONFIG_FILE_NAME);</b>
+<i>26</i>&nbsp;	}
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;	public static Settings loadSettings(String prmConfigFileDirectory, String prmFileName) throws FileNotFoundException
+<i>29</i>&nbsp;	{
+<b class="fc"><i>30</i>&nbsp;		return loadSettings(Paths.get(prmConfigFileDirectory).normalize().resolve(prmFileName).toAbsolutePath());</b>
+<i>31</i>&nbsp;	}
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;	public static Settings loadSettings(Path prmPathToConfigFile) throws FileNotFoundException
+<i>34</i>&nbsp;	{
+<b class="fc"><i>35</i>&nbsp;		return loadSettings(prmPathToConfigFile.toFile());</b>
+<i>36</i>&nbsp;	}
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;	public static Settings loadSettings(File prmConfigFile) throws FileNotFoundException
+<i>39</i>&nbsp;	{
+<b class="fc"><i>40</i>&nbsp;		FileReader wvReader = new FileReader(prmConfigFile);</b>
+<b class="fc"><i>41</i>&nbsp;		Gson wvJsonSerializer = new GsonFireBuilder()</b>
+<b class="fc"><i>42</i>&nbsp;				.enableHooks(Settings.class)</b>
+<b class="fc"><i>43</i>&nbsp;				.enableHooks(TupleDefinition.class)</b>
+<b class="fc"><i>44</i>&nbsp;				.createGson();</b>
+<b class="fc"><i>45</i>&nbsp;		return wvJsonSerializer.fromJson(wvReader, Settings.class);</b>
+<i>46</i>&nbsp;	}
+<i>47</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-02-26 09:51</div>
+    <div style="float:right;">generated on 2018-03-01 22:31</div>
 </div>
 </body>
 </html>

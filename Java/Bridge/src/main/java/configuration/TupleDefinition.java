@@ -45,6 +45,7 @@ public class TupleDefinition implements Iterable<TType>
 		mTypesMap = new HashMap<>(prmDefinition.mTypesMap);
 		mVarDefinitionMap = new HashMap<>(prmDefinition.mVarDefinitionMap);
 		mArity = prmDefinition.mArity;
+
 		computeHashCode();
 	}
 
