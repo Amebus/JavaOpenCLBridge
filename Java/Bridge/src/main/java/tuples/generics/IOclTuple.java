@@ -7,4 +7,6 @@ public interface IOclTuple
 
 	void fromByteStream(byte[] prmInputStream);
 
+	byte getArity();
+
 }

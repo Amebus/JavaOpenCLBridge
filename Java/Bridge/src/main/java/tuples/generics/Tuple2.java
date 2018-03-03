@@ -34,8 +34,8 @@ public class Tuple2 <T1, T2> extends Tuple implements IOclTuple
 	{
 		List<Object> wvTemp = tValuesFromByteStream(prmInputStream);
 
-		mT1 = (T1)wvTemp.get(1);
-		mT2 = (T2)wvTemp.get(2);
+		mT1 = (T1)wvTemp.get(0);
+		mT2 = (T2)wvTemp.get(1);
 	}
 
 	public T1 getT1()

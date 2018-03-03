@@ -7,9 +7,8 @@ import java.util.List;
 
 public abstract class Tuple implements IOclTuple
 {
-	private static final int ARITY_BYTE_DIM = 1;
 	private byte mArity;
-	private int mResultDim = ARITY_BYTE_DIM;
+	private int mResultDim = 1;
 
 	private List<SerializationInfo> mSerializationChunks;
 
@@ -19,6 +18,7 @@ public abstract class Tuple implements IOclTuple
 		mSerializationChunks = new LinkedList<>();
 	}
 
+	@Override
 	public byte getArity()
 	{
 		return mArity;
@@ -53,7 +53,7 @@ public abstract class Tuple implements IOclTuple
 			{
 				wvLength = wvInfo.getStream().length;
 				byteArrayCopy(wvResult, wvIndex, toByteArray(wvLength));
-				wvIndex += wvLength;
+				wvIndex += 4;
 			}
 		}
 
@@ -72,7 +72,8 @@ public abstract class Tuple implements IOclTuple
 
 	protected List<Object> tValuesFromByteStream(byte[] prmInputStream)
 	{
-		List<Object> wvResult = new ArrayList<>(mArity);
+		int wvArity = mArity;
+		List<Object> wvResult = new ArrayList<>(wvArity);
 		Object wvTemp;
 		int wvIndex = 1;
 		byte wvType;
@@ -98,34 +99,34 @@ public abstract class Tuple implements IOclTuple
 					wvTempStream = new byte[4];
 					byteArrayCopy(wvTempStream, prmInputStream, wvIndex, wvTempStream.length);
 					Integer wvStringLength = toInteger(wvTempStream);
-					wvIndex += wvStringLength;
+					wvIndex += wvTempStream.length;
 					wvTemp = new String(prmInputStream, wvIndex, wvStringLength);
 					break;
 				default:
 					throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
 			}
-			wvResult.set(i, wvTemp);
+			wvResult.add(i, wvTemp);
 			wvIndex += wvTempStream.length;
 		}
 
 		return wvResult;
 	}
 
-	private static void byteArrayCopy(byte[] wvDest, int wvDestStartIndex, byte[] wvSource)
+	private static void byteArrayCopy(byte[] prmDest, int prmDestStartIndex, byte[] prmSource)
 	{
-		byteArrayCopy(wvDest, wvDestStartIndex, wvSource, 0, wvDest.length);
+		byteArrayCopy(prmDest, prmDestStartIndex, prmSource, 0, prmSource.length);
 	}
 
-	private static void byteArrayCopy(byte[] wvDest, byte[] wvSource, int wvSourceStartIndex, int prmSourceLength)
+	private static void byteArrayCopy(byte[] prmDest, byte[] prmSource, int prmSourceStartIndex, int prmSourceLength)
 	{
-		byteArrayCopy(wvDest, 0, wvSource, wvSourceStartIndex, prmSourceLength);
+		byteArrayCopy(prmDest, 0, prmSource, prmSourceStartIndex, prmSourceLength);
 	}
 
-	private static void byteArrayCopy(byte[] wvDest, int wvDestStartIndex, byte[] wvSource, int wvSourceStartIndex, int prmSourceLength)
+	private static void byteArrayCopy(byte[] prmDest, int prmDestStartIndex, byte[] prmSource, int prmSourceStartIndex, int prmSourceLength)
 	{
-		for (int i = wvSourceStartIndex, j= wvDestStartIndex; i < wvSource.length && j < prmSourceLength; i++, j++)
+		for (int dI = prmDestStartIndex, sI = 0; dI < prmDest.length && sI < prmSourceLength ; dI++, sI++)
 		{
-			wvDest[j] = wvSource[i];
+			prmDest[dI] = prmSource[prmSourceStartIndex + sI];
 		}
 	}
 
@@ -185,7 +186,7 @@ public abstract class Tuple implements IOclTuple
 			mType = prmType;
 			mStream = prmStream;
 			mLength = mStream.length + 1;
-			if(prmType == 1)
+			if(prmType == Types.STRING)
 			{
 				mLength += 4;
 			}
