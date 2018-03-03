@@ -20,7 +20,7 @@ public class TupleDefinition implements Iterable<TType>
 
 	public static final transient int T_LIMIT = 22;
 	private transient int mHashCode;
-	private transient int mArity;
+	private transient byte mArity;
 
 	@SerializedName("name")
 	@Expose
@@ -68,7 +68,7 @@ public class TupleDefinition implements Iterable<TType>
 							  mTypesMap.remove(x);
 						  });
 
-		mArity = mTypesMap.size();
+		mArity = (byte)mTypesMap.size();
 
 		mTypesMap.forEach( (k,v) -> mVarDefinitionMap.put(k, new TupleVarDefinition(v)));
 
@@ -93,7 +93,7 @@ public class TupleDefinition implements Iterable<TType>
 	 * Return the tuple arity
 	 * @return an int representing the arity of the tuple
 	 */
-	public Integer getArity()
+	public Byte getArity()
 	{
 		return mArity;
 	}
