@@ -1,41 +1,52 @@
 package tuples.generics;
 
-import java.util.List;
+import java.util.Iterator;
 
-public class Tuple1 <T1> extends Tuple implements IOclTuple
+public class Tuple1 <T1> implements IOclTuple
 {
 
-	private static final byte ARITY = 1;
 	private T1 mT1;
-
-	private Tuple1()
-	{
-		super(ARITY);
-	}
 
 	public Tuple1(T1 prmT1)
 	{
-		this();
-		mT1 = prmT1;
+		setT1(prmT1);
 	}
 
 	@Override
-	public byte[] toByteStream()
+	public byte getArity()
 	{
-		addT(mT1);
-		return super.toByteStream();
-	}
-
-	@Override
-	public void fromByteStream(byte[] prmInputStream)
-	{
-		List<Object> wvTemp = tValuesFromByteStream(prmInputStream);
-
-		mT1 = (T1)wvTemp.get(0);
+		return 1;
 	}
 
 	public T1 getT1()
 	{
 		return mT1;
+	}
+
+	public void setT1(T1 prmT1)
+	{
+		mT1 = prmT1;
+	}
+
+	@Override
+	public Iterator iterator()
+	{
+		return new Iterator()
+		{
+			private int mIndex = 0;
+
+			@Override
+			public boolean hasNext()
+			{
+				return mIndex == 0;
+			}
+
+			@Override
+			public Object next()
+			{
+				mIndex++;
+				return getT1();
+			}
+		};
 	}
 }

@@ -1,12 +1,6 @@
 package tuples.generics;
 
-public interface IOclTuple
+public interface IOclTuple extends Iterable
 {
-
-	byte[] toByteStream();
-
-	void fromByteStream(byte[] prmInputStream);
-
 	byte getArity();
-
 }

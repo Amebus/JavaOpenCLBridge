@@ -1,19 +1,14 @@
 package tuples.generics;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static testHelpers.Constants.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class Tuple1Test
+class TupleTest
 {
-	private static final Integer INTEGER_TEST_VALUE = -12;
-	private static final Double DOUBLE_TEST_VALUE = -12.5;
-	private static final String STRING_TEST_VALUE = "string";
-	
 	@Test
 	void Tuple1_Arity_Ok()
 	{
@@ -31,33 +26,8 @@ class Tuple1Test
 		wvTuple = new Tuple1<>(null);
 		assertEquals(null, wvTuple.getT1());
 
-		wvTuple = new Tuple1<>(INTEGER_TEST_VALUE);
-		assertEquals(INTEGER_TEST_VALUE, wvTuple.getT1());
-	}
-
-	@Test
-	void Tuple1_Integer_ToByteStream_Ok()
-	{
-		Tuple1<Integer> wvTuple1 = new Tuple1<>(INTEGER_TEST_VALUE);
-		byte[] wvStream = wvTuple1.toByteStream();
-
-		assertEquals(6, wvStream.length);
-
-		assertEquals(wvTuple1.getArity(), wvStream[0]);
-		assertEquals(Tuple.Types.INT, wvStream[1]);
-	}
-
-	@Test
-	void Tuple1_Integer_FromByteStream_Ok()
-	{
-		Tuple1<Integer> wvTuple1 = new Tuple1<>(INTEGER_TEST_VALUE);
-		Tuple1<Integer> wvTuple2 = new Tuple1<>(null);
-		byte[] wvStream = wvTuple1.toByteStream();
-
-		wvTuple2.fromByteStream(wvStream);
-
-		assertEquals(wvTuple1.getArity(), wvTuple2.getArity());
-		assertEquals(wvTuple1.getT1(), wvTuple2.getT1());
+		wvTuple = new Tuple1<>(ITV_0);
+		assertEquals(ITV_0, wvTuple.getT1());
 	}
 
 	@Test
@@ -68,33 +38,8 @@ class Tuple1Test
 		wvTuple = new Tuple1<>(null);
 		assertEquals(null, wvTuple.getT1());
 
-		wvTuple = new Tuple1<>(DOUBLE_TEST_VALUE);
-		assertEquals(DOUBLE_TEST_VALUE, wvTuple.getT1());
-	}
-
-	@Test
-	void Tuple1_Double_ToByteStream_Ok()
-	{
-		Tuple1<Double> wvTuple = new Tuple1<>(DOUBLE_TEST_VALUE);
-		byte[] wvStream = wvTuple.toByteStream();
-
-		assertEquals(10, wvStream.length);
-
-		assertEquals(wvTuple.getArity(), wvStream[0]);
-		assertEquals(Tuple.Types.DOUBLE, wvStream[1]);
-	}
-
-	@Test
-	void Tuple1_Double_FromByteStream_Ok()
-	{
-		Tuple1<Double> wvTuple1 = new Tuple1<>(DOUBLE_TEST_VALUE);
-		Tuple1<Double> wvTuple2 = new Tuple1<>(null);
-		byte[] wvStream = wvTuple1.toByteStream();
-
-		wvTuple2.fromByteStream(wvStream);
-
-		assertEquals(wvTuple1.getArity(), wvTuple2.getArity());
-		assertEquals(wvTuple1.getT1(), wvTuple2.getT1());
+		wvTuple = new Tuple1<>(DTV_0);
+		assertEquals(DTV_0, wvTuple.getT1());
 	}
 
 	@Test
@@ -105,37 +50,59 @@ class Tuple1Test
 		wvTuple = new Tuple1<>(null);
 		assertEquals(null, wvTuple.getT1());
 
-		wvTuple = new Tuple1<>(STRING_TEST_VALUE);
-		assertEquals(STRING_TEST_VALUE, wvTuple.getT1());
+		wvTuple = new Tuple1<>(STV_0);
+		assertEquals(STV_0, wvTuple.getT1());
 	}
 
 	@Test
-	void Tuple1_String_ToByteStream_Ok()
+	void Tuple2_Arity_Ok()
 	{
-		Tuple1<String> wvTuple1 = new Tuple1<>(STRING_TEST_VALUE);
-		byte[] wvStream = wvTuple1.toByteStream();
+		Tuple2<Integer, Double> wvTuple;
 
-		assertEquals( 2 + 4 + STRING_TEST_VALUE.length(), wvStream.length);
-
-		assertEquals(wvTuple1.getArity(), wvStream[0]);
-		assertEquals(Tuple.Types.STRING, wvStream[1]);
-
-		byte[] wvStringLength = Arrays.copyOfRange(wvStream, 2, 6);
-
-		assertEquals((Integer) STRING_TEST_VALUE.length(), Tuple.toInteger(wvStringLength));
+		wvTuple = new Tuple2<>(null, null);
+		assertEquals(2, wvTuple.getArity());
 	}
 
 	@Test
-	void Tuple1_String_FromByteStream_Ok()
+	void Tuple2_Integer_Integer_Ok ()
 	{
-		Tuple1<String> wvTuple1 = new Tuple1<>(STRING_TEST_VALUE);
-		Tuple1<String> wvTuple2 = new Tuple1<>(null);
-		byte[] wvStream = wvTuple1.toByteStream();
+		Tuple2<Integer, Integer> wvTuple;
 
-		wvTuple2.fromByteStream(wvStream);
+		wvTuple = new Tuple2<>(null, null);
+		assertEquals(null, wvTuple.getT1());
+		assertEquals(null, wvTuple.getT2());
 
-		assertEquals(wvTuple1.getArity(), wvTuple2.getArity());
-		assertEquals(wvTuple1.getT1(), wvTuple2.getT1());
+		wvTuple = new Tuple2<>(ITV_1, ITV_2);
+		assertEquals(ITV_1, wvTuple.getT1());
+		assertEquals(ITV_2, wvTuple.getT2());
+	}
+
+	@Test
+	void Tuple2_Double_Double_Ok ()
+	{
+		Tuple2<Double, Double> wvTuple;
+
+		wvTuple = new Tuple2<>(null, null);
+		assertEquals(null, wvTuple.getT1());
+		assertEquals(null, wvTuple.getT2());
+
+		wvTuple = new Tuple2<>(DTV_1, DTV_2);
+		assertEquals(DTV_1, wvTuple.getT1());
+		assertEquals(DTV_2, wvTuple.getT2());
+	}
+
+	@Test
+	void Tuple2_String_String_Ok ()
+	{
+		Tuple2<String, String> wvTuple;
+
+		wvTuple = new Tuple2<>(null, null);
+		assertEquals(null, wvTuple.getT1());
+		assertEquals(null, wvTuple.getT2());
+
+		wvTuple = new Tuple2<>(STV_1, STV_2);
+		assertEquals(STV_1, wvTuple.getT1());
+		assertEquals(STV_2, wvTuple.getT2());
 	}
 
 }
