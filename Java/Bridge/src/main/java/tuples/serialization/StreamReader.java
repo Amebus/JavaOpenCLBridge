@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class StreamReader implements Iterable<IOclTuple>
+public class StreamReader implements Iterable<IOclTuple>
 {
 
 	private byte mArity;
@@ -52,11 +52,11 @@ public final class StreamReader implements Iterable<IOclTuple>
 		switch (getArity())
 		{
 			case 1:
-				return new Tuple1Iterator(new StreamReader(this));
+				return new Tuple1Iterator(this);
 			case 2:
-				return new Tuple2Iterator(new StreamReader(this));
+				return new Tuple2Iterator(this);
 			case 3:
-				return new Tuple3Iterator(new StreamReader(this));
+				return new Tuple3Iterator(this);
 			default:
 				throw new IllegalArgumentException("Tuple dimension not supported");
 		}
@@ -117,6 +117,7 @@ public final class StreamReader implements Iterable<IOclTuple>
 						throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
 				}
 			}
+			mTypeIndex = 1;
 			return mResult;
 		}
 

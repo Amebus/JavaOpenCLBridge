@@ -49,4 +49,11 @@ public class Tuple1 <T1> implements IOclTuple
 			}
 		};
 	}
+
+	@Override
+	public boolean equals(Object prmOther)
+	{
+		return prmOther != null &&
+			   (prmOther == this || prmOther instanceof IOclTuple && equals((IOclTuple) prmOther));
+	}
 }

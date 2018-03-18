@@ -130,7 +130,7 @@ public class TupleDefinition implements Iterable<TType>
 
 		Iterator<TType> wvRhsIterator = rhs.iterator();
 
-		forEach( (x) -> wvBuilder.append(x, wvRhsIterator.next()));
+		forEach( x -> wvBuilder.append(x, wvRhsIterator.next()));
 
 		return wvBuilder.append(getName(), rhs.getName()).isEquals();
 	}

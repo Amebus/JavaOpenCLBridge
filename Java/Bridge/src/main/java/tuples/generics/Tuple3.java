@@ -64,4 +64,11 @@ public class Tuple3 <T1, T2, T3> implements IOclTuple
 
 		return wvList.iterator();
 	}
+
+	@Override
+	public boolean equals(Object prmOther)
+	{
+		return prmOther != null &&
+			   (prmOther == this || prmOther instanceof IOclTuple && equals((IOclTuple) prmOther));
+	}
 }

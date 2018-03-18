@@ -31,6 +31,17 @@ public final class StreamsGetter
 		return getStreamWriterFrom(prmTupleList).writeStream().getT1();
 	}
 
+
+	public static StreamWriterResult getStreamWriterResultFrom(IOclTuple prmTuple)
+	{
+		return getStreamWriterResultFrom(toList(prmTuple));
+	}
+
+	public static StreamWriterResult getStreamWriterResultFrom(List<? extends IOclTuple> prmTupleList)
+	{
+		return new StreamWriterResult(getStreamWriterFrom(prmTupleList).writeStream());
+	}
+
 	public static StreamWriter getStreamWriterFrom(IOclTuple prmTuple)
 	{
 		return getStreamWriterFrom(toList(prmTuple));

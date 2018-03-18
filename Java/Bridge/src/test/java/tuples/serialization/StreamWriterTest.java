@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static testHelpers.StreamsGetter.*;
 import static testHelpers.Constants.*;
-import static testHelpers.TuplesGetter.*;
+import static testHelpers.TupleGetters.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StreamWriterTest

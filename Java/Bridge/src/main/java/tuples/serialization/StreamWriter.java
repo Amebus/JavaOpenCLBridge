@@ -61,26 +61,25 @@ public class StreamWriter
 	private byte[] getTypes(IOclTuple prmTuple)
 	{
 		byte[] wvResult = new byte[prmTuple.getArity()];
-		final int[] wvI = {0};
+		int wvI = 0;
 
-		prmTuple.iterator()
-				.forEachRemaining( x ->
-								   {
-									   switch (x.getClass().getName())
-									   {
-										   case "java.lang.Integer":
-											   wvResult[wvI[0]++] = Types.INT;
-											   break;
-										   case "java.lang.Double":
-											   wvResult[wvI[0]++] = Types.DOUBLE;
-											   break;
-										   case "java.lang.String":
-											   wvResult[wvI[0]++] = Types.STRING;
-											   break;
-										   default:
-											   throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
-									   }
-								   });
+		for (Object wvT : prmTuple)
+		{
+			switch (wvT.getClass().getName())
+			{
+				case "java.lang.Integer":
+					wvResult[wvI++] = Types.INT;
+					break;
+				case "java.lang.Double":
+					wvResult[wvI++] = Types.DOUBLE;
+					break;
+				case "java.lang.String":
+					wvResult[wvI++] = Types.STRING;
+					break;
+				default:
+					throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
+			}
+		}
 		return wvResult;
 	}
 
