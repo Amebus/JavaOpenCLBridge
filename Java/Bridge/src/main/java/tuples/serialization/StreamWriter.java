@@ -22,12 +22,12 @@ public class StreamWriter
 		mTupleList = prmTupleList;
 	}
 
-	public Tuple2<byte[], int[]> writeStream()
+	public StreamWriterResult writeStream()
 	{
 		if (mTupleList == null || mTupleList.size() == 0)
 		{
 			// throw new IllegalArgumentException("The list cannot be empty");
-			return new Tuple2<>(new byte[0], new int[0]);
+			return new StreamWriterResult(new byte[0], new int[0]);
 		}
 
 		IOclTuple wvTemplateTuple = mTupleList.get(0);
@@ -54,7 +54,7 @@ public class StreamWriter
 			wvTupleIndexes[wvI++] = writeStream(wvTuple, wvStream);
 		}
 
-		return new Tuple2<>(wvStream, wvTupleIndexes);
+		return new StreamWriterResult(wvStream, wvTupleIndexes);
 	}
 
 
@@ -105,7 +105,7 @@ public class StreamWriter
 		return wvDim;
 	}
 
-	public int writeStream(IOclTuple prmTuple, byte[] prmStream)
+	private int writeStream(IOclTuple prmTuple, byte[] prmStream)
 	{
 		int wvStartIndex = mIndex;
 		int i = 0;

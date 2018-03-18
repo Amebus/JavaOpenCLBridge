@@ -3,16 +3,13 @@ package testHelpers;
 import tuples.generics.IOclTuple;
 import tuples.serialization.StreamReader;
 import tuples.serialization.StreamWriter;
+import tuples.serialization.StreamWriterResult;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public final class StreamsGetter
+public class StreamsGetter
 {
-	private StreamsGetter()
-	{
-
-	}
 
 	private static List<? extends IOclTuple> toList(IOclTuple prmTuple)
 	{

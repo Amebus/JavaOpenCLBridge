@@ -15,6 +15,42 @@ class StreamReaderTest
 {
 
 	@Test
+	void Read_Tuple100_Error()
+	{
+		boolean wvError = false;
+
+		try
+		{
+			new StreamReader(new byte[] { 100 }).getTupleList();
+		}
+		catch (IllegalArgumentException ex)
+		{
+			assertEquals(StreamReader.DIMENSION_ERROR, ex.getMessage());
+			wvError = true;
+		}
+
+		assertTrue(wvError);
+	}
+
+	@Test
+	void Read_UnsupportedT_Error()
+	{
+		boolean wvError = false;
+
+		try
+		{
+			new StreamReader(new byte[] { 1, 100, 1 }).getTupleList();
+		}
+		catch (IllegalArgumentException ex)
+		{
+			assertEquals(StreamReader.DESERIALIZATION_ERROR, ex.getMessage());
+			wvError = true;
+		}
+
+		assertTrue(wvError);
+	}
+
+	@Test
 	void ReadTuple1_Integer_Ok()
 	{
 		Tuple1<Integer> wvTuple1 = new Tuple1<>(ITV_0);

@@ -11,6 +11,11 @@ import static testHelpers.Constants.*;
 public class TupleGetters
 {
 
+	public static class UnsupportedT
+	{
+
+	}
+
 	public static int getExpectedStreamLength (List<? extends IOclTuple> prmExpectedList)
 	{
 		List<? extends IOclTuple> wvNewList = new ArrayList<>(prmExpectedList);
@@ -50,6 +55,20 @@ public class TupleGetters
 		}
 
 		return wvExpectedPositions;
+	}
+
+	public static List<IOclTuple> getEmptyTupleList()
+	{
+		return new ArrayList<>();
+	}
+
+	public static List<IOclTuple> getListWithUsupportedT()
+	{
+		List<IOclTuple> wvList = new ArrayList<>();
+
+		wvList.add(new Tuple1<>(new UnsupportedT()));
+
+		return wvList;
 	}
 
 	public static int QUANTITY = 4;
@@ -102,6 +121,30 @@ public class TupleGetters
 		return wvResult;
 	}
 
+	public static List<Tuple2<Integer, Double>> getIntegerDoubleTupleList()
+	{
+		List<Tuple2<Integer, Double>> wvResult = new ArrayList<>(QUANTITY);
+
+		wvResult.add(new Tuple2<>(ITV_1, DTV_4));
+		wvResult.add(new Tuple2<>(ITV_2, DTV_3));
+		wvResult.add(new Tuple2<>(ITV_3, DTV_2));
+		wvResult.add(new Tuple2<>(ITV_4, DTV_1));
+
+		return wvResult;
+	}
+
+	public static List<Tuple2<Integer, String>> getIntegerStringTupleList()
+	{
+		List<Tuple2<Integer, String>> wvResult = new ArrayList<>(QUANTITY);
+
+		wvResult.add(new Tuple2<>(ITV_1, STV_4));
+		wvResult.add(new Tuple2<>(ITV_2, STV_3));
+		wvResult.add(new Tuple2<>(ITV_3, STV_2));
+		wvResult.add(new Tuple2<>(ITV_4, STV_1));
+
+		return wvResult;
+	}
+
 	public static List<Tuple2<Double, Double>> getDoubleDoubleTupleList()
 	{
 		List<Tuple2<Double, Double>> wvResult = new ArrayList<>(QUANTITY);
@@ -110,6 +153,30 @@ public class TupleGetters
 		wvResult.add(new Tuple2<>(DTV_2, DTV_3));
 		wvResult.add(new Tuple2<>(DTV_3, DTV_2));
 		wvResult.add(new Tuple2<>(DTV_4, DTV_1));
+
+		return wvResult;
+	}
+
+	public static List<Tuple2<Double, Integer>> getDoubleIntegerTupleList()
+	{
+		List<Tuple2<Double, Integer>> wvResult = new ArrayList<>(QUANTITY);
+
+		wvResult.add(new Tuple2<>(DTV_1, ITV_4));
+		wvResult.add(new Tuple2<>(DTV_2, ITV_3));
+		wvResult.add(new Tuple2<>(DTV_3, ITV_2));
+		wvResult.add(new Tuple2<>(DTV_4, ITV_1));
+
+		return wvResult;
+	}
+
+	public static List<Tuple2<Double, String>> getDoubleStringTupleList()
+	{
+		List<Tuple2<Double, String>> wvResult = new ArrayList<>(QUANTITY);
+
+		wvResult.add(new Tuple2<>(DTV_1, STV_4));
+		wvResult.add(new Tuple2<>(DTV_2, STV_3));
+		wvResult.add(new Tuple2<>(DTV_3, STV_2));
+		wvResult.add(new Tuple2<>(DTV_4, STV_1));
 
 		return wvResult;
 	}
@@ -126,5 +193,27 @@ public class TupleGetters
 		return wvResult;
 	}
 
+	public static List<Tuple2<String, Integer>> getStringIntegerTupleList()
+	{
+		List<Tuple2<String, Integer>> wvResult = new ArrayList<>(QUANTITY);
 
+		wvResult.add(new Tuple2<>(STV_1, ITV_4));
+		wvResult.add(new Tuple2<>(STV_2, ITV_3));
+		wvResult.add(new Tuple2<>(STV_3, ITV_2));
+		wvResult.add(new Tuple2<>(STV_4, ITV_1));
+
+		return wvResult;
+	}
+
+	public static List<Tuple2<String, Double>> getStringDoubleTupleList()
+	{
+		List<Tuple2<String, Double>> wvResult = new ArrayList<>(QUANTITY);
+
+		wvResult.add(new Tuple2<>(STV_1, DTV_4));
+		wvResult.add(new Tuple2<>(STV_2, DTV_3));
+		wvResult.add(new Tuple2<>(STV_3, DTV_2));
+		wvResult.add(new Tuple2<>(STV_4, DTV_1));
+
+		return wvResult;
+	}
 }

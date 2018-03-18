@@ -1,8 +1,6 @@
 package tuples.generics;
 
-import org.junit.jupiter.api.*;
-import testHelpers.StreamWriterResult;
-import tuples.serialization.*;
+import tuples.serialization.StreamWriterResult;
 
 import java.util.List;
 

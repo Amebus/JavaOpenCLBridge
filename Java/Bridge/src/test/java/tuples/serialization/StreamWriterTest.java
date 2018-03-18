@@ -19,6 +19,43 @@ class StreamWriterTest
 {
 
 	@Test
+	void Writer_EmptyStreamFromNullList_Ok()
+	{
+		StreamWriter wvWriter = new StreamWriter(null);
+		StreamWriterResult wvResult = wvWriter.writeStream();
+
+		assertTrue(0 == wvResult.getStream().length);
+		assertTrue(0 == wvResult.getPositions().length);
+	}
+
+	@Test
+	void Writer_EmptyStreamFormEmptyList_Ok()
+	{
+		StreamWriter wvWriter = new StreamWriter(getEmptyTupleList());
+		StreamWriterResult wvResult = wvWriter.writeStream();
+
+		assertTrue(0 == wvResult.getStream().length);
+		assertTrue(0 == wvResult.getPositions().length);
+	}
+
+	@Test
+	void Writer_StreamFormUnsupportedTuple_Error()
+	{
+		StreamWriter wvWriter = new StreamWriter(getListWithUsupportedT());
+		boolean wvError = false;
+
+		try
+		{
+			wvWriter.writeStream();
+		}
+		catch (IllegalArgumentException ex)
+		{
+			wvError = true;
+		}
+		assertTrue(wvError);
+	}
+
+	@Test
 	void WriteTuple1_Integer_Ok()
 	{
 		Tuple1<Integer> wvTuple = new Tuple1<>(ITV_0);

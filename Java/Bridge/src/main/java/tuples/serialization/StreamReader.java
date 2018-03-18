@@ -8,6 +8,9 @@ import java.util.List;
 
 public class StreamReader implements Iterable<IOclTuple>
 {
+	public static final String DIMENSION_ERROR = "Tuple dimension not supported";
+	public static final String DESERIALIZATION_ERROR = "Object type not recognized, unable to deserialize it";
+
 
 	private byte mArity;
 	private byte[] mStream;
@@ -16,11 +19,6 @@ public class StreamReader implements Iterable<IOclTuple>
 	{
 		mStream = prmStream;
 		mArity = mStream[0];
-	}
-
-	public StreamReader(StreamReader prmStreamReader)
-	{
-		this(prmStreamReader.mStream);
 	}
 
 	public byte[] getStream()
@@ -58,7 +56,7 @@ public class StreamReader implements Iterable<IOclTuple>
 			case 3:
 				return new Tuple3Iterator(this);
 			default:
-				throw new IllegalArgumentException("Tuple dimension not supported");
+				throw new IllegalArgumentException(DIMENSION_ERROR);
 		}
 	}
 
@@ -114,7 +112,7 @@ public class StreamReader implements Iterable<IOclTuple>
 						stringFromByteArray();
 						break;
 					default:
-						throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
+						throw new IllegalArgumentException(DESERIALIZATION_ERROR);
 				}
 			}
 			mTypeIndex = 1;
