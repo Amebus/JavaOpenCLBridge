@@ -14,7 +14,7 @@ public class ObjectHelper
 
 	public static boolean isNullOrEmptyOrWhiteSpace(String str)
 	{
-		return str == null || str.equals("") || str.trim().equals("") || str.trim().equals(" ");
+		return str == null || str.trim().equals("") ;
 	}
 
 	public static boolean isNullOrEmpty(String str)
