@@ -13,83 +13,83 @@ class TTTypeTest
 	@Test
 	void JavaTypes_Builder_Ok()
 	{
-		TType wvType;
+		TType vType;
 
 		//String
-		wvType = getJavaTString();
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.STRING);
-		wvType = getJavaTCString();
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.STRING);
+		vType = getJavaTString();
+		assertEquals(vType.getT(), JavaTType.JavaTypes.STRING);
+		vType = getJavaTCString();
+		assertEquals(vType.getT(), JavaTType.JavaTypes.STRING);
 		//String:100
-		wvType = getJavaTString(100);
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.STRING);
-		wvType = getJavaTCString(100);
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.STRING);
+		vType = getJavaTString(100);
+		assertEquals(vType.getT(), JavaTType.JavaTypes.STRING);
+		vType = getJavaTCString(100);
+		assertEquals(vType.getT(), JavaTType.JavaTypes.STRING);
 
 		//Integer
-		wvType = getJavaTInteger();
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.INTEGER);
-		wvType = getJavaTInt();
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.INTEGER);
+		vType = getJavaTInteger();
+		assertEquals(vType.getT(), JavaTType.JavaTypes.INTEGER);
+		vType = getJavaTInt();
+		assertEquals(vType.getT(), JavaTType.JavaTypes.INTEGER);
 
 		//Integer
-		wvType = getJavaTDouble();
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.DOUBLE);
+		vType = getJavaTDouble();
+		assertEquals(vType.getT(), JavaTType.JavaTypes.DOUBLE);
 	}
 
 	@Test
 	void CTypes_Builder_Ok()
 	{
-		TType wvType;
+		TType vType;
 
 		//String
-		wvType = getCTString();
-		assertEquals(wvType.getT(), CTType.CTypes.STRING);
-		wvType = getCTCString();
-		assertEquals(wvType.getT(), CTType.CTypes.STRING);
+		vType = getCTString();
+		assertEquals(vType.getT(), CTType.CTypes.STRING);
+		vType = getCTCString();
+		assertEquals(vType.getT(), CTType.CTypes.STRING);
 		//String:100
-		wvType = getCTString(100);
-		assertEquals(wvType.getT(), CTType.CTypes.STRING);
-		wvType = getCTCString(100);
-		assertEquals(wvType.getT(), CTType.CTypes.STRING);
+		vType = getCTString(100);
+		assertEquals(vType.getT(), CTType.CTypes.STRING);
+		vType = getCTCString(100);
+		assertEquals(vType.getT(), CTType.CTypes.STRING);
 
 		//Integer
-		wvType = getCTInteger();
-		assertEquals(wvType.getT(), CTType.CTypes.INTEGER);
-		wvType = getCTInt();
-		assertEquals(wvType.getT(), CTType.CTypes.INTEGER);
+		vType = getCTInteger();
+		assertEquals(vType.getT(), CTType.CTypes.INTEGER);
+		vType = getCTInt();
+		assertEquals(vType.getT(), CTType.CTypes.INTEGER);
 
 		//Integer
-		wvType = getCTDouble();
-		assertEquals(wvType.getT(), CTType.CTypes.DOUBLE);
+		vType = getCTDouble();
+		assertEquals(vType.getT(), CTType.CTypes.DOUBLE);
 	}
 
 	@Test
 	void TTypes_HashCode_Ok()
 	{
-		TType wvType1, wvType2;
+		TType vType1, vType2;
 
-		wvType1 = getJavaTString();
-		wvType2 = getJavaTString();
+		vType1 = getJavaTString();
+		vType2 = getJavaTString();
 
-		assertTrue(wvType1.equals(wvType2));
-		assertEquals(wvType1.hashCode(), wvType2.hashCode());
+		assertTrue(vType1.equals(vType2));
+		assertEquals(vType1.hashCode(), vType2.hashCode());
 
-		wvType2 = getJavaTInteger();
-		assertFalse(wvType1.equals(wvType2));
-		assertNotEquals(wvType1.hashCode(), wvType2.hashCode());
+		vType2 = getJavaTInteger();
+		assertFalse(vType1.equals(vType2));
+		assertNotEquals(vType1.hashCode(), vType2.hashCode());
 
-		wvType1 = getJavaTInteger();
-		assertTrue(wvType1.equals(wvType2));
-		assertEquals(wvType1.hashCode(), wvType2.hashCode());
+		vType1 = getJavaTInteger();
+		assertTrue(vType1.equals(vType2));
+		assertEquals(vType1.hashCode(), vType2.hashCode());
 
-		wvType2 = getJavaTDouble();
-		assertFalse(wvType1.equals(wvType2));
-		assertNotEquals(wvType1.hashCode(), wvType2.hashCode());
+		vType2 = getJavaTDouble();
+		assertFalse(vType1.equals(vType2));
+		assertNotEquals(vType1.hashCode(), vType2.hashCode());
 
-		wvType1 = getJavaTDouble();
-		assertTrue(wvType1.equals(wvType2));
-		assertEquals(wvType1.hashCode(), wvType2.hashCode());
+		vType1 = getJavaTDouble();
+		assertTrue(vType1.equals(vType2));
+		assertEquals(vType1.hashCode(), vType2.hashCode());
 
 	}
 
@@ -107,7 +107,7 @@ class TTTypeTest
 
 	private void javaTTypeError(String prmType)
 	{
-		boolean wvExceptionRaised = false;
+		boolean vExceptionRaised = false;
 
 		try
 		{
@@ -115,15 +115,15 @@ class TTTypeTest
 		}
 		catch (IllegalArgumentException ex)
 		{
-			wvExceptionRaised = true;
+			vExceptionRaised = true;
 		}
 
-		assertTrue(wvExceptionRaised);
+		assertTrue(vExceptionRaised);
 	}
 
 	private void cTTypeError(String prmType)
 	{
-		boolean wvExceptionRaised = false;
+		boolean vExceptionRaised = false;
 
 		try
 		{
@@ -131,183 +131,183 @@ class TTTypeTest
 		}
 		catch (IllegalArgumentException ex)
 		{
-			wvExceptionRaised = true;
+			vExceptionRaised = true;
 		}
 
-		assertTrue(wvExceptionRaised);
+		assertTrue(vExceptionRaised);
 	}
 
 	@Test
 	void TTypes_Builder_String_Ok()
 	{
-		TType wvType;
+		TType vType;
 
 		//String
-		wvType = getJavaTString();
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.STRING);
-		assertEquals(-1, wvType.getByteDimension());
-		assertEquals(100, wvType.getMaxByteDimension());
+		vType = getJavaTString();
+		assertEquals(vType.getT(), JavaTType.JavaTypes.STRING);
+		assertEquals(-1, vType.getByteDimension());
+		assertEquals(100, vType.getMaxByteDimension());
 
-		wvType = getJavaTCString();
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.STRING);
-		assertEquals(-1, wvType.getByteDimension());
-		assertEquals(100, wvType.getMaxByteDimension());
+		vType = getJavaTCString();
+		assertEquals(vType.getT(), JavaTType.JavaTypes.STRING);
+		assertEquals(-1, vType.getByteDimension());
+		assertEquals(100, vType.getMaxByteDimension());
 
 		//String
-		wvType = getCTString();
-		assertEquals(wvType.getT(), CTType.CTypes.STRING);
-		assertEquals(-1, wvType.getByteDimension());
-		assertEquals(100, wvType.getMaxByteDimension());
+		vType = getCTString();
+		assertEquals(vType.getT(), CTType.CTypes.STRING);
+		assertEquals(-1, vType.getByteDimension());
+		assertEquals(100, vType.getMaxByteDimension());
 
-		wvType = getCTCString();
-		assertEquals(wvType.getT(), CTType.CTypes.STRING);
-		assertEquals(-1, wvType.getByteDimension());
-		assertEquals(100, wvType.getMaxByteDimension());
+		vType = getCTCString();
+		assertEquals(vType.getT(), CTType.CTypes.STRING);
+		assertEquals(-1, vType.getByteDimension());
+		assertEquals(100, vType.getMaxByteDimension());
 	}
 
 	@Test
 	void TTypes_Builder_StringWithMaxDim_Ok()
 	{
-		TType wvType;
+		TType vType;
 
 		//String
-		wvType = getJavaTString(33);
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.STRING);
-		assertEquals(-1, wvType.getByteDimension());
-		assertEquals(33, wvType.getMaxByteDimension());
+		vType = getJavaTString(33);
+		assertEquals(vType.getT(), JavaTType.JavaTypes.STRING);
+		assertEquals(-1, vType.getByteDimension());
+		assertEquals(33, vType.getMaxByteDimension());
 
-		wvType = getJavaTCString(33);
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.STRING);
-		assertEquals(-1, wvType.getByteDimension());
-		assertEquals(33, wvType.getMaxByteDimension());
+		vType = getJavaTCString(33);
+		assertEquals(vType.getT(), JavaTType.JavaTypes.STRING);
+		assertEquals(-1, vType.getByteDimension());
+		assertEquals(33, vType.getMaxByteDimension());
 
 		//String
-		wvType = getCTString(33);
-		assertEquals(wvType.getT(), CTType.CTypes.STRING);
-		assertEquals(-1, wvType.getByteDimension());
-		assertEquals(33, wvType.getMaxByteDimension());
+		vType = getCTString(33);
+		assertEquals(vType.getT(), CTType.CTypes.STRING);
+		assertEquals(-1, vType.getByteDimension());
+		assertEquals(33, vType.getMaxByteDimension());
 
-		wvType = getCTCString(33);
-		assertEquals(wvType.getT(), CTType.CTypes.STRING);
-		assertEquals(-1, wvType.getByteDimension());
-		assertEquals(33, wvType.getMaxByteDimension());
+		vType = getCTCString(33);
+		assertEquals(vType.getT(), CTType.CTypes.STRING);
+		assertEquals(-1, vType.getByteDimension());
+		assertEquals(33, vType.getMaxByteDimension());
 	}
 
 	@Test
 	void TTypes_Builder_Integer_Ok()
 	{
-		TType wvType;
+		TType vType;
 
 		//
-		wvType = getJavaTInteger();
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.INTEGER);
-		assertEquals(4, wvType.getByteDimension());
-		assertEquals(4, wvType.getMaxByteDimension());
+		vType = getJavaTInteger();
+		assertEquals(vType.getT(), JavaTType.JavaTypes.INTEGER);
+		assertEquals(4, vType.getByteDimension());
+		assertEquals(4, vType.getMaxByteDimension());
 
-		wvType = getJavaTInt();
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.INTEGER);
-		assertEquals(4, wvType.getByteDimension());
-		assertEquals(4, wvType.getMaxByteDimension());
+		vType = getJavaTInt();
+		assertEquals(vType.getT(), JavaTType.JavaTypes.INTEGER);
+		assertEquals(4, vType.getByteDimension());
+		assertEquals(4, vType.getMaxByteDimension());
 
 		//
-		wvType = getCTInteger();
-		assertEquals(wvType.getT(), CTType.CTypes.INTEGER);
-		assertEquals(4, wvType.getByteDimension());
-		assertEquals(4, wvType.getMaxByteDimension());
+		vType = getCTInteger();
+		assertEquals(vType.getT(), CTType.CTypes.INTEGER);
+		assertEquals(4, vType.getByteDimension());
+		assertEquals(4, vType.getMaxByteDimension());
 
-		wvType = getCTInt();
-		assertEquals(wvType.getT(), CTType.CTypes.INTEGER);
-		assertEquals(4, wvType.getByteDimension());
-		assertEquals(4, wvType.getMaxByteDimension());
+		vType = getCTInt();
+		assertEquals(vType.getT(), CTType.CTypes.INTEGER);
+		assertEquals(4, vType.getByteDimension());
+		assertEquals(4, vType.getMaxByteDimension());
 	}
 
 	@Test
 	void TTypes_Builder_Double_Ok()
 	{
-		TType wvType;
+		TType vType;
 
-		wvType = getJavaTDouble();
-		assertEquals(wvType.getT(), JavaTType.JavaTypes.DOUBLE);
-		assertEquals(8, wvType.getByteDimension());
-		assertEquals(8, wvType.getMaxByteDimension());
+		vType = getJavaTDouble();
+		assertEquals(vType.getT(), JavaTType.JavaTypes.DOUBLE);
+		assertEquals(8, vType.getByteDimension());
+		assertEquals(8, vType.getMaxByteDimension());
 
-		wvType = getCTDouble();
-		assertEquals(wvType.getT(), CTType.CTypes.DOUBLE);
-		assertEquals(8, wvType.getByteDimension());
-		assertEquals(8, wvType.getMaxByteDimension());
+		vType = getCTDouble();
+		assertEquals(vType.getT(), CTType.CTypes.DOUBLE);
+		assertEquals(8, vType.getByteDimension());
+		assertEquals(8, vType.getMaxByteDimension());
 	}
 
 	@Test
 	void JavaTTypes_Equal_Ok()
 	{
-		TType wvTypeJ, wvActualType;
-		wvTypeJ = getJavaTString();
+		TType vTypeJ, vActualType;
+		vTypeJ = getJavaTString();
 
-		assertFalse(wvTypeJ.equals(null));
-		assertTrue(wvTypeJ.equals(wvTypeJ));
+		assertFalse(vTypeJ.equals(null));
+		assertTrue(vTypeJ.equals(vTypeJ));
 
-		wvActualType = getJavaTString();
+		vActualType = getJavaTString();
 
-		assertTrue(wvTypeJ.equals(wvActualType));
-		assertTrue( wvActualType.equals(wvTypeJ));
+		assertTrue(vTypeJ.equals(vActualType));
+		assertTrue( vActualType.equals(vTypeJ));
 
-		wvActualType = getJavaTInteger();
+		vActualType = getJavaTInteger();
 
-		assertFalse(wvTypeJ.equals(wvActualType));
-		assertFalse( wvActualType.equals(wvTypeJ));
+		assertFalse(vTypeJ.equals(vActualType));
+		assertFalse( vActualType.equals(vTypeJ));
 	}
 
 	@Test
 	void CTTypes_Equal_Ok()
 	{
-		TType wvTypeC, wvActualType;
-		wvTypeC = getCTString();
+		TType vTypeC, vActualType;
+		vTypeC = getCTString();
 
-		assertFalse(wvTypeC.equals(null));
-		assertTrue(wvTypeC.equals(wvTypeC));
+		assertFalse(vTypeC.equals(null));
+		assertTrue(vTypeC.equals(vTypeC));
 
-		wvActualType = getCTString();
+		vActualType = getCTString();
 
-		assertTrue(wvTypeC.equals(wvActualType));
-		assertTrue( wvActualType.equals(wvTypeC));
+		assertTrue(vTypeC.equals(vActualType));
+		assertTrue( vActualType.equals(vTypeC));
 
-		wvActualType = getCTInteger();
+		vActualType = getCTInteger();
 
-		assertFalse(wvTypeC.equals(wvActualType));
-		assertFalse( wvActualType.equals(wvTypeC));
+		assertFalse(vTypeC.equals(vActualType));
+		assertFalse( vActualType.equals(vTypeC));
 	}
 
 	@Test
 	void TTypes_Builder_BuildsFromOtherTTypes_Ok()
 	{
-		TType wvTypeJ, wvTypeC, wvActualType;
+		TType vTypeJ, vTypeC, vActualType;
 
-		wvTypeJ = getJavaTString();
-		wvTypeC = getCTString();
+		vTypeJ = getJavaTString();
+		vTypeC = getCTString();
 
 		//Java from Java
-		wvActualType = new JavaTType.Builder(wvTypeJ).build();
+		vActualType = new JavaTType.Builder(vTypeJ).build();
 
-		assertEquals(wvTypeJ, wvActualType);
-		assertTrue(wvActualType.equals(wvTypeJ));
+		assertEquals(vTypeJ, vActualType);
+		assertTrue(vActualType.equals(vTypeJ));
 
 		//Java from C
-		wvActualType = new JavaTType.Builder(wvTypeC).build();
+		vActualType = new JavaTType.Builder(vTypeC).build();
 
-		assertEquals(wvTypeJ, wvActualType);
-		assertTrue(wvActualType.equals(wvTypeJ));
+		assertEquals(vTypeJ, vActualType);
+		assertTrue(vActualType.equals(vTypeJ));
 
 		//C from Java
-		wvActualType = new CTType.Builder(wvTypeJ).build();
+		vActualType = new CTType.Builder(vTypeJ).build();
 
-		assertEquals(wvTypeC, wvActualType);
-		assertTrue(wvActualType.equals(wvTypeC));
+		assertEquals(vTypeC, vActualType);
+		assertTrue(vActualType.equals(vTypeC));
 
 		//C from C
-		wvActualType = new CTType.Builder(wvTypeC).build();
+		vActualType = new CTType.Builder(vTypeC).build();
 
-		assertEquals(wvTypeC, wvActualType);
-		assertTrue(wvActualType.equals(wvTypeC));
+		assertEquals(vTypeC, vActualType);
+		assertTrue(vActualType.equals(vTypeC));
 	}
 
 }

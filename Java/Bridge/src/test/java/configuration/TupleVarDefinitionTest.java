@@ -12,51 +12,51 @@ class TupleVarDefinitionTest
 	@Test
 	void TupleDefinition_GetT_Ok()
 	{
-		TupleVarDefinition wvDefinition = new TupleVarDefinition(getJavaTString().getT());
+		TupleVarDefinition vDefinition = new TupleVarDefinition(getJavaTString().getT());
 
-		assertEquals(getJavaTString(), wvDefinition.getJavaT());
-		assertEquals(getCTString(), wvDefinition.getCT());
+		assertEquals(getJavaTString(), vDefinition.getJavaT());
+		assertEquals(getCTString(), vDefinition.getCT());
 
-		wvDefinition = new TupleVarDefinition(TType.ConfigTypes.STRING);
+		vDefinition = new TupleVarDefinition(TType.ConfigTypes.STRING);
 
-		assertEquals(getJavaTString(), wvDefinition.getJavaT());
-		assertEquals(getCTString(), wvDefinition.getCT());
+		assertEquals(getJavaTString(), vDefinition.getJavaT());
+		assertEquals(getCTString(), vDefinition.getCT());
 	}
 
 	@Test
 	void TupleDefinition_Hash_Ok()
 	{
-		TupleVarDefinition wvDefinition1 = new TupleVarDefinition(getJavaTString().getT());
-		TupleVarDefinition wvDefinition2 = new TupleVarDefinition(TType.ConfigTypes.STRING);
+		TupleVarDefinition vDefinition1 = new TupleVarDefinition(getJavaTString().getT());
+		TupleVarDefinition vDefinition2 = new TupleVarDefinition(TType.ConfigTypes.STRING);
 
-		assertEquals(wvDefinition1.hashCode(), wvDefinition2.hashCode());
+		assertEquals(vDefinition1.hashCode(), vDefinition2.hashCode());
 	}
 
 	@Test
 	void TupleDefinition_Equal_Ok()
 	{
-		TupleVarDefinition wvDefinition1 = new TupleVarDefinition(getJavaTString().getT());
+		TupleVarDefinition vDefinition1 = new TupleVarDefinition(getJavaTString().getT());
 
-		assertFalse(wvDefinition1.equals(null));
-		assertFalse(wvDefinition1.equals("ciao"));
-		assertTrue(wvDefinition1.equals(wvDefinition1));
+		assertFalse(vDefinition1.equals(null));
+		assertFalse(vDefinition1.equals("ciao"));
+		assertTrue(vDefinition1.equals(vDefinition1));
 
-		TupleVarDefinition wvDefinition2 = new TupleVarDefinition(getCTDouble().getT());
-		assertFalse(wvDefinition1.equals(wvDefinition2));
-		assertFalse(wvDefinition2.equals(wvDefinition1));
+		TupleVarDefinition vDefinition2 = new TupleVarDefinition(getCTDouble().getT());
+		assertFalse(vDefinition1.equals(vDefinition2));
+		assertFalse(vDefinition2.equals(vDefinition1));
 	}
 
 	@Test
 	void TupleDefinition_FromTupleDefinition_Ok()
 	{
-		TupleVarDefinition wvDefinition1 = new TupleVarDefinition(getJavaTString().getT());
-		TupleVarDefinition wvDefinition2 = new TupleVarDefinition(wvDefinition1);
+		TupleVarDefinition vDefinition1 = new TupleVarDefinition(getJavaTString().getT());
+		TupleVarDefinition vDefinition2 = new TupleVarDefinition(vDefinition1);
 
-		assertEquals(wvDefinition1, wvDefinition2);
-		assertEquals(wvDefinition2, wvDefinition1);
+		assertEquals(vDefinition1, vDefinition2);
+		assertEquals(vDefinition2, vDefinition1);
 
-		assertTrue(wvDefinition1 != wvDefinition2);
+		assertTrue(vDefinition1 != vDefinition2);
 
-		assertEquals(wvDefinition1.hashCode(), wvDefinition2.hashCode());
+		assertEquals(vDefinition1.hashCode(), vDefinition2.hashCode());
 	}
 }

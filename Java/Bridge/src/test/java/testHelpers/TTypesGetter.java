@@ -14,9 +14,9 @@ public class TTypesGetter
 		return loadSettings().getSettings();
 	}
 
-	public static Settings getSettings(LoadSettingsDirective prmDirective)
+	public static Settings getSettings(LoadSettingsDirective pDirective)
 	{
-		return loadSettings(prmDirective).getSettings();
+		return loadSettings(pDirective).getSettings();
 	}
 
 	public static JavaTType getJavaTInteger()
@@ -44,14 +44,14 @@ public class TTypesGetter
 		return new JavaTType.Builder(TType.ConfigTypes.CSTRING).build();
 	}
 
-	public static JavaTType getJavaTString(int prmMaxDim)
+	public static JavaTType getJavaTString(int pMaxDim)
 	{
-		return new JavaTType.Builder(TType.ConfigTypes.STRING + ":" + prmMaxDim).build();
+		return new JavaTType.Builder(TType.ConfigTypes.STRING + ":" + pMaxDim).build();
 	}
 
-	public static JavaTType getJavaTCString(int prmMaxDim)
+	public static JavaTType getJavaTCString(int pMaxDim)
 	{
-		return new JavaTType.Builder(TType.ConfigTypes.CSTRING + ":" + prmMaxDim).build();
+		return new JavaTType.Builder(TType.ConfigTypes.CSTRING + ":" + pMaxDim).build();
 	}
 
 	public static CTType getCTInteger()
@@ -79,13 +79,13 @@ public class TTypesGetter
 		return new CTType.Builder(TType.ConfigTypes.CSTRING).build();
 	}
 
-	public static CTType getCTString(int prmMaxDim)
+	public static CTType getCTString(int pMaxDim)
 	{
-		return new CTType.Builder(TType.ConfigTypes.STRING + ":" + prmMaxDim).build();
+		return new CTType.Builder(TType.ConfigTypes.STRING + ":" + pMaxDim).build();
 	}
 
-	public static CTType getCTCString(int prmMaxDim)
+	public static CTType getCTCString(int pMaxDim)
 	{
-		return new CTType.Builder(TType.ConfigTypes.CSTRING + ":" + prmMaxDim).build();
+		return new CTType.Builder(TType.ConfigTypes.CSTRING + ":" + pMaxDim).build();
 	}
 }

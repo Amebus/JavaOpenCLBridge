@@ -21,39 +21,39 @@ class SettingsLoaderTest
 	@Test
 	void loadSettings_Ok()
 	{
-		SettingsWrapper wvWrapper = loadSettings();
+		SettingsWrapper vWrapper = loadSettings();
 
-		assertTrue(wvWrapper.isEverythingOk());
+		assertTrue(vWrapper.isEverythingOk());
 	}
 
 	@Test
 	void loadSettings_NameSet_Ok()
 	{
-		LoadSettingsDirective wvDirective = new LoadSettingsDirective(FILE_NAME);
-		SettingsWrapper wvWrapper = loadSettings(wvDirective);
+		LoadSettingsDirective vDirective = new LoadSettingsDirective(FILE_NAME);
+		SettingsWrapper vWrapper = loadSettings(vDirective);
 
-		assertTrue(wvWrapper.isEverythingOk());
+		assertTrue(vWrapper.isEverythingOk());
 	}
 
 	@Test
 	void loadSettings_Path_Ok()
 	{
-		LoadSettingsDirective wvDirective = new LoadSettingsDirective();
-		Path wvPath = Paths.get(wvDirective.getFileDirectory()).normalize().resolve(FILE_NAME).toAbsolutePath();
-		wvDirective = new LoadSettingsDirective(wvPath);
-		SettingsWrapper wvWrapper = loadSettings(wvDirective);
+		LoadSettingsDirective vDirective = new LoadSettingsDirective();
+		Path vPath = Paths.get(vDirective.getFileDirectory()).normalize().resolve(FILE_NAME).toAbsolutePath();
+		vDirective = new LoadSettingsDirective(vPath);
+		SettingsWrapper vWrapper = loadSettings(vDirective);
 
-		assertTrue(wvWrapper.isEverythingOk());
+		assertTrue(vWrapper.isEverythingOk());
 	}
 
 	@Test
 	void loadSettings_File_Ok()
 	{
-		LoadSettingsDirective wvDirective = new LoadSettingsDirective();
-		Path wvPath = Paths.get(wvDirective.getFileDirectory()).normalize().resolve(FILE_NAME).toAbsolutePath();
-		wvDirective = new LoadSettingsDirective(new File(wvPath.toString()));
-		SettingsWrapper wvWrapper = loadSettings(wvDirective);
+		LoadSettingsDirective vDirective = new LoadSettingsDirective();
+		Path vPath = Paths.get(vDirective.getFileDirectory()).normalize().resolve(FILE_NAME).toAbsolutePath();
+		vDirective = new LoadSettingsDirective(new File(vPath.toString()));
+		SettingsWrapper vWrapper = loadSettings(vDirective);
 
-		assertTrue(wvWrapper.isEverythingOk());
+		assertTrue(vWrapper.isEverythingOk());
 	}
 }

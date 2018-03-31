@@ -22,10 +22,10 @@ class Tuple1ListTest
 	@Test
 	void TupleListFromTuple1IntegerList_Ok()
 	{
-		List<Tuple1<Integer>> wvExpectedList = getIntegerTupleList();
-		StreamReader wvReader = getStreamReaderFrom(wvExpectedList);
+		List<Tuple1<Integer>> vExpectedList = getIntegerTupleList();
+		StreamReader vReader = getStreamReaderFrom(vExpectedList);
 
-		assertEquals(wvExpectedList, wvReader.getTupleList());
+		assertEquals(vExpectedList, vReader.getTupleList());
 	}
 
 	@Test
@@ -37,10 +37,10 @@ class Tuple1ListTest
 	@Test
 	void TupleListFromTuple1DoubleList_Ok()
 	{
-		List<Tuple1<Double>> wvExpectedList = getDoubleTupleList();
-		StreamReader wvReader = getStreamReaderFrom(wvExpectedList);
+		List<Tuple1<Double>> vExpectedList = getDoubleTupleList();
+		StreamReader vReader = getStreamReaderFrom(vExpectedList);
 
-		assertEquals(wvExpectedList, wvReader.getTupleList());
+		assertEquals(vExpectedList, vReader.getTupleList());
 	}
 
 	@Test
@@ -52,9 +52,9 @@ class Tuple1ListTest
 	@Test
 	void TupleListFromTuple1StringList_Ok()
 	{
-		List<Tuple1<String>> wvExpectedList = getStringTupleList();
-		StreamReader wvReader = getStreamReaderFrom(wvExpectedList);
+		List<Tuple1<String>> vExpectedList = getStringTupleList();
+		StreamReader vReader = getStreamReaderFrom(vExpectedList);
 
-		assertEquals(wvExpectedList, wvReader.getTupleList());
+		assertEquals(vExpectedList, vReader.getTupleList());
 	}
 }

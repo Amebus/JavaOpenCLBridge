@@ -13,15 +13,15 @@ public interface IOclTuple extends Iterable
 			return false;
 		}
 
-		boolean wvResult = true;
+		boolean vResult = true;
 
-		Iterator wvIThis = iterator();
-		Iterator wvIOther = pOther.iterator();
-		while (wvIThis.hasNext())
+		Iterator vIThis = iterator();
+		Iterator vIOther = pOther.iterator();
+		while (vIThis.hasNext())
 		{
-			wvResult &= wvIThis.next().equals(wvIOther.next());
+			vResult &= vIThis.next().equals(vIOther.next());
 		}
 
-		return wvResult;
+		return vResult;
 	}
 }

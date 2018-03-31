@@ -19,27 +19,27 @@ public class LoadSettingsDirective
 		mFileDirectory = Constants.RESOURCES_DIR;
 	}
 
-	public LoadSettingsDirective(String prmFileName)
+	public LoadSettingsDirective(String pFileName)
 	{
-		this(prmFileName, null, null);
+		this(pFileName, null, null);
 	}
 
-	public LoadSettingsDirective(Path prmPath)
+	public LoadSettingsDirective(Path pPath)
 	{
-		this(null, prmPath, null);
+		this(null, pPath, null);
 	}
 
-	public LoadSettingsDirective(File prmFile)
+	public LoadSettingsDirective(File pFile)
 	{
-		this(null, null, prmFile);
+		this(null, null, pFile);
 	}
 
-	private LoadSettingsDirective(String prmFileName, Path prmPath, File prmFile)
+	private LoadSettingsDirective(String pFileName, Path pPath, File pFile)
 	{
 		this();
-		mFileName = prmFileName;
-		mPath = prmPath;
-		mFile = prmFile;
+		mFileName = pFileName;
+		mPath = pPath;
+		mFile = pFile;
 	}
 
 	public String getFileDirectory()
@@ -79,25 +79,25 @@ public class LoadSettingsDirective
 
 	public ILoadFunction getLoadFunction()
 	{
-		ILoadFunction wvLoadFunction;
+		ILoadFunction vLoadFunction;
 
 		if (loadWithFileName())
 		{
-			wvLoadFunction = () -> SettingsLoader.loadSettings(mFileDirectory, mFileName);
+			vLoadFunction = () -> SettingsLoader.loadSettings(mFileDirectory, mFileName);
 		}
 		else if (loadWithPath())
 		{
-			wvLoadFunction = () -> SettingsLoader.loadSettings(mPath);
+			vLoadFunction = () -> SettingsLoader.loadSettings(mPath);
 		}
 		else if (loadWithFile())
 		{
-			wvLoadFunction = () -> SettingsLoader.loadSettings(mFile);
+			vLoadFunction = () -> SettingsLoader.loadSettings(mFile);
 		}
 		else
 		{
-			wvLoadFunction = () -> SettingsLoader.loadSettings(mFileDirectory);
+			vLoadFunction = () -> SettingsLoader.loadSettings(mFileDirectory);
 		}
-		return wvLoadFunction;
+		return vLoadFunction;
 	}
 
 	public interface ILoadFunction

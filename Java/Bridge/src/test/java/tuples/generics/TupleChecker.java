@@ -13,16 +13,16 @@ public final class TupleChecker
 
 	public static void checkExpectedList(List<? extends IOclTuple> prmExpectedList)
 	{
-		IOclTuple wvFirstTuple = prmExpectedList.get(0);
-		int wvExpectedStreamLength = getExpectedStreamLength(prmExpectedList);
+		IOclTuple vFirstTuple = prmExpectedList.get(0);
+		int vExpectedStreamLength = getExpectedStreamLength(prmExpectedList);
 
-		StreamWriterResult wvWriterResult = getStreamWriterResultFrom(prmExpectedList);
-		byte[] wvStream = wvWriterResult.getStream();
+		StreamWriterResult vWriterResult = getStreamWriterResultFrom(prmExpectedList);
+		byte[] vStream = vWriterResult.getStream();
 
-		assertEquals(wvFirstTuple.getArity(), wvStream[0]);
-		assertEquals(wvExpectedStreamLength, wvStream.length);
+		assertEquals(vFirstTuple.getArity(), vStream[0]);
+		assertEquals(vExpectedStreamLength, vStream.length);
 
-		assertArrayEquals(getTupleExpectedPositions(prmExpectedList), wvWriterResult.getPositions());
+		assertArrayEquals(getTupleExpectedPositions(prmExpectedList), vWriterResult.getPositions());
 	}
 
 }

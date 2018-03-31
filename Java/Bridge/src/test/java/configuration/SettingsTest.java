@@ -15,26 +15,26 @@ class SettingsTest
 	@Test
 	void loadSettings_Ok()
 	{
-		Settings wvSettings = new Settings();
-		boolean wvLoadWithoutError;
+		Settings vSettings = new Settings();
+		boolean vLoadWithoutError;
 		try
 		{
-			wvSettings = SettingsLoader.loadSettings(Constants.RESOURCES_DIR);
-			wvLoadWithoutError = true;
+			vSettings = SettingsLoader.loadSettings(Constants.RESOURCES_DIR);
+			vLoadWithoutError = true;
 		}
 		catch (FileNotFoundException prmE)
 		{
 			prmE.printStackTrace();
-			wvLoadWithoutError = false;
+			vLoadWithoutError = false;
 		}
 
-		assertTrue(wvLoadWithoutError);
-		assertNotNull(wvSettings.getOclSettings());
-		assertNotNull(wvSettings.getTupleDefinitions());
+		assertTrue(vLoadWithoutError);
+		assertNotNull(vSettings.getOclSettings());
+		assertNotNull(vSettings.getTupleDefinitions());
 
 		int expectedCount = 2;
 		final int[] actualCount = {0};
-		wvSettings.getTupleDefinitions().forEach( x -> actualCount[0]++);
+		vSettings.getTupleDefinitions().forEach( x -> actualCount[0]++);
 
 		assertEquals(expectedCount, actualCount[0]);
 	}
@@ -42,18 +42,18 @@ class SettingsTest
 	@Test
 	void loadSettings_FileNotFound_Error()
 	{
-		boolean wvLoadWithoutError;
+		boolean vLoadWithoutError;
 		try
 		{
 			SettingsLoader.loadSettings("somewhere");
-			wvLoadWithoutError = true;
+			vLoadWithoutError = true;
 		}
 		catch (FileNotFoundException prmE)
 		{
-			wvLoadWithoutError = false;
+			vLoadWithoutError = false;
 		}
 
-		assertFalse(wvLoadWithoutError);
+		assertFalse(vLoadWithoutError);
 	}
 
 }
