@@ -7,9 +7,9 @@ public class Tuple1 <T1> implements IOclTuple
 
 	private T1 mT1;
 
-	public Tuple1(T1 prmT1)
+	public Tuple1(T1 pT1)
 	{
-		setT1(prmT1);
+		setT1(pT1);
 	}
 
 	@Override
@@ -23,9 +23,9 @@ public class Tuple1 <T1> implements IOclTuple
 		return mT1;
 	}
 
-	public void setT1(T1 prmT1)
+	public void setT1(T1 pT1)
 	{
-		mT1 = prmT1;
+		mT1 = pT1;
 	}
 
 	@Override
@@ -51,9 +51,9 @@ public class Tuple1 <T1> implements IOclTuple
 	}
 
 	@Override
-	public boolean equals(Object prmOther)
+	public boolean equals(Object pOther)
 	{
-		return prmOther != null &&
-			   (prmOther == this || prmOther instanceof IOclTuple && equals((IOclTuple) prmOther));
+		return pOther != null &&
+			   (pOther == this || pOther instanceof IOclTuple && equals((IOclTuple) pOther));
 	}
 }

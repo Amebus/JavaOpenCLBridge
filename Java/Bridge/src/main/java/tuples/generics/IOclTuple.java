@@ -6,9 +6,9 @@ public interface IOclTuple extends Iterable
 {
 	byte getArity();
 
-	default boolean equals(IOclTuple prmOther)
+	default boolean equals(IOclTuple pOther)
 	{
-		if (getArity() != prmOther.getArity())
+		if (getArity() != pOther.getArity())
 		{
 			return false;
 		}
@@ -16,7 +16,7 @@ public interface IOclTuple extends Iterable
 		boolean wvResult = true;
 
 		Iterator wvIThis = iterator();
-		Iterator wvIOther = prmOther.iterator();
+		Iterator wvIOther = pOther.iterator();
 		while (wvIThis.hasNext())
 		{
 			wvResult &= wvIThis.next().equals(wvIOther.next());

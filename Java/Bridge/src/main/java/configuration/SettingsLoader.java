@@ -20,28 +20,28 @@ public final class SettingsLoader
 
 	public static final String CONFIG_FILE_NAME = "oclConfig.json";
 
-	public static Settings loadSettings(String prmConfigFileDirectory) throws FileNotFoundException
+	public static Settings loadSettings(String pConfigFileDirectory) throws FileNotFoundException
 	{
-		return loadSettings(prmConfigFileDirectory, CONFIG_FILE_NAME);
+		return loadSettings(pConfigFileDirectory, CONFIG_FILE_NAME);
 	}
 
-	public static Settings loadSettings(String prmConfigFileDirectory, String prmFileName) throws FileNotFoundException
+	public static Settings loadSettings(String pConfigFileDirectory, String pFileName) throws FileNotFoundException
 	{
-		return loadSettings(Paths.get(prmConfigFileDirectory).normalize().resolve(prmFileName).toAbsolutePath());
+		return loadSettings(Paths.get(pConfigFileDirectory).normalize().resolve(pFileName).toAbsolutePath());
 	}
 
-	public static Settings loadSettings(Path prmPathToConfigFile) throws FileNotFoundException
+	public static Settings loadSettings(Path pPathToConfigFile) throws FileNotFoundException
 	{
-		return loadSettings(prmPathToConfigFile.toFile());
+		return loadSettings(pPathToConfigFile.toFile());
 	}
 
-	public static Settings loadSettings(File prmConfigFile) throws FileNotFoundException
+	public static Settings loadSettings(File pConfigFile) throws FileNotFoundException
 	{
-		FileReader wvReader = new FileReader(prmConfigFile);
-		Gson wvJsonSerializer = new GsonFireBuilder()
+		FileReader vReader = new FileReader(pConfigFile);
+		Gson vJsonSerializer = new GsonFireBuilder()
 				.enableHooks(Settings.class)
 				.enableHooks(TupleDefinition.class)
 				.createGson();
-		return wvJsonSerializer.fromJson(wvReader, Settings.class);
+		return vJsonSerializer.fromJson(vReader, Settings.class);
 	}
 }

@@ -10,33 +10,33 @@ public class CTType extends TType
 		static final String STRING = "char*";
 	}
 
-	private CTType(String prmType, int prmByteDimension, int prmMaxByteDimension)
+	private CTType(String pType, int pByteDimension, int pMaxByteDimension)
 	{
-		super(prmType, prmByteDimension, prmMaxByteDimension);
+		super(pType, pByteDimension, pMaxByteDimension);
 	}
 
 	public static class Builder extends TTypeBuilder
 	{
-		public Builder(String prmType)
+		public Builder(String pType)
 		{
-			super(prmType);
+			super(pType);
 		}
 
-		public Builder(TType prmType)
+		public Builder(TType pType)
 		{
-			super(prmType);
+			super(pType);
 		}
 
 		public CTType build()
 		{
-			String wvType;
+			String vType;
 			if (isInteger(getType()))
-				wvType = CTypes.INTEGER;
+				vType = CTypes.INTEGER;
 			else if (isDouble(getType()))
-				wvType = CTypes.DOUBLE;
+				vType = CTypes.DOUBLE;
 			else
-				wvType = CTypes.STRING;
-			return new CTType(wvType, getByteDimension(), getMaxByteDimension());
+				vType = CTypes.STRING;
+			return new CTType(vType, getByteDimension(), getMaxByteDimension());
 		}
 	}
 }

@@ -34,9 +34,9 @@ public class StreamReader implements Iterable<IOclTuple>
 		mTuple3Iterator = new Tuple3Iterator();
 	}
 
-	public StreamReader setStream(byte[] prmStream)
+	public StreamReader setStream(byte[] pStream)
 	{
-		mStream = prmStream;
+		mStream = pStream;
 		mArity = mStream[0];
 		return this;
 	}
@@ -53,14 +53,14 @@ public class StreamReader implements Iterable<IOclTuple>
 
 	public <R extends IOclTuple> List<R> getTupleList()
 	{
-		List<R> wvResult = new LinkedList<>();
+		List<R> vResult = new LinkedList<>();
 
-		for (IOclTuple wvTuple : this)
+		for (IOclTuple vTuple : this)
 		{
-			wvResult.add((R)wvTuple);
+			vResult.add((R)vTuple);
 		}
 
-		return wvResult;
+		return vResult;
 	}
 
 
@@ -111,14 +111,14 @@ public class StreamReader implements Iterable<IOclTuple>
 		// 	setStreamReader(prmStreamReader);
 		// }
 
-		StreamIterator setStreamReader(StreamReader prmStreamReader)
+		StreamIterator setStreamReader(StreamReader pStreamReader)
 		{
-			byte wvArity = prmStreamReader.getArity();
-			mStream = prmStreamReader.getStream();
-			if (mArity != wvArity)
+			byte vArity = pStreamReader.getArity();
+			mStream = pStreamReader.getStream();
+			if (mArity != vArity)
 			{
-				mArity = wvArity;
-				mResult = new Object[wvArity];
+				mArity = vArity;
+				mResult = new Object[vArity];
 			}
 			mIndex = 1 + mArity;
 			mTypeIndex = 1;
@@ -129,12 +129,12 @@ public class StreamReader implements Iterable<IOclTuple>
 
 		Object[] readValuesFromStream()
 		{
-			byte wvType;
+			byte vType;
 
 			for (mResultIndex = 0; mResultIndex < mArity; mResultIndex++)
 			{
-				wvType = mStream[mTypeIndex++];
-				switch (wvType)
+				vType = mStream[mTypeIndex++];
+				switch (vType)
 				{
 					case Types.INT:
 						integerFromByteArray();
@@ -202,20 +202,20 @@ public class StreamReader implements Iterable<IOclTuple>
 			super();
 		}
 
-		// Tuple1Iterator(StreamReader prmStreamReader)
+		// Tuple1Iterator(StreamReader pStreamReader)
 		// {
-		// 	super(prmStreamReader);
+		// 	super(pStreamReader);
 		// }
 
 		@Override
 		public IOclTuple next()
 		{
-			Tuple1 wvTuple = new Tuple1(null);
-			Object[] wvValues = readValuesFromStream();
+			Tuple1 vTuple = new Tuple1(null);
+			Object[] vValues = readValuesFromStream();
 
-			wvTuple.setT1(wvValues[0]);
+			vTuple.setT1(vValues[0]);
 
-			return wvTuple;
+			return vTuple;
 		}
 
 		@Override
@@ -233,21 +233,21 @@ public class StreamReader implements Iterable<IOclTuple>
 			super();
 		}
 
-		// Tuple2Iterator(StreamReader prmStreamReader)
+		// Tuple2Iterator(StreamReader pStreamReader)
 		// {
-		// 	super(prmStreamReader);
+		// 	super(pStreamReader);
 		// }
 
 		@Override
 		public IOclTuple next()
 		{
-			Tuple2 wvTuple = new Tuple2(null, null);
-			Object[] wvValues = readValuesFromStream();
+			Tuple2 vTuple = new Tuple2(null, null);
+			Object[] vValues = readValuesFromStream();
 
-			wvTuple.setT1(wvValues[0]);
-			wvTuple.setT2(wvValues[1]);
+			vTuple.setT1(vValues[0]);
+			vTuple.setT2(vValues[1]);
 
-			return wvTuple;
+			return vTuple;
 		}
 
 		@Override
@@ -265,22 +265,22 @@ public class StreamReader implements Iterable<IOclTuple>
 			super();
 		}
 
-		// Tuple3Iterator(StreamReader prmStreamReader)
+		// Tuple3Iterator(StreamReader pStreamReader)
 		// {
-		// 	super(prmStreamReader);
+		// 	super(pStreamReader);
 		// }
 
 		@Override
 		public IOclTuple next()
 		{
-			Tuple3 wvTuple = new Tuple3(null, null, null);
-			Object[] wvValues = readValuesFromStream();
+			Tuple3 vTuple = new Tuple3(null, null, null);
+			Object[] vValues = readValuesFromStream();
 
-			wvTuple.setT1(wvValues[0]);
-			wvTuple.setT2(wvValues[1]);
-			wvTuple.setT3(wvValues[2]);
+			vTuple.setT1(vValues[0]);
+			vTuple.setT2(vValues[1]);
+			vTuple.setT3(vValues[2]);
 
-			return wvTuple;
+			return vTuple;
 		}
 
 		@Override
