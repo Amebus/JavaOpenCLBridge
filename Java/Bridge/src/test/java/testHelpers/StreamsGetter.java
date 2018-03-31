@@ -46,7 +46,7 @@ public class StreamsGetter
 
 	public static StreamWriter getStreamWriterFrom(List<? extends IOclTuple> prmTupleList)
 	{
-		return new StreamWriter(prmTupleList);
+		return StreamWriter.getStreamWriter().setTupleList(prmTupleList);
 	}
 
 	public static StreamReader getStreamReaderFrom(IOclTuple prmTuple)
@@ -56,7 +56,7 @@ public class StreamsGetter
 
 	public static StreamReader getStreamReaderFrom(List<? extends IOclTuple> prmTupleList)
 	{
-		return new StreamReader(getStreamWriterFrom(prmTupleList).writeStream().getT1());
+		return StreamReader.getStreamReader().setStream(getStreamWriterFrom(prmTupleList).writeStream().getT1());
 	}
 
 }

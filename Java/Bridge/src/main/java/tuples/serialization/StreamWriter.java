@@ -1,8 +1,10 @@
 package tuples.serialization;
 
 import tuples.generics.IOclTuple;
+import tuples.generics.OclTupleIterator;
 import tuples.generics.Tuple2;
 
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -13,13 +15,27 @@ public class StreamWriter
 	private byte[] mVarTypes;
 	private int mIndex;
 
+	private OclTupleIterator mIterator;
 	private int mTempInteger;
 	private Double mTempDouble;
 	private String mTempString;
 
-	public StreamWriter(List<? extends IOclTuple> prmTupleList)
+	private static StreamWriter sStreamWriter = new StreamWriter();
+
+	public static StreamWriter getStreamWriter()
+	{
+		return sStreamWriter;
+	}
+
+	private StreamWriter()
+	{
+		mIterator = OclTupleIterator.getIterator();
+	}
+
+	public StreamWriter setTupleList(List<? extends IOclTuple> prmTupleList)
 	{
 		mTupleList = prmTupleList;
+		return this;
 	}
 
 	public StreamWriterResult writeStream()
@@ -40,6 +56,8 @@ public class StreamWriter
 		{
 			wvStreamLength += getBytesDim(wvTuple);
 		}
+
+		mIterator.resetToArity(wvTemplateTuple.getArity());
 
 		final byte[] wvStream = new byte[wvStreamLength];
 		final int[] wvTupleIndexes = new int[mTupleList.size()];
@@ -110,25 +128,48 @@ public class StreamWriter
 		int wvStartIndex = mIndex;
 		int i = 0;
 
-		for (Object wvObj : prmTuple)
+		mIterator.iterateOver(prmTuple);
+
+		while (mIterator.hasNext())
 		{
 			switch (mVarTypes[i])
 			{
 				case Types.INT:
-					mTempInteger = (int) wvObj;
+					mTempInteger = (int) mIterator.next();
 					insertInt(prmStream);
 					break;
 				case Types.DOUBLE:
-					mTempDouble = (Double) wvObj;
+					mTempDouble = (Double) mIterator.next();
 					insertDouble(prmStream);
 					break;
 				case Types.STRING:
-					mTempString = (String) wvObj;
+					mTempString = (String) mIterator.next();
 					insertString(prmStream);
 					break;
 			}
 			i++;
 		}
+
+
+		// for (Object wvObj : prmTuple)
+		// {
+		// 	switch (mVarTypes[i])
+		// 	{
+		// 		case Types.INT:
+		// 			mTempInteger = (int) wvObj;
+		// 			insertInt(prmStream);
+		// 			break;
+		// 		case Types.DOUBLE:
+		// 			mTempDouble = (Double) wvObj;
+		// 			insertDouble(prmStream);
+		// 			break;
+		// 		case Types.STRING:
+		// 			mTempString = (String) wvObj;
+		// 			insertString(prmStream);
+		// 			break;
+		// 	}
+		// 	i++;
+		// }
 		return wvStartIndex;
 	}
 

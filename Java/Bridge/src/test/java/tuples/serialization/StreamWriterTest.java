@@ -21,7 +21,7 @@ class StreamWriterTest
 	@Test
 	void Writer_EmptyStreamFromNullList_Ok()
 	{
-		StreamWriter wvWriter = new StreamWriter(null);
+		StreamWriter wvWriter = StreamWriter.getStreamWriter();
 		StreamWriterResult wvResult = wvWriter.writeStream();
 
 		assertTrue(0 == wvResult.getStream().length);
@@ -31,7 +31,7 @@ class StreamWriterTest
 	@Test
 	void Writer_EmptyStreamFormEmptyList_Ok()
 	{
-		StreamWriter wvWriter = new StreamWriter(getEmptyTupleList());
+		StreamWriter wvWriter = StreamWriter.getStreamWriter().setTupleList(getEmptyTupleList());
 		StreamWriterResult wvResult = wvWriter.writeStream();
 
 		assertTrue(0 == wvResult.getStream().length);
@@ -41,7 +41,7 @@ class StreamWriterTest
 	@Test
 	void Writer_StreamFormUnsupportedTuple_Error()
 	{
-		StreamWriter wvWriter = new StreamWriter(getListWithUsupportedT());
+		StreamWriter wvWriter = StreamWriter.getStreamWriter().setTupleList(getListWithUsupportedT());
 		boolean wvError = false;
 
 		try

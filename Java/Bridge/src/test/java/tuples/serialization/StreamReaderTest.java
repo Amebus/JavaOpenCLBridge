@@ -21,7 +21,7 @@ class StreamReaderTest
 
 		try
 		{
-			new StreamReader(new byte[] { 100 }).getTupleList();
+			StreamReader.getStreamReader().setStream(new byte[] { 100 }).getTupleList();
 		}
 		catch (IllegalArgumentException ex)
 		{
@@ -39,7 +39,7 @@ class StreamReaderTest
 
 		try
 		{
-			new StreamReader(new byte[] { 1, 100, 1 }).getTupleList();
+			StreamReader.getStreamReader().setStream(new byte[] { 1, 100, 1 }).getTupleList();
 		}
 		catch (IllegalArgumentException ex)
 		{
