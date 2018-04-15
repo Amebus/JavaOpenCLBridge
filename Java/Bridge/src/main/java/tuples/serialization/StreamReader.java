@@ -16,10 +16,6 @@ public class StreamReader implements Iterable<IOclTuple>
 	private byte mArity;
 	private byte[] mStream;
 
-	private Tuple1Iterator mTuple1Iterator;
-	private Tuple2Iterator mTuple2Iterator;
-	private Tuple3Iterator mTuple3Iterator;
-
 	private static StreamReader sStreamReader = new StreamReader();
 
 	public static StreamReader getStreamReader()
@@ -29,9 +25,6 @@ public class StreamReader implements Iterable<IOclTuple>
 
 	private StreamReader()
 	{
-		mTuple1Iterator = new Tuple1Iterator();
-		mTuple2Iterator = new Tuple2Iterator();
-		mTuple3Iterator = new Tuple3Iterator();
 	}
 
 	public StreamReader setStream(byte[] pStream)
@@ -70,11 +63,11 @@ public class StreamReader implements Iterable<IOclTuple>
 		switch (getArity())
 		{
 			case 1:
-				return mTuple1Iterator.setStreamReader(this);
+				return new Tuple1Iterator(this);//mTuple1Iterator.setStreamReader(this);
 			case 2:
-				return mTuple2Iterator.setStreamReader(this);
+				return new Tuple2Iterator(this);//mTuple2Iterator.setStreamReader(this);
 			case 3:
-				return mTuple3Iterator.setStreamReader(this);
+				return new Tuple3Iterator(this);//mTuple3Iterator.setStreamReader(this);
 			default:
 				throw new IllegalArgumentException(DIMENSION_ERROR);
 		}
@@ -100,18 +93,8 @@ public class StreamReader implements Iterable<IOclTuple>
 		private int mResultIndex;
 		private int mStringLength;
 
-
-		StreamIterator()
-		{
-
-		}
-
-		// StreamIterator(StreamReader prmStreamReader)
-		// {
-		// 	setStreamReader(prmStreamReader);
-		// }
-
-		StreamIterator setStreamReader(StreamReader pStreamReader)
+		
+		StreamIterator(StreamReader pStreamReader)
 		{
 			byte vArity = pStreamReader.getArity();
 			mStream = pStreamReader.getStream();
@@ -124,7 +107,6 @@ public class StreamReader implements Iterable<IOclTuple>
 			mTypeIndex = 1;
 			mResultIndex = 0;
 			mStringLength = 0;
-			return this;
 		}
 
 		Object[] readValuesFromStream()
@@ -197,15 +179,10 @@ public class StreamReader implements Iterable<IOclTuple>
 	private static class Tuple1Iterator extends StreamIterator
 	{
 
-		Tuple1Iterator()
+		Tuple1Iterator(StreamReader pStreamReader)
 		{
-			super();
+			super(pStreamReader);
 		}
-
-		// Tuple1Iterator(StreamReader pStreamReader)
-		// {
-		// 	super(pStreamReader);
-		// }
 
 		@Override
 		public IOclTuple next()
@@ -228,15 +205,10 @@ public class StreamReader implements Iterable<IOclTuple>
 	private static class Tuple2Iterator extends StreamIterator
 	{
 
-		Tuple2Iterator()
+		Tuple2Iterator(StreamReader pStreamReader)
 		{
-			super();
+			super(pStreamReader);
 		}
-
-		// Tuple2Iterator(StreamReader pStreamReader)
-		// {
-		// 	super(pStreamReader);
-		// }
 
 		@Override
 		public IOclTuple next()
@@ -260,15 +232,10 @@ public class StreamReader implements Iterable<IOclTuple>
 	private static class Tuple3Iterator extends StreamIterator
 	{
 
-		Tuple3Iterator()
+		Tuple3Iterator(StreamReader pStreamReader)
 		{
-			super();
+			super(pStreamReader);
 		}
-
-		// Tuple3Iterator(StreamReader pStreamReader)
-		// {
-		// 	super(pStreamReader);
-		// }
 
 		@Override
 		public IOclTuple next()

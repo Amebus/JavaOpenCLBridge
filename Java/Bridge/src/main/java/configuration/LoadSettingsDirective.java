@@ -1,7 +1,4 @@
-package testHelpers;
-
-import configuration.Settings;
-import configuration.SettingsLoader;
+package configuration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,29 +11,32 @@ public class LoadSettingsDirective
 	private Path mPath;
 	private File mFile;
 
-	public LoadSettingsDirective()
+	public LoadSettingsDirective(String pDirectory)
 	{
-		mFileDirectory = Constants.RESOURCES_DIR;
+//		System.out.println("Working Directory = " +
+//						   System.getProperty("user.dir"));
+//		mFileDirectory = System.getProperty("user.dir");
+		mFileDirectory = pDirectory;
 	}
 
-	public LoadSettingsDirective(String pFileName)
+	public LoadSettingsDirective(String pDirectory, String pFileName)
 	{
-		this(pFileName, null, null);
+		this(pDirectory, pFileName, null, null);
 	}
 
 	public LoadSettingsDirective(Path pPath)
 	{
-		this(null, pPath, null);
+		this(null, null, pPath, null);
 	}
 
 	public LoadSettingsDirective(File pFile)
 	{
-		this(null, null, pFile);
+		this(null, null, null, pFile);
 	}
 
-	private LoadSettingsDirective(String pFileName, Path pPath, File pFile)
+	private LoadSettingsDirective(String pDirectory, String pFileName, Path pPath, File pFile)
 	{
-		this();
+		this(pDirectory);
 		mFileName = pFileName;
 		mPath = pPath;
 		mFile = pFile;
@@ -77,9 +77,9 @@ public class LoadSettingsDirective
 		return getFile() != null;
 	}
 
-	public ILoadFunction getLoadFunction()
+	public ILoadSettingsFunction getLoadFunction()
 	{
-		ILoadFunction vLoadFunction;
+		ILoadSettingsFunction vLoadFunction;
 
 		if (loadWithFileName())
 		{
@@ -100,7 +100,7 @@ public class LoadSettingsDirective
 		return vLoadFunction;
 	}
 
-	public interface ILoadFunction
+	public interface ILoadSettingsFunction
 	{
 		Settings loadSettings() throws FileNotFoundException;
 	}

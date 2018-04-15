@@ -3,6 +3,7 @@ package configuration;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import com.google.gson.internal.LinkedHashTreeMap;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 import io.gsonfire.annotations.PostDeserialize;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -22,15 +23,9 @@ public class TupleDefinition implements Iterable<TType>
 	private transient int mHashCode;
 	private transient byte mArity;
 
-	@SerializedName("name")
-	@Expose
 	private String mName;
-
-	@SerializedName("types")
-	@Expose
-	private Map<String, String> mTypesMap = new HashMap<>();
-
-	private transient Map<String, TupleVarDefinition> mVarDefinitionMap = new HashMap<>();
+//	private Map<String, String> mTypesMap = new HashMap<>();
+	private Map<String, TupleVarDefinition> mVarDefinitionMap = new HashMap<>();
 
 
 	public TupleDefinition()
@@ -38,39 +33,47 @@ public class TupleDefinition implements Iterable<TType>
 		mArity = 0;
 	}
 
+	public TupleDefinition(String pName, Map<String, String> pTypesMap)
+	{
+		this();
+		mName = pName;
+//		mTypesMap = pTypesMap;
+		postDeserialize(pTypesMap);
+	}
+	
 	public TupleDefinition(TupleDefinition pDefinition)
 	{
 		this();
 		mName = pDefinition.getName();
-		mTypesMap = new HashMap<>(pDefinition.mTypesMap);
+//		mTypesMap = new HashMap<>(pDefinition.mTypesMap);
 		mVarDefinitionMap = new HashMap<>(pDefinition.mVarDefinitionMap);
 		mArity = pDefinition.mArity;
 
 		computeHashCode();
 	}
-
-	@PostDeserialize
-	public void postDeserialize()
+	
+	private void postDeserialize(Map<String, String> pTypesMap)
 	{
 		final RegularExpression vExpression = new RegularExpression("t\\d+");
-		Set<String> vKeySet = new HashSet<>(mTypesMap.keySet());
+//		pTypesMap = new LinkedHashMap<>(pTypesMap);
+		Set<String> vKeySet = new HashSet<>(pTypesMap.keySet());
 		vKeySet.forEach( x ->
 						  {
 							  if(vExpression.matches(x))
 							  {
 								  String vTempString = x.substring(1);
 								  int vValue = Integer.parseInt(vTempString);
-								  if( 0 < vValue && vValue <= T_LIMIT)
+								  if( 0 <= vValue && vValue < T_LIMIT)
 								  {
 									  return;
 								  }
 							  }
-							  mTypesMap.remove(x);
+							  pTypesMap.remove(x);
 						  });
 
-		mArity = (byte)mTypesMap.size();
-
-		mTypesMap.forEach( (k,v) -> mVarDefinitionMap.put(k, new TupleVarDefinition(v)));
+		mArity = (byte)pTypesMap.size();
+		
+		pTypesMap.forEach( (k,v) -> mVarDefinitionMap.put(k, new TupleVarDefinition(v)));
 
 		computeHashCode();
 	}
@@ -239,7 +242,7 @@ public class TupleDefinition implements Iterable<TType>
 		private int mCurrentIndex;
 		private ForwardTIterator()
 		{
-			mCurrentIndex = 1;
+			mCurrentIndex = 0;
 		}
 
 		protected int advanceCurrentIndex()
@@ -250,7 +253,7 @@ public class TupleDefinition implements Iterable<TType>
 		@Override
 		public boolean hasNext()
 		{
-			return mCurrentIndex <= getArity() && mCurrentIndex <= T_LIMIT;
+			return mCurrentIndex < getArity() && mCurrentIndex < T_LIMIT;
 		}
 	}
 
@@ -260,7 +263,7 @@ public class TupleDefinition implements Iterable<TType>
 
 		private ReverseTIterator()
 		{
-			mCurrentIndex = mVarDefinitionMap.size();
+			mCurrentIndex = mVarDefinitionMap.size() - 1;
 		}
 
 		protected int advanceCurrentIndex()
@@ -271,7 +274,7 @@ public class TupleDefinition implements Iterable<TType>
 		@Override
 		public boolean hasNext()
 		{
-			return mCurrentIndex > 0;
+			return mCurrentIndex >= 0;
 		}
 	}
 }

@@ -1,16 +1,24 @@
 {
   "oclSettings" : {
+    "contextOptions": {
+      "kernelsBuildFolder" : "oclKernels"
+    },
+    "kernelOptions": {
 
+    }
   },
-  "tuples": [{
-    "name": "tupleOne",
-    "types": {
-      "t1": "int",
-      "t2": "string",
-      "t3": "double",
-      "t4": "int"
-    }}, {
-    "name": "tupleTwo",
-    "types": {
-      "t1": "double"
-}}]}
+  "tuples":{
+    "tupleOne": {
+        "t0": "int",
+        "t1": "string",
+        "t2": "double",
+        "t3": "int"
+    },
+    "tupleTwo": {
+      "t0": "double"
+    }
+  }
+}
+
+
+

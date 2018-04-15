@@ -34,7 +34,7 @@ class SettingsTest
 
 		int expectedCount = 2;
 		final int[] actualCount = {0};
-		vSettings.getTupleDefinitions().forEach( x -> actualCount[0]++);
+		vSettings.getTupleDefinitions().asIterable().forEach( x -> actualCount[0]++);
 
 		assertEquals(expectedCount, actualCount[0]);
 	}

@@ -1,5 +1,6 @@
 package testHelpers;
 
+import configuration.LoadSettingsDirective;
 import configuration.Settings;
 
 import java.io.FileNotFoundException;
@@ -30,7 +31,7 @@ public class SettingsWrapper
 
 	public static SettingsWrapper loadSettings()
 	{
-		return loadSettings(new LoadSettingsDirective());
+		return loadSettings(new LoadSettingsDirective(Constants.RESOURCES_DIR));
 	}
 
 	public static SettingsWrapper loadSettings(LoadSettingsDirective pDirective)

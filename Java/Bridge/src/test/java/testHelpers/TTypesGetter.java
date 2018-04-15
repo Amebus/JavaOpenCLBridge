@@ -1,9 +1,6 @@
 package testHelpers;
 
-import configuration.CTType;
-import configuration.JavaTType;
-import configuration.Settings;
-import configuration.TType;
+import configuration.*;
 
 import static testHelpers.SettingsWrapper.loadSettings;
 

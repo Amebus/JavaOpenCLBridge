@@ -2,7 +2,7 @@ package configuration;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import testHelpers.LoadSettingsDirective;
+import testHelpers.Constants;
 import testHelpers.SettingsWrapper;
 
 import java.io.File;
@@ -29,7 +29,7 @@ class SettingsLoaderTest
 	@Test
 	void loadSettings_NameSet_Ok()
 	{
-		LoadSettingsDirective vDirective = new LoadSettingsDirective(FILE_NAME);
+		LoadSettingsDirective vDirective = new LoadSettingsDirective(Constants.RESOURCES_DIR, FILE_NAME);
 		SettingsWrapper vWrapper = loadSettings(vDirective);
 
 		assertTrue(vWrapper.isEverythingOk());
@@ -38,7 +38,7 @@ class SettingsLoaderTest
 	@Test
 	void loadSettings_Path_Ok()
 	{
-		LoadSettingsDirective vDirective = new LoadSettingsDirective();
+		LoadSettingsDirective vDirective = new LoadSettingsDirective(Constants.RESOURCES_DIR);
 		Path vPath = Paths.get(vDirective.getFileDirectory()).normalize().resolve(FILE_NAME).toAbsolutePath();
 		vDirective = new LoadSettingsDirective(vPath);
 		SettingsWrapper vWrapper = loadSettings(vDirective);
@@ -49,7 +49,7 @@ class SettingsLoaderTest
 	@Test
 	void loadSettings_File_Ok()
 	{
-		LoadSettingsDirective vDirective = new LoadSettingsDirective();
+		LoadSettingsDirective vDirective = new LoadSettingsDirective(Constants.RESOURCES_DIR);
 		Path vPath = Paths.get(vDirective.getFileDirectory()).normalize().resolve(FILE_NAME).toAbsolutePath();
 		vDirective = new LoadSettingsDirective(new File(vPath.toString()));
 		SettingsWrapper vWrapper = loadSettings(vDirective);

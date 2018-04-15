@@ -3,7 +3,7 @@ package configuration;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import testHelpers.LoadSettingsDirective;
+import testHelpers.Constants;
 
 import java.util.Iterator;
 
@@ -17,9 +17,9 @@ class TupleDefinitionTest
 	@Test
 	void TupleDefinition_Equals_Ok()
 	{
-		LoadSettingsDirective vSettingsDirective = new LoadSettingsDirective("tupleEqualsTest.json");
+		LoadSettingsDirective vSettingsDirective = new LoadSettingsDirective(Constants.RESOURCES_DIR, "tupleEqualsTest.json");
 		Settings vSettings = getSettings(vSettingsDirective);
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions();
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
 		vDefinitions.forEach( x -> assertTrue(x.equals(x)));
 
@@ -48,9 +48,9 @@ class TupleDefinitionTest
 	@Test
 	void TupleDefinition_HashCode_Ok()
 	{
-		LoadSettingsDirective vSettingsDirective = new LoadSettingsDirective("tupleEqualsTest.json");
+		LoadSettingsDirective vSettingsDirective = new LoadSettingsDirective(Constants.RESOURCES_DIR, "tupleEqualsTest.json");
 		Settings vSettings = getSettings(vSettingsDirective);
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions();
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
 		vDefinitions.forEach( x -> assertEquals(x.hashCode(), x.hashCode()));
 
@@ -70,7 +70,7 @@ class TupleDefinitionTest
 	void TupleDefinition_TWithIndexOutOfBoundIsNull_Ok()
 	{
 		Settings vSettings = getSettings();
-		Iterator<TupleDefinition> vIterator = vSettings.getTupleDefinitions().iterator();
+		Iterator<TupleDefinition> vIterator = vSettings.getTupleDefinitions().asIterable().iterator();
 
 		TupleDefinition vOne = vIterator.next();
 
@@ -89,7 +89,7 @@ class TupleDefinitionTest
 	{
 		Settings vSettings = getSettings();
 
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions();
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
@@ -140,7 +140,7 @@ class TupleDefinitionTest
 	{
 		Settings vSettings = getSettings();
 
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions();
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
@@ -191,7 +191,7 @@ class TupleDefinitionTest
 	{
 		Settings vSettings = getSettings();
 
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions();
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
@@ -242,7 +242,7 @@ class TupleDefinitionTest
 	{
 		Settings vSettings = getSettings();
 
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions();
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};

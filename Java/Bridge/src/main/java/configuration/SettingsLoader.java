@@ -38,10 +38,9 @@ public final class SettingsLoader
 	public static Settings loadSettings(File pConfigFile) throws FileNotFoundException
 	{
 		FileReader vReader = new FileReader(pConfigFile);
-		Gson vJsonSerializer = new GsonFireBuilder()
+		return new GsonFireBuilder()
 				.enableHooks(Settings.class)
-				.enableHooks(TupleDefinition.class)
-				.createGson();
-		return vJsonSerializer.fromJson(vReader, Settings.class);
+				.createGson()
+				.fromJson(vReader, Settings.class);
 	}
 }
