@@ -1,5 +1,6 @@
 package testHelpers;
 
+import configuration.LoadSettingsDirective;
 import configuration.Settings;
 
 import java.io.FileNotFoundException;
@@ -13,9 +14,9 @@ public class SettingsWrapper
 		this(null);
 	}
 
-	public SettingsWrapper(Settings prmSettings)
+	public SettingsWrapper(Settings pSettings)
 	{
-		mSettings = prmSettings;
+		mSettings = pSettings;
 	}
 
 	public boolean isEverythingOk()
@@ -30,23 +31,23 @@ public class SettingsWrapper
 
 	public static SettingsWrapper loadSettings()
 	{
-		return loadSettings(new LoadSettingsDirective());
+		return loadSettings(new LoadSettingsDirective(Constants.RESOURCES_DIR));
 	}
 
-	public static SettingsWrapper loadSettings(LoadSettingsDirective prmDirective)
+	public static SettingsWrapper loadSettings(LoadSettingsDirective pDirective)
 	{
-		SettingsWrapper wvWrapper;
+		SettingsWrapper vWrapper;
 
 		try
 		{
-			wvWrapper = new SettingsWrapper(prmDirective.getLoadFunction().loadSettings());
+			vWrapper = new SettingsWrapper(pDirective.getLoadFunction().loadSettings());
 		}
-		catch (FileNotFoundException prmE)
+		catch (FileNotFoundException pE)
 		{
-			prmE.printStackTrace();
-			wvWrapper = new SettingsWrapper();
+			pE.printStackTrace();
+			vWrapper = new SettingsWrapper();
 		}
 
-		return wvWrapper;
+		return vWrapper;
 	}
 }

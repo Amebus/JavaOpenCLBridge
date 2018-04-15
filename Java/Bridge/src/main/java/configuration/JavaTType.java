@@ -10,33 +10,33 @@ public class JavaTType extends TType
 		static final String STRING = "String";
 	}
 
-	private JavaTType(String prmType, int prmByteDimension, int prmMaxByteDimension)
+	private JavaTType(String pType, int pByteDimension, int pMaxByteDimension)
 	{
-		super(prmType, prmByteDimension, prmMaxByteDimension);
+		super(pType, pByteDimension, pMaxByteDimension);
 	}
 
 	public static class Builder extends TTypeBuilder
 	{
-		public Builder(String prmType)
+		public Builder(String pType)
 		{
-			super(prmType);
+			super(pType);
 		}
 
-		public Builder(TType prmType)
+		public Builder(TType pType)
 		{
-			super(prmType);
+			super(pType);
 		}
 
 		public JavaTType build()
 		{
-			String wvType;
+			String vType;
 			if (isInteger(getType()))
-				wvType = JavaTypes.INTEGER;
+				vType = JavaTypes.INTEGER;
 			else if (isDouble(getType()))
-				wvType = JavaTypes.DOUBLE;
+				vType = JavaTypes.DOUBLE;
 			else
-				wvType = JavaTypes.STRING;
-			return new JavaTType(wvType, getByteDimension(), getMaxByteDimension());
+				vType = JavaTypes.STRING;
+			return new JavaTType(vType, getByteDimension(), getMaxByteDimension());
 		}
 	}
 }

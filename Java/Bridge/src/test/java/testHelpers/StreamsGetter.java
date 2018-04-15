@@ -3,52 +3,60 @@ package testHelpers;
 import tuples.generics.IOclTuple;
 import tuples.serialization.StreamReader;
 import tuples.serialization.StreamWriter;
+import tuples.serialization.StreamWriterResult;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public final class StreamsGetter
+public class StreamsGetter
 {
-	private StreamsGetter()
-	{
 
+	private static List<? extends IOclTuple> toList(IOclTuple pTuple)
+	{
+		List<IOclTuple> vList = new LinkedList<>();
+		vList.add(pTuple);
+		return vList;
 	}
 
-	private static List<? extends IOclTuple> toList(IOclTuple prmTuple)
+	public static byte[] getStreamFrom(IOclTuple pTuple)
 	{
-		List<IOclTuple> wvList = new LinkedList<>();
-		wvList.add(prmTuple);
-		return wvList;
+		return getStreamFrom(toList(pTuple));
 	}
 
-	public static byte[] getStreamFrom(IOclTuple prmTuple)
+	public static byte[] getStreamFrom(List<? extends IOclTuple> pTupleList)
 	{
-		return getStreamFrom(toList(prmTuple));
+		return getStreamWriterFrom(pTupleList).writeStream().getT1();
 	}
 
-	public static byte[] getStreamFrom(List<? extends IOclTuple> prmTupleList)
+
+	public static StreamWriterResult getStreamWriterResultFrom(IOclTuple pTuple)
 	{
-		return getStreamWriterFrom(prmTupleList).writeStream().getT1();
+		return getStreamWriterResultFrom(toList(pTuple));
 	}
 
-	public static StreamWriter getStreamWriterFrom(IOclTuple prmTuple)
+	public static StreamWriterResult getStreamWriterResultFrom(List<? extends IOclTuple> pTupleList)
 	{
-		return getStreamWriterFrom(toList(prmTuple));
+		return new StreamWriterResult(getStreamWriterFrom(pTupleList).writeStream());
 	}
 
-	public static StreamWriter getStreamWriterFrom(List<? extends IOclTuple> prmTupleList)
+	public static StreamWriter getStreamWriterFrom(IOclTuple pTuple)
 	{
-		return new StreamWriter(prmTupleList);
+		return getStreamWriterFrom(toList(pTuple));
 	}
 
-	public static StreamReader getStreamReaderFrom(IOclTuple prmTuple)
+	public static StreamWriter getStreamWriterFrom(List<? extends IOclTuple> pTupleList)
 	{
-		return getStreamReaderFrom(toList(prmTuple));
+		return StreamWriter.getStreamWriter().setTupleList(pTupleList);
 	}
 
-	public static StreamReader getStreamReaderFrom(List<? extends IOclTuple> prmTupleList)
+	public static StreamReader getStreamReaderFrom(IOclTuple pTuple)
 	{
-		return new StreamReader(getStreamWriterFrom(prmTupleList).writeStream().getT1());
+		return getStreamReaderFrom(toList(pTuple));
+	}
+
+	public static StreamReader getStreamReaderFrom(List<? extends IOclTuple> pTupleList)
+	{
+		return StreamReader.getStreamReader().setStream(getStreamWriterFrom(pTupleList).writeStream().getT1());
 	}
 
 }

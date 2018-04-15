@@ -31,9 +31,9 @@
 // 	@Test
 // 	public void OclTuple_CharacterValue_Ok()
 // 	{
-// 		OclTuple1<Character> wvTuple1 = new OclTuple1<>('A');
+// 		OclTuple1<Character> wvTuple1 = new OclTuple1<>('CreateKernel');
 //
-// 		assertEquals((Character) 'A', wvTuple1._1());
+// 		assertEquals((Character) 'CreateKernel', wvTuple1._1());
 // 	}
 //
 // 	@Test
@@ -49,7 +49,7 @@
 // 	{
 // 		OclTuple1<Integer> wvIntegerOclTuple1 = new OclTuple1<>(10);
 // 		OclTuple1<Double> wvDoubleOclTuple1 = new OclTuple1<>(10.4);
-// 		OclTuple1<Character> wvCharacterOclTuple1 = new OclTuple1<>('A');
+// 		OclTuple1<Character> wvCharacterOclTuple1 = new OclTuple1<>('CreateKernel');
 // 		OclTuple1<String> wvStringOclTuple1 = new OclTuple1<>("Ciao");
 // 		Tuple1<Integer> wvIntTuple1 = new Tuple1<>(10);
 //

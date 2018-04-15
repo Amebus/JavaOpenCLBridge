@@ -18,7 +18,7 @@ public class SerializationBridgeTest
 	}
 
 	// @Test
-	// void A()
+	// void CreateKernel()
 	// {
 	//
 	// 	byte[] expected = new byte[] { 'g' };

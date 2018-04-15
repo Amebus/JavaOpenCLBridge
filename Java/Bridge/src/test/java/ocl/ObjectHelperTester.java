@@ -48,24 +48,4 @@ class ObjectHelperTester
 		assertFalse(ObjectHelper.isNullOrWhiteSpace(str));
 	}
 
-	@Test
-	void testIsNullOrEmptyOrWhiteSpace_OK()
-	{
-		String str = null;
-		assertTrue(ObjectHelper.isNullOrEmptyOrWhiteSpace(str));
-
-		str = "";
-		assertTrue(ObjectHelper.isNullOrEmptyOrWhiteSpace(str));
-
-		str = "    ";
-		assertTrue(ObjectHelper.isNullOrEmptyOrWhiteSpace(str));
-
-		str = "ciao";
-		assertFalse(ObjectHelper.isNullOrEmptyOrWhiteSpace(str));
-
-		str = "   ciao     ";
-		assertFalse(ObjectHelper.isNullOrEmptyOrWhiteSpace(str));
-	}
-
-
 }

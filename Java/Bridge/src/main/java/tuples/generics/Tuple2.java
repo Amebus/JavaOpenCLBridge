@@ -9,10 +9,10 @@ public class Tuple2 <T1, T2> implements IOclTuple
 	private T1 mT1;
 	private T2 mT2;
 
-	public Tuple2(T1 prmT1, T2 prmT2)
+	public Tuple2(T1 pT1, T2 pT2)
 	{
-		setT1(prmT1);
-		setT2(prmT2);
+		setT1(pT1);
+		setT2(pT2);
 	}
 
 	@Override
@@ -31,25 +31,32 @@ public class Tuple2 <T1, T2> implements IOclTuple
 		return mT2;
 	}
 
-	public void setT1(T1 prmT1)
+	public void setT1(T1 pT1)
 	{
-		mT1 = prmT1;
+		mT1 = pT1;
 	}
 
-	public void setT2(T2 prmT2)
+	public void setT2(T2 pT2)
 	{
-		mT2 = prmT2;
+		mT2 = pT2;
 	}
 
 	@Override
 	public Iterator iterator()
 	{
-		List wvList = new ArrayList(getArity());
+		List vList = new ArrayList(getArity());
 
-		wvList.add(getT1());
-		wvList.add(getT2());
+		vList.add(getT1());
+		vList.add(getT2());
 
-		return wvList.iterator();
+		return vList.iterator();
+	}
+
+	@Override
+	public boolean equals(Object pOther)
+	{
+		return pOther != null &&
+			   (pOther == this || pOther instanceof IOclTuple && equals((IOclTuple) pOther));
 	}
 
 }

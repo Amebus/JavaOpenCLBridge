@@ -225,12 +225,12 @@
 <i>106</i>&nbsp;
 <b class="fc"><i>107</i>&nbsp;		result += (getKernelName().length() + getExecutionLogic().length());</b>
 <i>108</i>&nbsp;
-<b class="pc"><i>109</i>&nbsp;		if(!ObjectHelper.isNullOrEmptyOrWhiteSpace(getParametersDefinition()))</b>
+<b class="pc"><i>109</i>&nbsp;		if(!ObjectHelper.isNullOrWhiteSpace(getParametersDefinition()))</b>
 <i>110</i>&nbsp;		{
 <b class="nc"><i>111</i>&nbsp;			result += getParametersDefinition().length();</b>
 <i>112</i>&nbsp;		}
 <i>113</i>&nbsp;
-<b class="pc"><i>114</i>&nbsp;		if (!ObjectHelper.isNullOrEmptyOrWhiteSpace(getPostExecutionLogic()))</b>
+<b class="pc"><i>114</i>&nbsp;		if (!ObjectHelper.isNullOrWhiteSpace(getPostExecutionLogic()))</b>
 <i>115</i>&nbsp;		{
 <b class="nc"><i>116</i>&nbsp;			result += getPostExecutionLogic().length();</b>
 <i>117</i>&nbsp;		}
@@ -272,7 +272,7 @@
 <i>153</i>&nbsp;
 <i>154</i>&nbsp;	private void correctlyAddIfPassTest(String str)
 <i>155</i>&nbsp;	{
-<b class="fc"><i>156</i>&nbsp;		if(!ObjectHelper.isNullOrEmptyOrWhiteSpace(str))</b>
+<b class="fc"><i>156</i>&nbsp;		if(!ObjectHelper.isNullOrWhiteSpace(str))</b>
 <i>157</i>&nbsp;		{
 <b class="fc"><i>158</i>&nbsp;			mKernelSourceBuilder.append(str);</b>
 <b class="pc"><i>159</i>&nbsp;			if(!str.endsWith(&quot;;&quot;))</b>
@@ -288,7 +288,7 @@
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-03-01 22:31</div>
+    <div style="float:right;">generated on 2018-03-25 15:52</div>
 </div>
 </body>
 </html>

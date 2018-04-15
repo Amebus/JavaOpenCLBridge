@@ -1,8 +1,10 @@
 package tuples.serialization;
 
 import tuples.generics.IOclTuple;
+import tuples.generics.OclTupleIterator;
 import tuples.generics.Tuple2;
 
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -13,169 +15,207 @@ public class StreamWriter
 	private byte[] mVarTypes;
 	private int mIndex;
 
+	private OclTupleIterator mIterator;
 	private int mTempInteger;
 	private Double mTempDouble;
 	private String mTempString;
 
-	public StreamWriter(List<? extends IOclTuple> prmTupleList)
+	private static StreamWriter sStreamWriter = new StreamWriter();
+
+	public static StreamWriter getStreamWriter()
 	{
-		mTupleList = prmTupleList;
+		return sStreamWriter;
 	}
 
-	public Tuple2<byte[], int[]> writeStream()
+	private StreamWriter()
+	{
+		mIterator = OclTupleIterator.getIterator();
+	}
+
+	public StreamWriter setTupleList(List<? extends IOclTuple> pTupleList)
+	{
+		mTupleList = pTupleList;
+		return this;
+	}
+
+	public StreamWriterResult writeStream()
 	{
 		if (mTupleList == null || mTupleList.size() == 0)
 		{
 			// throw new IllegalArgumentException("The list cannot be empty");
-			return new Tuple2<>(new byte[0], new int[0]);
+			return new StreamWriterResult(new byte[0], new int[0]);
 		}
 
-		IOclTuple wvTemplateTuple = mTupleList.get(0);
-		byte wvArity = wvTemplateTuple.getArity();
-		int wvStreamLength = 1 + wvArity;
-		mVarTypes = getTypes(wvTemplateTuple);
-		mIndex = wvStreamLength;
+		IOclTuple vTemplateTuple = mTupleList.get(0);
+		byte vArity = vTemplateTuple.getArity();
+		int vStreamLength = 1 + vArity;
+		mVarTypes = getTypes(vTemplateTuple);
+		mIndex = vStreamLength;
 
-		for (IOclTuple wvTuple : mTupleList)
+		for (IOclTuple vTuple : mTupleList)
 		{
-			wvStreamLength += getBytesDim(wvTuple);
+			vStreamLength += getBytesDim(vTuple);
 		}
 
-		final byte[] wvStream = new byte[wvStreamLength];
-		final int[] wvTupleIndexes = new int[mTupleList.size()];
+		mIterator.resetToArity(vTemplateTuple.getArity());
 
-		wvStream[0] = wvArity;
+		final byte[] vStream = new byte[vStreamLength];
+		final int[] vTupleIndexes = new int[mTupleList.size()];
 
-		System.arraycopy(mVarTypes, 0, wvStream, 1, mVarTypes.length);
+		vStream[0] = vArity;
 
-		int wvI = 0;
-		for (IOclTuple wvTuple : mTupleList)
+		System.arraycopy(mVarTypes, 0, vStream, 1, mVarTypes.length);
+
+		int vI = 0;
+		for (IOclTuple vTuple : mTupleList)
 		{
-			wvTupleIndexes[wvI++] = writeStream(wvTuple, wvStream);
+			vTupleIndexes[vI++] = writeStream(vTuple, vStream);
 		}
 
-		return new Tuple2<>(wvStream, wvTupleIndexes);
+		return new StreamWriterResult(vStream, vTupleIndexes);
 	}
 
 
-	private byte[] getTypes(IOclTuple prmTuple)
+	private byte[] getTypes(IOclTuple pTuple)
 	{
-		byte[] wvResult = new byte[prmTuple.getArity()];
-		final int[] wvI = {0};
+		byte[] vResult = new byte[pTuple.getArity()];
+		int vI = 0;
 
-		prmTuple.iterator()
-				.forEachRemaining( x ->
-								   {
-									   switch (x.getClass().getName())
-									   {
-										   case "java.lang.Integer":
-											   wvResult[wvI[0]++] = Types.INT;
-											   break;
-										   case "java.lang.Double":
-											   wvResult[wvI[0]++] = Types.DOUBLE;
-											   break;
-										   case "java.lang.String":
-											   wvResult[wvI[0]++] = Types.STRING;
-											   break;
-										   default:
-											   throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
-									   }
-								   });
-		return wvResult;
+		for (Object vT : pTuple)
+		{
+			switch (vT.getClass().getName())
+			{
+				case "java.lang.Integer":
+					vResult[vI++] = Types.INT;
+					break;
+				case "java.lang.Double":
+					vResult[vI++] = Types.DOUBLE;
+					break;
+				case "java.lang.String":
+					vResult[vI++] = Types.STRING;
+					break;
+				default:
+					throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
+			}
+		}
+		return vResult;
 	}
 
-	private int getBytesDim(IOclTuple prmTuple)
+	private int getBytesDim(IOclTuple pTuple)
 	{
-		int wvDim = 0;
-		int wvIndex = 0;
+		int vDim = 0;
+		int vIndex = 0;
 
-		for (Object wvT : prmTuple)
+		for (Object vT : pTuple)
 		{
-			switch (mVarTypes[wvIndex++])
+			switch (mVarTypes[vIndex++])
 			{
 				case Types.DOUBLE:
-					wvDim += Dimensions.DOUBLE;
+					vDim += Dimensions.DOUBLE;
 					break;
 				case Types.STRING:
-					wvDim += ((String)wvT).length();
+					vDim += ((String)vT).length();
 				case Types.INT:
-					wvDim += Dimensions.INT;
+					vDim += Dimensions.INT;
 			}
 		}
 
-		return wvDim;
+		return vDim;
 	}
 
-	public int writeStream(IOclTuple prmTuple, byte[] prmStream)
+	private int writeStream(IOclTuple pTuple, byte[] pStream)
 	{
-		int wvStartIndex = mIndex;
+		int vStartIndex = mIndex;
 		int i = 0;
 
-		for (Object wvObj : prmTuple)
+		mIterator.iterateOver(pTuple);
+
+		while (mIterator.hasNext())
 		{
 			switch (mVarTypes[i])
 			{
 				case Types.INT:
-					mTempInteger = (int) wvObj;
-					insertInt(prmStream);
+					mTempInteger = (int) mIterator.next();
+					insertInt(pStream);
 					break;
 				case Types.DOUBLE:
-					mTempDouble = (Double) wvObj;
-					insertDouble(prmStream);
+					mTempDouble = (Double) mIterator.next();
+					insertDouble(pStream);
 					break;
 				case Types.STRING:
-					mTempString = (String) wvObj;
-					insertString(prmStream);
+					mTempString = (String) mIterator.next();
+					insertString(pStream);
 					break;
 			}
 			i++;
 		}
-		return wvStartIndex;
+
+
+		// for (Object vObj : pTuple)
+		// {
+		// 	switch (mVarTypes[i])
+		// 	{
+		// 		case Types.INT:
+		// 			mTempInteger = (int) vObj;
+		// 			insertInt(pStream);
+		// 			break;
+		// 		case Types.DOUBLE:
+		// 			mTempDouble = (Double) vObj;
+		// 			insertDouble(pStream);
+		// 			break;
+		// 		case Types.STRING:
+		// 			mTempString = (String) vObj;
+		// 			insertString(pStream);
+		// 			break;
+		// 	}
+		// 	i++;
+		// }
+		return vStartIndex;
 	}
 
-	private void insertInt(byte[] prmStream)
+	private void insertInt(byte[] pStream)
 	{
-		prmStream[mIndex++] = (byte)(mTempInteger >> 24);
-		prmStream[mIndex++] = (byte)(mTempInteger >> 16);
-		prmStream[mIndex++] = (byte)(mTempInteger >> 8);
-		prmStream[mIndex++] = (byte) mTempInteger;
+		pStream[mIndex++] = (byte)(mTempInteger >> 24);
+		pStream[mIndex++] = (byte)(mTempInteger >> 16);
+		pStream[mIndex++] = (byte)(mTempInteger >> 8);
+		pStream[mIndex++] = (byte) mTempInteger;
 	}
 
-	private void insertDouble(byte[] prmStream)
+	private void insertDouble(byte[] pStream)
 	{
-		long wvL = Double.doubleToLongBits(mTempDouble);
-		prmStream[mIndex++] = (byte)((wvL >> 56) & 0xFF);
-		prmStream[mIndex++] = (byte)((wvL >> 48) & 0xFF);
-		prmStream[mIndex++] = (byte)((wvL >> 40) & 0xFF);
-		prmStream[mIndex++] = (byte)((wvL >> 32) & 0xFF);
-		prmStream[mIndex++] = (byte)((wvL >> 24) & 0xFF);
-		prmStream[mIndex++] = (byte)((wvL >> 16) & 0xFF);
-		prmStream[mIndex++] = (byte)((wvL >> 8) & 0xFF);
-		prmStream[mIndex++] = (byte)(wvL & 0xFF);
+		long vL = Double.doubleToLongBits(mTempDouble);
+		pStream[mIndex++] = (byte)((vL >> 56) & 0xFF);
+		pStream[mIndex++] = (byte)((vL >> 48) & 0xFF);
+		pStream[mIndex++] = (byte)((vL >> 40) & 0xFF);
+		pStream[mIndex++] = (byte)((vL >> 32) & 0xFF);
+		pStream[mIndex++] = (byte)((vL >> 24) & 0xFF);
+		pStream[mIndex++] = (byte)((vL >> 16) & 0xFF);
+		pStream[mIndex++] = (byte)((vL >> 8) & 0xFF);
+		pStream[mIndex++] = (byte)(vL & 0xFF);
 	}
 
-	private void insertString(byte[] prmStream)
+	private void insertString(byte[] pStream)
 	{
-		byte[] wvStream = mTempString.getBytes();
-		insertStringLength(prmStream, wvStream.length);
-		for (int i = 0; i < wvStream.length && mIndex < prmStream.length; i++, mIndex++)
+		byte[] vStream = mTempString.getBytes();
+		insertStringLength(pStream, vStream.length);
+		for (int i = 0; i < vStream.length && mIndex < pStream.length; i++, mIndex++)
 		{
-			prmStream[mIndex] = wvStream[i];
+			pStream[mIndex] = vStream[i];
 		}
 
-		// int wvLength = prmValue.length();
-		// insertStringLength(prmStream, wvLength);
-		// for (int i = 0; i < wvLength && mIndex < prmStream.length; i++, mIndex++)
+		// int vLength = pValue.length();
+		// insertStringLength(pStream, vLength);
+		// for (int i = 0; i < vLength && mIndex < pStream.length; i++, mIndex++)
 		// {
-		// 	prmStream[mIndex] = (byte) prmValue.charAt(i);
+		// 	pStream[mIndex] = (byte) pValue.charAt(i);
 		// }
 	}
 
-	private void insertStringLength(byte[] prmStream, int prmValue)
+	private void insertStringLength(byte[] pStream, int pValue)
 	{
-		prmStream[mIndex++] = (byte)(prmValue >> 24);
-		prmStream[mIndex++] = (byte)(prmValue >> 16);
-		prmStream[mIndex++] = (byte)(prmValue >> 8);
-		prmStream[mIndex++] = (byte)prmValue;
+		pStream[mIndex++] = (byte)(pValue >> 24);
+		pStream[mIndex++] = (byte)(pValue >> 16);
+		pStream[mIndex++] = (byte)(pValue >> 8);
+		pStream[mIndex++] = (byte)pValue;
 	}
 }

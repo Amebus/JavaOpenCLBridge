@@ -2,25 +2,36 @@ package tuples.serialization;
 
 import tuples.generics.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class StreamReader implements Iterable<IOclTuple>
+public class StreamReader implements Iterable<IOclTuple>
 {
+	public static final String DIMENSION_ERROR = "Tuple dimension not supported";
+	public static final String DESERIALIZATION_ERROR = "Object type not recognized, unable to deserialize it";
+
 
 	private byte mArity;
 	private byte[] mStream;
 
-	public StreamReader(byte[] prmStream)
+	private static StreamReader sStreamReader = new StreamReader();
+
+	public static StreamReader getStreamReader()
 	{
-		mStream = prmStream;
-		mArity = mStream[0];
+		return sStreamReader;
 	}
 
-	public StreamReader(StreamReader prmStreamReader)
+	private StreamReader()
 	{
-		this(prmStreamReader.mStream);
+	}
+
+	public StreamReader setStream(byte[] pStream)
+	{
+		mStream = pStream;
+		mArity = mStream[0];
+		return this;
 	}
 
 	public byte[] getStream()
@@ -35,30 +46,30 @@ public final class StreamReader implements Iterable<IOclTuple>
 
 	public <R extends IOclTuple> List<R> getTupleList()
 	{
-		List<R> wvResult = new LinkedList<>();
+		List<R> vResult = new LinkedList<>();
 
-		for (IOclTuple wvTuple : this)
+		for (IOclTuple vTuple : this)
 		{
-			wvResult.add((R)wvTuple);
+			vResult.add((R)vTuple);
 		}
 
-		return wvResult;
+		return vResult;
 	}
 
 
 	@Override
-	public Iterator<IOclTuple> iterator()
+	public @NotNull Iterator<IOclTuple> iterator()
 	{
 		switch (getArity())
 		{
 			case 1:
-				return new Tuple1Iterator(new StreamReader(this));
+				return new Tuple1Iterator(this);//mTuple1Iterator.setStreamReader(this);
 			case 2:
-				return new Tuple2Iterator(new StreamReader(this));
+				return new Tuple2Iterator(this);//mTuple2Iterator.setStreamReader(this);
 			case 3:
-				return new Tuple3Iterator(new StreamReader(this));
+				return new Tuple3Iterator(this);//mTuple3Iterator.setStreamReader(this);
 			default:
-				throw new IllegalArgumentException("Tuple dimension not supported");
+				throw new IllegalArgumentException(DIMENSION_ERROR);
 		}
 	}
 
@@ -82,27 +93,30 @@ public final class StreamReader implements Iterable<IOclTuple>
 		private int mResultIndex;
 		private int mStringLength;
 
-
-		StreamIterator(StreamReader prmStreamReader)
+		
+		StreamIterator(StreamReader pStreamReader)
 		{
-			mStream = prmStreamReader.getStream();
-			mArity = prmStreamReader.getArity();
-			mResult = new Object[mArity];
+			byte vArity = pStreamReader.getArity();
+			mStream = pStreamReader.getStream();
+			if (mArity != vArity)
+			{
+				mArity = vArity;
+				mResult = new Object[vArity];
+			}
 			mIndex = 1 + mArity;
 			mTypeIndex = 1;
 			mResultIndex = 0;
 			mStringLength = 0;
-
 		}
 
 		Object[] readValuesFromStream()
 		{
-			byte wvType;
+			byte vType;
 
 			for (mResultIndex = 0; mResultIndex < mArity; mResultIndex++)
 			{
-				wvType = mStream[mTypeIndex++];
-				switch (wvType)
+				vType = mStream[mTypeIndex++];
+				switch (vType)
 				{
 					case Types.INT:
 						integerFromByteArray();
@@ -114,9 +128,10 @@ public final class StreamReader implements Iterable<IOclTuple>
 						stringFromByteArray();
 						break;
 					default:
-						throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
+						throw new IllegalArgumentException(DESERIALIZATION_ERROR);
 				}
 			}
+			mTypeIndex = 1;
 			return mResult;
 		}
 
@@ -164,20 +179,20 @@ public final class StreamReader implements Iterable<IOclTuple>
 	private static class Tuple1Iterator extends StreamIterator
 	{
 
-		Tuple1Iterator(StreamReader prmStreamReader)
+		Tuple1Iterator(StreamReader pStreamReader)
 		{
-			super(prmStreamReader);
+			super(pStreamReader);
 		}
 
 		@Override
 		public IOclTuple next()
 		{
-			Tuple1 wvTuple = new Tuple1(null);
-			Object[] wvValues = readValuesFromStream();
+			Tuple1 vTuple = new Tuple1(null);
+			Object[] vValues = readValuesFromStream();
 
-			wvTuple.setT1(wvValues[0]);
+			vTuple.setT1(vValues[0]);
 
-			return wvTuple;
+			return vTuple;
 		}
 
 		@Override
@@ -189,21 +204,22 @@ public final class StreamReader implements Iterable<IOclTuple>
 
 	private static class Tuple2Iterator extends StreamIterator
 	{
-		Tuple2Iterator(StreamReader prmStreamReader)
+
+		Tuple2Iterator(StreamReader pStreamReader)
 		{
-			super(prmStreamReader);
+			super(pStreamReader);
 		}
 
 		@Override
 		public IOclTuple next()
 		{
-			Tuple2 wvTuple = new Tuple2(null, null);
-			Object[] wvValues = readValuesFromStream();
+			Tuple2 vTuple = new Tuple2(null, null);
+			Object[] vValues = readValuesFromStream();
 
-			wvTuple.setT1(wvValues[0]);
-			wvTuple.setT2(wvValues[1]);
+			vTuple.setT1(vValues[0]);
+			vTuple.setT2(vValues[1]);
 
-			return wvTuple;
+			return vTuple;
 		}
 
 		@Override
@@ -215,22 +231,23 @@ public final class StreamReader implements Iterable<IOclTuple>
 
 	private static class Tuple3Iterator extends StreamIterator
 	{
-		Tuple3Iterator(StreamReader prmStreamReader)
+
+		Tuple3Iterator(StreamReader pStreamReader)
 		{
-			super(prmStreamReader);
+			super(pStreamReader);
 		}
 
 		@Override
 		public IOclTuple next()
 		{
-			Tuple3 wvTuple = new Tuple3(null, null, null);
-			Object[] wvValues = readValuesFromStream();
+			Tuple3 vTuple = new Tuple3(null, null, null);
+			Object[] vValues = readValuesFromStream();
 
-			wvTuple.setT1(wvValues[0]);
-			wvTuple.setT2(wvValues[1]);
-			wvTuple.setT3(wvValues[2]);
+			vTuple.setT1(vValues[0]);
+			vTuple.setT2(vValues[1]);
+			vTuple.setT3(vValues[2]);
 
-			return wvTuple;
+			return vTuple;
 		}
 
 		@Override

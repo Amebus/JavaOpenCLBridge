@@ -3,6 +3,7 @@ package configuration;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import com.google.gson.internal.LinkedHashTreeMap;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 import io.gsonfire.annotations.PostDeserialize;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -22,15 +23,9 @@ public class TupleDefinition implements Iterable<TType>
 	private transient int mHashCode;
 	private transient byte mArity;
 
-	@SerializedName("name")
-	@Expose
 	private String mName;
-
-	@SerializedName("types")
-	@Expose
-	private Map<String, String> mTypesMap = new HashMap<>();
-
-	private transient Map<String, TupleVarDefinition> mVarDefinitionMap = new HashMap<>();
+//	private Map<String, String> mTypesMap = new HashMap<>();
+	private Map<String, TupleVarDefinition> mVarDefinitionMap = new HashMap<>();
 
 
 	public TupleDefinition()
@@ -38,48 +33,56 @@ public class TupleDefinition implements Iterable<TType>
 		mArity = 0;
 	}
 
-	public TupleDefinition(TupleDefinition prmDefinition)
+	public TupleDefinition(String pName, Map<String, String> pTypesMap)
 	{
 		this();
-		mName = prmDefinition.getName();
-		mTypesMap = new HashMap<>(prmDefinition.mTypesMap);
-		mVarDefinitionMap = new HashMap<>(prmDefinition.mVarDefinitionMap);
-		mArity = prmDefinition.mArity;
+		mName = pName;
+//		mTypesMap = pTypesMap;
+		postDeserialize(pTypesMap);
+	}
+	
+	public TupleDefinition(TupleDefinition pDefinition)
+	{
+		this();
+		mName = pDefinition.getName();
+//		mTypesMap = new HashMap<>(pDefinition.mTypesMap);
+		mVarDefinitionMap = new HashMap<>(pDefinition.mVarDefinitionMap);
+		mArity = pDefinition.mArity;
 
 		computeHashCode();
 	}
-
-	@PostDeserialize
-	public void postDeserialize()
+	
+	private void postDeserialize(Map<String, String> pTypesMap)
 	{
-		final RegularExpression wvExpression = new RegularExpression("t\\d+");
-		Set<String> wvKeySet = new HashSet<>(mTypesMap.keySet());
-		wvKeySet.forEach( x ->
+		final RegularExpression vExpression = new RegularExpression("t\\d+");
+//		pTypesMap = new LinkedHashMap<>(pTypesMap);
+		Set<String> vKeySet = new HashSet<>(pTypesMap.keySet());
+		vKeySet.forEach( x ->
 						  {
-							  if(wvExpression.matches(x))
+							  if(vExpression.matches(x))
 							  {
-								  String wvTempString = x.substring(1);
-								  int wvValue = Integer.parseInt(wvTempString);
-								  if( 0 < wvValue && wvValue <= T_LIMIT)
+								  String vTempString = x.substring(1);
+								  int vValue = Integer.parseInt(vTempString);
+								  if( 0 <= vValue && vValue < T_LIMIT)
 								  {
 									  return;
 								  }
 							  }
-							  mTypesMap.remove(x);
+							  pTypesMap.remove(x);
 						  });
 
-		mArity = (byte)mTypesMap.size();
-
-		mTypesMap.forEach( (k,v) -> mVarDefinitionMap.put(k, new TupleVarDefinition(v)));
+		mArity = (byte)pTypesMap.size();
+		
+		pTypesMap.forEach( (k,v) -> mVarDefinitionMap.put(k, new TupleVarDefinition(v)));
 
 		computeHashCode();
 	}
 
 	private void computeHashCode()
 	{
-		HashCodeBuilder wvBuilder = new HashCodeBuilder();
-		reverseIterator().forEachRemaining(wvBuilder::append);
-		mHashCode = wvBuilder
+		HashCodeBuilder vBuilder = new HashCodeBuilder();
+		reverseIterator().forEachRemaining(vBuilder::append);
+		mHashCode = vBuilder
 				.append(getName())
 				.toHashCode();
 	}
@@ -126,50 +129,50 @@ public class TupleDefinition implements Iterable<TType>
 			return false;
 		}
 
-		EqualsBuilder wvBuilder = new EqualsBuilder();
+		EqualsBuilder vBuilder = new EqualsBuilder();
 
-		Iterator<TType> wvRhsIterator = rhs.iterator();
+		Iterator<TType> vRhsIterator = rhs.iterator();
 
-		forEach( (x) -> wvBuilder.append(x, wvRhsIterator.next()));
+		forEach( x -> vBuilder.append(x, vRhsIterator.next()));
 
-		return wvBuilder.append(getName(), rhs.getName()).isEquals();
+		return vBuilder.append(getName(), rhs.getName()).isEquals();
 	}
 
 	/**
 	 * Return the Java equivalent type
-	 * @param prmIndex T index
+	 * @param pIndex T index
 	 * @return String representing the Java type name
 	 */
-	public TType getJavaT(int prmIndex)
+	public TType getJavaT(int pIndex)
 	{
-		TupleVarDefinition wvT = getT(prmIndex);
-		return wvT == null ? null : wvT.getJavaT();
+		TupleVarDefinition vT = getT(pIndex);
+		return vT == null ? null : vT.getJavaT();
 	}
 
-	public TupleVarDefinition getT(int prmIndex)
+	public TupleVarDefinition getT(int pIndex)
 	{
-		return getT(getKey(prmIndex));
+		return getT(getKey(pIndex));
 	}
 
-	private TupleVarDefinition getT(String prmKey)
+	private TupleVarDefinition getT(String pKey)
 	{
-		return mVarDefinitionMap.get(prmKey);
+		return mVarDefinitionMap.get(pKey);
 	}
 
 	/**
 	 * Return the C equivalent type
-	 * @param prmIndex T index
+	 * @param pIndex T index
 	 * @return String representing the C type name
 	 */
-	public TType getCT(int prmIndex)
+	public TType getCT(int pIndex)
 	{
-		TupleVarDefinition wvT = getT(prmIndex);
-		return wvT == null ? null : wvT.getCT();
+		TupleVarDefinition vT = getT(pIndex);
+		return vT == null ? null : vT.getCT();
 	}
 
-	private String getKey(int prmIndex)
+	private String getKey(int pIndex)
 	{
-		return Keys.T + prmIndex;
+		return Keys.T + pIndex;
 	}
 
 	@Override
@@ -239,7 +242,7 @@ public class TupleDefinition implements Iterable<TType>
 		private int mCurrentIndex;
 		private ForwardTIterator()
 		{
-			mCurrentIndex = 1;
+			mCurrentIndex = 0;
 		}
 
 		protected int advanceCurrentIndex()
@@ -250,7 +253,7 @@ public class TupleDefinition implements Iterable<TType>
 		@Override
 		public boolean hasNext()
 		{
-			return mCurrentIndex <= getArity() && mCurrentIndex <= T_LIMIT;
+			return mCurrentIndex < getArity() && mCurrentIndex < T_LIMIT;
 		}
 	}
 
@@ -260,7 +263,7 @@ public class TupleDefinition implements Iterable<TType>
 
 		private ReverseTIterator()
 		{
-			mCurrentIndex = mVarDefinitionMap.size();
+			mCurrentIndex = mVarDefinitionMap.size() - 1;
 		}
 
 		protected int advanceCurrentIndex()
@@ -271,7 +274,7 @@ public class TupleDefinition implements Iterable<TType>
 		@Override
 		public boolean hasNext()
 		{
-			return mCurrentIndex > 0;
+			return mCurrentIndex >= 0;
 		}
 	}
 }

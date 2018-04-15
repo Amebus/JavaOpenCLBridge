@@ -24,16 +24,16 @@ public abstract class TType
 	private int mByteDimension;
 	private int mMaxByteDimension;
 
-	protected TType(String prmType, int prmByteDimension, int prmMaxByteDimension)
+	protected TType(String pType, int pByteDimension, int pMaxByteDimension)
 	{
-		mType = prmType;
-		mByteDimension = prmByteDimension;
-		mMaxByteDimension = prmMaxByteDimension;
+		mType = pType;
+		mByteDimension = pByteDimension;
+		mMaxByteDimension = pMaxByteDimension;
 	}
 
-	// protected TType(TType prmTType)
+	// protected TType(TType pTType)
 	// {
-	// 	this(prmTType.getT(), prmTType.getByteDimension(), prmTType.getMaxByteDimension());
+	// 	this(pTType.getT(), pTType.getByteDimension(), pTType.getMaxByteDimension());
 	// }
 
 	public String getT()
@@ -63,41 +63,41 @@ public abstract class TType
 
 
 	@Override
-	public boolean equals(Object prmOther)
+	public boolean equals(Object pOther)
 	{
-		return prmOther != null && prmOther instanceof TType && equals((TType) prmOther);
+		return pOther != null && pOther instanceof TType && equals((TType) pOther);
 	}
 
-	public boolean equals(TType prmOther)
+	public boolean equals(TType pOther)
 	{
-		return prmOther != null &&
-			   (prmOther == this ||
+		return pOther != null &&
+			   (pOther == this ||
 				new EqualsBuilder()
-						.append(getT(), prmOther.getT())
-						.append(getByteDimension(), prmOther.getByteDimension())
-						.append(getMaxByteDimension(), prmOther.getMaxByteDimension())
+						.append(getT(), pOther.getT())
+						.append(getByteDimension(), pOther.getByteDimension())
+						.append(getMaxByteDimension(), pOther.getMaxByteDimension())
 						.isEquals());
 	}
 
-	public static boolean isInteger (String prmT)
+	public static boolean isInteger (String pT)
 	{
-		if (prmT == null)
+		if (pT == null)
 			return false;
-		prmT = prmT.toLowerCase();
-		return prmT.equals(ConfigTypes.INT) || prmT.equals(ConfigTypes.INTEGER);
+		pT = pT.toLowerCase();
+		return pT.equals(ConfigTypes.INT) || pT.equals(ConfigTypes.INTEGER);
 	}
 
-	public static boolean isDouble (String prmT)
+	public static boolean isDouble (String pT)
 	{
-		return prmT != null && prmT.toLowerCase().equals(ConfigTypes.DOUBLE);
+		return pT != null && pT.toLowerCase().equals(ConfigTypes.DOUBLE);
 	}
 
-	public static boolean isString (String prmT)
+	public static boolean isString (String pT)
 	{
-		if (prmT == null)
+		if (pT == null)
 			return false;
-		prmT = prmT.toLowerCase();
-		return ConfigTypes.EXPRESSION.matches(prmT);
+		pT = pT.toLowerCase();
+		return ConfigTypes.EXPRESSION.matches(pT);
 	}
 
 	protected static abstract class TTypeBuilder
@@ -107,58 +107,58 @@ public abstract class TType
 		private int mMaxByteDimension;
 
 
-		public TTypeBuilder(String prmType)
+		public TTypeBuilder(String pType)
 		{
 			mByteDimension = 0;
 			mMaxByteDimension = 100;
-			mType = prmType;
-			setBuildParameters(prmType);
+			mType = pType;
+			setBuildParameters(pType);
 		}
 
-		public TTypeBuilder(TType prmType)
+		public TTypeBuilder(TType pType)
 		{
-			setBuildParameters(prmType);
+			setBuildParameters(pType);
 		}
 
-		private void setBuildParameters(TType prmType)
+		private void setBuildParameters(TType pType)
 		{
-			mByteDimension = prmType.getByteDimension();
-			mMaxByteDimension = prmType.getMaxByteDimension();
-			mType = prmType.getT();
+			mByteDimension = pType.getByteDimension();
+			mMaxByteDimension = pType.getMaxByteDimension();
+			mType = pType.getT();
 		}
 
-		private void setBuildParameters(String prmType)
+		private void setBuildParameters(String pType)
 		{
-			if (isString(prmType))
+			if (isString(pType))
 			{
-				asStringType(prmType);
+				asStringType(pType);
 			}
-			else if (isInteger(prmType))
+			else if (isInteger(pType))
 			{
 				asIntegerType();
 			}
-			else if (isDouble(prmType))
+			else if (isDouble(pType))
 			{
 				asDoubleType();
 			}
 			else
 			{
 				mType = "";
-				throw new IllegalArgumentException("Error with var type " + prmType
+				throw new IllegalArgumentException("Error with var type " + pType
 												   +". The var type must be one between: int|integer or char|character or double or string");
 			}
 		}
 
-		private void asStringType(String prmType)
+		private void asStringType(String pType)
 		{
-			String[] wvStrings = prmType.split(COLUMN);
+			String[] vStrings = pType.split(COLUMN);
 			mByteDimension = -1;
 
-			if (wvStrings.length > 1)
+			if (vStrings.length > 1)
 			{
-				mMaxByteDimension = Integer.parseInt(wvStrings[1]);
+				mMaxByteDimension = Integer.parseInt(vStrings[1]);
 			}
-			mType = wvStrings[0];
+			mType = vStrings[0];
 		}
 
 		private void asIntegerType()

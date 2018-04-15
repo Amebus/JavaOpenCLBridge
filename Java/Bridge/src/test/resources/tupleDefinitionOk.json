@@ -1,8 +1,8 @@
 {
-  "name": "nn",
-  "types": {
-    "t1": "int",
-    "t2": "string",
-    "t3": "double"
+  "tupleOne": {
+    "t0": "int",
+    "t1": "string",
+    "t2": "double",
+    "t3": "int"
   }
 }

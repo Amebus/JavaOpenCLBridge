@@ -256,7 +256,7 @@
 <i>20</i>&nbsp;
 <i>21</i>&nbsp;	public static final transient int T_LIMIT = 22;
 <i>22</i>&nbsp;	private transient int mHashCode;
-<i>23</i>&nbsp;	private transient int mArity;
+<i>23</i>&nbsp;	private transient byte mArity;
 <i>24</i>&nbsp;
 <i>25</i>&nbsp;	@SerializedName(&quot;name&quot;)
 <i>26</i>&nbsp;	@Expose
@@ -304,7 +304,7 @@
 <b class="nc"><i>68</i>&nbsp;							  mTypesMap.remove(x);</b>
 <i>69</i>&nbsp;						  });
 <i>70</i>&nbsp;
-<b class="fc"><i>71</i>&nbsp;		mArity = mTypesMap.size();</b>
+<b class="fc"><i>71</i>&nbsp;		mArity = (byte)mTypesMap.size();</b>
 <i>72</i>&nbsp;
 <b class="fc"><i>73</i>&nbsp;		mTypesMap.forEach( (k,v) -&gt; mVarDefinitionMap.put(k, new TupleVarDefinition(v)));</b>
 <i>74</i>&nbsp;
@@ -329,7 +329,7 @@
 <i>93</i>&nbsp;	 * Return the tuple arity
 <i>94</i>&nbsp;	 * @return an int representing the arity of the tuple
 <i>95</i>&nbsp;	 */
-<i>96</i>&nbsp;	public Integer getArity()
+<i>96</i>&nbsp;	public Byte getArity()
 <i>97</i>&nbsp;	{
 <b class="fc"><i>98</i>&nbsp;		return mArity;</b>
 <i>99</i>&nbsp;	}
@@ -366,7 +366,7 @@
 <i>130</i>&nbsp;
 <b class="fc"><i>131</i>&nbsp;		Iterator&lt;TType&gt; wvRhsIterator = rhs.iterator();</b>
 <i>132</i>&nbsp;
-<b class="fc"><i>133</i>&nbsp;		forEach( (x) -&gt; wvBuilder.append(x, wvRhsIterator.next()));</b>
+<b class="fc"><i>133</i>&nbsp;		forEach( x -&gt; wvBuilder.append(x, wvRhsIterator.next()));</b>
 <i>134</i>&nbsp;
 <b class="fc"><i>135</i>&nbsp;		return wvBuilder.append(getName(), rhs.getName()).isEquals();</b>
 <i>136</i>&nbsp;	}
@@ -516,7 +516,7 @@
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-03-01 22:31</div>
+    <div style="float:right;">generated on 2018-03-25 15:52</div>
 </div>
 </body>
 </html>

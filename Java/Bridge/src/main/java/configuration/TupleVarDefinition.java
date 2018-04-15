@@ -11,14 +11,14 @@ public class TupleVarDefinition
 	private CTType mCTType;
 	private transient int mHashCode;
 
-	public TupleVarDefinition(String prmJsonVarType)
+	public TupleVarDefinition(String pJsonVarType)
 	{
-		setInternalValues(prmJsonVarType);
+		setInternalValues(pJsonVarType);
 	}
 
-	public TupleVarDefinition(TupleVarDefinition prmVarDefinition)
+	public TupleVarDefinition(TupleVarDefinition pVarDefinition)
 	{
-		setInternalValues(prmVarDefinition.getJavaT());
+		setInternalValues(pVarDefinition.getJavaT());
 	}
 
 	/**
@@ -39,15 +39,15 @@ public class TupleVarDefinition
 		return mCTType;
 	}
 
-	private void setInternalValues(String prmJsonVarType)
+	private void setInternalValues(String pJsonVarType)
 	{
-		setInternalValues(new CTType.Builder(prmJsonVarType).build());
+		setInternalValues(new CTType.Builder(pJsonVarType).build());
 	}
 
-	private void setInternalValues (TType prmType)
+	private void setInternalValues (TType pType)
 	{
-		mCTType = new CTType.Builder(prmType).build();
-		mJavaTType = new JavaTType.Builder(prmType).build();
+		mCTType = new CTType.Builder(pType).build();
+		mJavaTType = new JavaTType.Builder(pType).build();
 		mHashCode = new HashCodeBuilder()
 				.append(getJavaT())
 				.toHashCode();
@@ -60,21 +60,21 @@ public class TupleVarDefinition
 	}
 
 	@Override
-	public boolean equals(Object prmOther)
+	public boolean equals(Object pOther)
 	{
-		if (prmOther == null)
+		if (pOther == null)
 		{
 			return false;
 		}
-		if (prmOther == this)
+		if (pOther == this)
 		{
 			return true;
 		}
-		if (!(prmOther instanceof TupleVarDefinition))
+		if (!(pOther instanceof TupleVarDefinition))
 		{
 			return false;
 		}
-		TupleVarDefinition rhs = ((TupleVarDefinition) prmOther);
+		TupleVarDefinition rhs = ((TupleVarDefinition) pOther);
 
 		return new EqualsBuilder()
 				.append(getJavaT(), rhs.getJavaT())

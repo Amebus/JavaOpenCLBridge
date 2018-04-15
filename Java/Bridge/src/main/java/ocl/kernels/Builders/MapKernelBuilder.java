@@ -106,12 +106,12 @@ public class MapKernelBuilder extends BaseKernelBuilder
 
 		result += (getKernelName().length() + getExecutionLogic().length());
 
-		if(!ObjectHelper.isNullOrEmptyOrWhiteSpace(getParametersDefinition()))
+		if(!ObjectHelper.isNullOrWhiteSpace(getParametersDefinition()))
 		{
 			result += getParametersDefinition().length();
 		}
 
-		if (!ObjectHelper.isNullOrEmptyOrWhiteSpace(getPostExecutionLogic()))
+		if (!ObjectHelper.isNullOrWhiteSpace(getPostExecutionLogic()))
 		{
 			result += getPostExecutionLogic().length();
 		}
@@ -153,7 +153,7 @@ public class MapKernelBuilder extends BaseKernelBuilder
 
 	private void correctlyAddIfPassTest(String str)
 	{
-		if(!ObjectHelper.isNullOrEmptyOrWhiteSpace(str))
+		if(!ObjectHelper.isNullOrWhiteSpace(str))
 		{
 			mKernelSourceBuilder.append(str);
 			if(!str.endsWith(";"))

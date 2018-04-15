@@ -1,0 +1,304 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: StreamWriter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">tuples.serialization</a> ]
+</div>
+
+<h1>Coverage Summary for Class: StreamWriter (tuples.serialization)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StreamWriter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (85/ 85)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package tuples.serialization;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import tuples.generics.IOclTuple;
+<i>4</i>&nbsp;import tuples.generics.OclTupleIterator;
+<i>5</i>&nbsp;import tuples.generics.Tuple2;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.util.Iterator;
+<i>8</i>&nbsp;import java.util.List;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public class StreamWriter
+<i>12</i>&nbsp;{
+<i>13</i>&nbsp;	private List&lt;? extends IOclTuple&gt; mTupleList;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;	private byte[] mVarTypes;
+<i>16</i>&nbsp;	private int mIndex;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;	private OclTupleIterator mIterator;
+<i>19</i>&nbsp;	private int mTempInteger;
+<i>20</i>&nbsp;	private Double mTempDouble;
+<i>21</i>&nbsp;	private String mTempString;
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;	private static StreamWriter sStreamWriter = new StreamWriter();</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;	public static StreamWriter getStreamWriter()
+<i>26</i>&nbsp;	{
+<b class="fc"><i>27</i>&nbsp;		return sStreamWriter;</b>
+<i>28</i>&nbsp;	}
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;	private StreamWriter()
+<b class="fc"><i>31</i>&nbsp;	{</b>
+<b class="fc"><i>32</i>&nbsp;		mIterator = OclTupleIterator.getIterator();</b>
+<i>33</i>&nbsp;	}
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;	public StreamWriter setTupleList(List&lt;? extends IOclTuple&gt; prmTupleList)
+<i>36</i>&nbsp;	{
+<b class="fc"><i>37</i>&nbsp;		mTupleList = prmTupleList;</b>
+<b class="fc"><i>38</i>&nbsp;		return this;</b>
+<i>39</i>&nbsp;	}
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;	public StreamWriterResult writeStream()
+<i>42</i>&nbsp;	{
+<b class="pc"><i>43</i>&nbsp;		if (mTupleList == null || mTupleList.size() == 0)</b>
+<i>44</i>&nbsp;		{
+<i>45</i>&nbsp;			// throw new IllegalArgumentException(&quot;The list cannot be empty&quot;);
+<b class="fc"><i>46</i>&nbsp;			return new StreamWriterResult(new byte[0], new int[0]);</b>
+<i>47</i>&nbsp;		}
+<i>48</i>&nbsp;
+<b class="fc"><i>49</i>&nbsp;		IOclTuple wvTemplateTuple = mTupleList.get(0);</b>
+<b class="fc"><i>50</i>&nbsp;		byte wvArity = wvTemplateTuple.getArity();</b>
+<b class="fc"><i>51</i>&nbsp;		int wvStreamLength = 1 + wvArity;</b>
+<b class="fc"><i>52</i>&nbsp;		mVarTypes = getTypes(wvTemplateTuple);</b>
+<b class="fc"><i>53</i>&nbsp;		mIndex = wvStreamLength;</b>
+<i>54</i>&nbsp;
+<b class="fc"><i>55</i>&nbsp;		for (IOclTuple wvTuple : mTupleList)</b>
+<i>56</i>&nbsp;		{
+<b class="fc"><i>57</i>&nbsp;			wvStreamLength += getBytesDim(wvTuple);</b>
+<b class="fc"><i>58</i>&nbsp;		}</b>
+<i>59</i>&nbsp;
+<b class="fc"><i>60</i>&nbsp;		mIterator.resetToArity(wvTemplateTuple.getArity());</b>
+<i>61</i>&nbsp;
+<b class="fc"><i>62</i>&nbsp;		final byte[] wvStream = new byte[wvStreamLength];</b>
+<b class="fc"><i>63</i>&nbsp;		final int[] wvTupleIndexes = new int[mTupleList.size()];</b>
+<i>64</i>&nbsp;
+<b class="fc"><i>65</i>&nbsp;		wvStream[0] = wvArity;</b>
+<i>66</i>&nbsp;
+<b class="fc"><i>67</i>&nbsp;		System.arraycopy(mVarTypes, 0, wvStream, 1, mVarTypes.length);</b>
+<i>68</i>&nbsp;
+<b class="fc"><i>69</i>&nbsp;		int wvI = 0;</b>
+<b class="fc"><i>70</i>&nbsp;		for (IOclTuple wvTuple : mTupleList)</b>
+<i>71</i>&nbsp;		{
+<b class="fc"><i>72</i>&nbsp;			wvTupleIndexes[wvI++] = writeStream(wvTuple, wvStream);</b>
+<b class="fc"><i>73</i>&nbsp;		}</b>
+<i>74</i>&nbsp;
+<b class="fc"><i>75</i>&nbsp;		return new StreamWriterResult(wvStream, wvTupleIndexes);</b>
+<i>76</i>&nbsp;	}
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;	private byte[] getTypes(IOclTuple prmTuple)
+<i>80</i>&nbsp;	{
+<b class="fc"><i>81</i>&nbsp;		byte[] wvResult = new byte[prmTuple.getArity()];</b>
+<b class="fc"><i>82</i>&nbsp;		int wvI = 0;</b>
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;		for (Object wvT : prmTuple)</b>
+<i>85</i>&nbsp;		{
+<b class="pc"><i>86</i>&nbsp;			switch (wvT.getClass().getName())</b>
+<i>87</i>&nbsp;			{
+<i>88</i>&nbsp;				case &quot;java.lang.Integer&quot;:
+<b class="fc"><i>89</i>&nbsp;					wvResult[wvI++] = Types.INT;</b>
+<b class="fc"><i>90</i>&nbsp;					break;</b>
+<i>91</i>&nbsp;				case &quot;java.lang.Double&quot;:
+<b class="fc"><i>92</i>&nbsp;					wvResult[wvI++] = Types.DOUBLE;</b>
+<b class="fc"><i>93</i>&nbsp;					break;</b>
+<i>94</i>&nbsp;				case &quot;java.lang.String&quot;:
+<b class="fc"><i>95</i>&nbsp;					wvResult[wvI++] = Types.STRING;</b>
+<b class="fc"><i>96</i>&nbsp;					break;</b>
+<i>97</i>&nbsp;				default:
+<b class="fc"><i>98</i>&nbsp;					throw new IllegalArgumentException(&quot;Object type not recognized, unable to serialize it&quot;);</b>
+<i>99</i>&nbsp;			}
+<b class="fc"><i>100</i>&nbsp;		}</b>
+<b class="fc"><i>101</i>&nbsp;		return wvResult;</b>
+<i>102</i>&nbsp;	}
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;	private int getBytesDim(IOclTuple prmTuple)
+<i>105</i>&nbsp;	{
+<b class="fc"><i>106</i>&nbsp;		int wvDim = 0;</b>
+<b class="fc"><i>107</i>&nbsp;		int wvIndex = 0;</b>
+<i>108</i>&nbsp;
+<b class="fc"><i>109</i>&nbsp;		for (Object wvT : prmTuple)</b>
+<i>110</i>&nbsp;		{
+<b class="fc"><i>111</i>&nbsp;			switch (mVarTypes[wvIndex++])</b>
+<i>112</i>&nbsp;			{
+<i>113</i>&nbsp;				case Types.DOUBLE:
+<b class="fc"><i>114</i>&nbsp;					wvDim += Dimensions.DOUBLE;</b>
+<b class="fc"><i>115</i>&nbsp;					break;</b>
+<i>116</i>&nbsp;				case Types.STRING:
+<b class="fc"><i>117</i>&nbsp;					wvDim += ((String)wvT).length();</b>
+<i>118</i>&nbsp;				case Types.INT:
+<b class="fc"><i>119</i>&nbsp;					wvDim += Dimensions.INT;</b>
+<i>120</i>&nbsp;			}
+<b class="fc"><i>121</i>&nbsp;		}</b>
+<i>122</i>&nbsp;
+<b class="fc"><i>123</i>&nbsp;		return wvDim;</b>
+<i>124</i>&nbsp;	}
+<i>125</i>&nbsp;
+<i>126</i>&nbsp;	private int writeStream(IOclTuple prmTuple, byte[] prmStream)
+<i>127</i>&nbsp;	{
+<b class="fc"><i>128</i>&nbsp;		int wvStartIndex = mIndex;</b>
+<b class="fc"><i>129</i>&nbsp;		int i = 0;</b>
+<i>130</i>&nbsp;
+<b class="fc"><i>131</i>&nbsp;		mIterator.iterateOver(prmTuple);</b>
+<i>132</i>&nbsp;
+<b class="fc"><i>133</i>&nbsp;		while (mIterator.hasNext())</b>
+<i>134</i>&nbsp;		{
+<b class="fc"><i>135</i>&nbsp;			switch (mVarTypes[i])</b>
+<i>136</i>&nbsp;			{
+<i>137</i>&nbsp;				case Types.INT:
+<b class="fc"><i>138</i>&nbsp;					mTempInteger = (int) mIterator.next();</b>
+<b class="fc"><i>139</i>&nbsp;					insertInt(prmStream);</b>
+<b class="fc"><i>140</i>&nbsp;					break;</b>
+<i>141</i>&nbsp;				case Types.DOUBLE:
+<b class="fc"><i>142</i>&nbsp;					mTempDouble = (Double) mIterator.next();</b>
+<b class="fc"><i>143</i>&nbsp;					insertDouble(prmStream);</b>
+<b class="fc"><i>144</i>&nbsp;					break;</b>
+<i>145</i>&nbsp;				case Types.STRING:
+<b class="fc"><i>146</i>&nbsp;					mTempString = (String) mIterator.next();</b>
+<b class="fc"><i>147</i>&nbsp;					insertString(prmStream);</b>
+<i>148</i>&nbsp;					break;
+<i>149</i>&nbsp;			}
+<b class="fc"><i>150</i>&nbsp;			i++;</b>
+<i>151</i>&nbsp;		}
+<i>152</i>&nbsp;
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;		// for (Object wvObj : prmTuple)
+<i>155</i>&nbsp;		// {
+<i>156</i>&nbsp;		// 	switch (mVarTypes[i])
+<i>157</i>&nbsp;		// 	{
+<i>158</i>&nbsp;		// 		case Types.INT:
+<i>159</i>&nbsp;		// 			mTempInteger = (int) wvObj;
+<i>160</i>&nbsp;		// 			insertInt(prmStream);
+<i>161</i>&nbsp;		// 			break;
+<i>162</i>&nbsp;		// 		case Types.DOUBLE:
+<i>163</i>&nbsp;		// 			mTempDouble = (Double) wvObj;
+<i>164</i>&nbsp;		// 			insertDouble(prmStream);
+<i>165</i>&nbsp;		// 			break;
+<i>166</i>&nbsp;		// 		case Types.STRING:
+<i>167</i>&nbsp;		// 			mTempString = (String) wvObj;
+<i>168</i>&nbsp;		// 			insertString(prmStream);
+<i>169</i>&nbsp;		// 			break;
+<i>170</i>&nbsp;		// 	}
+<i>171</i>&nbsp;		// 	i++;
+<i>172</i>&nbsp;		// }
+<b class="fc"><i>173</i>&nbsp;		return wvStartIndex;</b>
+<i>174</i>&nbsp;	}
+<i>175</i>&nbsp;
+<i>176</i>&nbsp;	private void insertInt(byte[] prmStream)
+<i>177</i>&nbsp;	{
+<b class="fc"><i>178</i>&nbsp;		prmStream[mIndex++] = (byte)(mTempInteger &gt;&gt; 24);</b>
+<b class="fc"><i>179</i>&nbsp;		prmStream[mIndex++] = (byte)(mTempInteger &gt;&gt; 16);</b>
+<b class="fc"><i>180</i>&nbsp;		prmStream[mIndex++] = (byte)(mTempInteger &gt;&gt; 8);</b>
+<b class="fc"><i>181</i>&nbsp;		prmStream[mIndex++] = (byte) mTempInteger;</b>
+<i>182</i>&nbsp;	}
+<i>183</i>&nbsp;
+<i>184</i>&nbsp;	private void insertDouble(byte[] prmStream)
+<i>185</i>&nbsp;	{
+<b class="fc"><i>186</i>&nbsp;		long wvL = Double.doubleToLongBits(mTempDouble);</b>
+<b class="fc"><i>187</i>&nbsp;		prmStream[mIndex++] = (byte)((wvL &gt;&gt; 56) &amp; 0xFF);</b>
+<b class="fc"><i>188</i>&nbsp;		prmStream[mIndex++] = (byte)((wvL &gt;&gt; 48) &amp; 0xFF);</b>
+<b class="fc"><i>189</i>&nbsp;		prmStream[mIndex++] = (byte)((wvL &gt;&gt; 40) &amp; 0xFF);</b>
+<b class="fc"><i>190</i>&nbsp;		prmStream[mIndex++] = (byte)((wvL &gt;&gt; 32) &amp; 0xFF);</b>
+<b class="fc"><i>191</i>&nbsp;		prmStream[mIndex++] = (byte)((wvL &gt;&gt; 24) &amp; 0xFF);</b>
+<b class="fc"><i>192</i>&nbsp;		prmStream[mIndex++] = (byte)((wvL &gt;&gt; 16) &amp; 0xFF);</b>
+<b class="fc"><i>193</i>&nbsp;		prmStream[mIndex++] = (byte)((wvL &gt;&gt; 8) &amp; 0xFF);</b>
+<b class="fc"><i>194</i>&nbsp;		prmStream[mIndex++] = (byte)(wvL &amp; 0xFF);</b>
+<i>195</i>&nbsp;	}
+<i>196</i>&nbsp;
+<i>197</i>&nbsp;	private void insertString(byte[] prmStream)
+<i>198</i>&nbsp;	{
+<b class="fc"><i>199</i>&nbsp;		byte[] wvStream = mTempString.getBytes();</b>
+<b class="fc"><i>200</i>&nbsp;		insertStringLength(prmStream, wvStream.length);</b>
+<b class="pc"><i>201</i>&nbsp;		for (int i = 0; i &lt; wvStream.length &amp;&amp; mIndex &lt; prmStream.length; i++, mIndex++)</b>
+<i>202</i>&nbsp;		{
+<b class="fc"><i>203</i>&nbsp;			prmStream[mIndex] = wvStream[i];</b>
+<i>204</i>&nbsp;		}
+<i>205</i>&nbsp;
+<i>206</i>&nbsp;		// int wvLength = prmValue.length();
+<i>207</i>&nbsp;		// insertStringLength(prmStream, wvLength);
+<i>208</i>&nbsp;		// for (int i = 0; i &lt; wvLength &amp;&amp; mIndex &lt; prmStream.length; i++, mIndex++)
+<i>209</i>&nbsp;		// {
+<i>210</i>&nbsp;		// 	prmStream[mIndex] = (byte) prmValue.charAt(i);
+<i>211</i>&nbsp;		// }
+<i>212</i>&nbsp;	}
+<i>213</i>&nbsp;
+<i>214</i>&nbsp;	private void insertStringLength(byte[] prmStream, int prmValue)
+<i>215</i>&nbsp;	{
+<b class="fc"><i>216</i>&nbsp;		prmStream[mIndex++] = (byte)(prmValue &gt;&gt; 24);</b>
+<b class="fc"><i>217</i>&nbsp;		prmStream[mIndex++] = (byte)(prmValue &gt;&gt; 16);</b>
+<b class="fc"><i>218</i>&nbsp;		prmStream[mIndex++] = (byte)(prmValue &gt;&gt; 8);</b>
+<b class="fc"><i>219</i>&nbsp;		prmStream[mIndex++] = (byte)prmValue;</b>
+<i>220</i>&nbsp;	}
+<i>221</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-03-25 15:52</div>
+</div>
+</body>
+</html>

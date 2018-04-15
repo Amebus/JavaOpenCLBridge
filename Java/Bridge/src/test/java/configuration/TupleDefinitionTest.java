@@ -3,7 +3,7 @@ package configuration;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import testHelpers.LoadSettingsDirective;
+import testHelpers.Constants;
 
 import java.util.Iterator;
 
@@ -17,89 +17,89 @@ class TupleDefinitionTest
 	@Test
 	void TupleDefinition_Equals_Ok()
 	{
-		LoadSettingsDirective wvSettingsDirective = new LoadSettingsDirective("tupleEqualsTest.json");
-		Settings wvSettings = getSettings(wvSettingsDirective);
-		Iterable<TupleDefinition> wvDefinitions = wvSettings.getTupleDefinitions();
+		LoadSettingsDirective vSettingsDirective = new LoadSettingsDirective(Constants.RESOURCES_DIR, "tupleEqualsTest.json");
+		Settings vSettings = getSettings(vSettingsDirective);
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
-		wvDefinitions.forEach( x -> assertTrue(x.equals(x)));
+		vDefinitions.forEach( x -> assertTrue(x.equals(x)));
 
-		wvDefinitions.forEach( x -> assertTrue(x.equals(new TupleDefinition(x))));
+		vDefinitions.forEach( x -> assertTrue(x.equals(new TupleDefinition(x))));
 
-		wvDefinitions.forEach( x -> assertFalse(x.equals(null)));
+		vDefinitions.forEach( x -> assertFalse(x.equals(null)));
 
-		wvDefinitions.forEach( x -> assertFalse(x.equals("string")));
+		vDefinitions.forEach( x -> assertFalse(x.equals("string")));
 
-		Iterator<TupleDefinition> wvIterator = wvDefinitions.iterator();
+		Iterator<TupleDefinition> vIterator = vDefinitions.iterator();
 
-		TupleDefinition wvOne, wvTwo;
+		TupleDefinition vOne, vTwo;
 
-		wvOne = wvIterator.next();
-		wvTwo = wvIterator.next();
+		vOne = vIterator.next();
+		vTwo = vIterator.next();
 
-		assertFalse(wvOne.equals(wvTwo));
-		assertFalse(wvTwo.equals(wvOne));
+		assertFalse(vOne.equals(vTwo));
+		assertFalse(vTwo.equals(vOne));
 
-		wvTwo = wvIterator.next();
+		vTwo = vIterator.next();
 
-		assertFalse(wvOne.equals(wvTwo));
-		assertFalse(wvTwo.equals(wvOne));
+		assertFalse(vOne.equals(vTwo));
+		assertFalse(vTwo.equals(vOne));
 	}
 
 	@Test
 	void TupleDefinition_HashCode_Ok()
 	{
-		LoadSettingsDirective wvSettingsDirective = new LoadSettingsDirective("tupleEqualsTest.json");
-		Settings wvSettings = getSettings(wvSettingsDirective);
-		Iterable<TupleDefinition> wvDefinitions = wvSettings.getTupleDefinitions();
+		LoadSettingsDirective vSettingsDirective = new LoadSettingsDirective(Constants.RESOURCES_DIR, "tupleEqualsTest.json");
+		Settings vSettings = getSettings(vSettingsDirective);
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
-		wvDefinitions.forEach( x -> assertEquals(x.hashCode(), x.hashCode()));
+		vDefinitions.forEach( x -> assertEquals(x.hashCode(), x.hashCode()));
 
-		wvDefinitions.forEach( x -> assertEquals(x.hashCode(), new TupleDefinition(x).hashCode()));
+		vDefinitions.forEach( x -> assertEquals(x.hashCode(), new TupleDefinition(x).hashCode()));
 
-		Iterator<TupleDefinition> wvIterator = wvDefinitions.iterator();
+		Iterator<TupleDefinition> vIterator = vDefinitions.iterator();
 
-		TupleDefinition wvOne, wvTwo;
+		TupleDefinition vOne, vTwo;
 
-		wvOne = wvIterator.next();
-		wvTwo = wvIterator.next();
+		vOne = vIterator.next();
+		vTwo = vIterator.next();
 
-		assertNotEquals(wvOne.hashCode(), wvTwo.hashCode());
+		assertNotEquals(vOne.hashCode(), vTwo.hashCode());
 	}
 
 	@Test
 	void TupleDefinition_TWithIndexOutOfBoundIsNull_Ok()
 	{
-		Settings wvSettings = getSettings();
-		Iterator<TupleDefinition> wvIterator = wvSettings.getTupleDefinitions().iterator();
+		Settings vSettings = getSettings();
+		Iterator<TupleDefinition> vIterator = vSettings.getTupleDefinitions().asIterable().iterator();
 
-		TupleDefinition wvOne = wvIterator.next();
+		TupleDefinition vOne = vIterator.next();
 
-		assertNull(wvOne.getT(5));
-		assertNull(wvOne.getT(TupleDefinition.T_LIMIT + 1));
+		assertNull(vOne.getT(5));
+		assertNull(vOne.getT(TupleDefinition.T_LIMIT + 1));
 
-		assertNull(wvOne.getJavaT(5));
-		assertNull(wvOne.getJavaT(TupleDefinition.T_LIMIT + 1));
+		assertNull(vOne.getJavaT(5));
+		assertNull(vOne.getJavaT(TupleDefinition.T_LIMIT + 1));
 
-		assertNull(wvOne.getCT(5));
-		assertNull(wvOne.getCT(TupleDefinition.T_LIMIT + 1));
+		assertNull(vOne.getCT(5));
+		assertNull(vOne.getCT(TupleDefinition.T_LIMIT + 1));
 	}
 
 	@Test
 	void TupleDefinition_Iterator_Ok()
 	{
-		Settings wvSettings = getSettings();
+		Settings vSettings = getSettings();
 
-		Iterable<TupleDefinition> wvDefinitions = wvSettings.getTupleDefinitions();
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
 
-		Iterator<TupleDefinition> wvTupleIterator = wvDefinitions.iterator();
+		Iterator<TupleDefinition> vTupleIterator = vDefinitions.iterator();
 
-		TupleDefinition wvTupleDefinition = wvTupleIterator.next();
+		TupleDefinition vTupleDefinition = vTupleIterator.next();
 
-		assertTrue(expectedCount == wvTupleDefinition.getArity());
-		assertEquals("tupleOne", wvTupleDefinition.getName());
+		assertTrue(expectedCount == vTupleDefinition.getArity());
+		assertEquals("tupleOne", vTupleDefinition.getName());
 
 		final TType[] expectedTypes =
 				{
@@ -109,7 +109,7 @@ class TupleDefinitionTest
 					getJavaTInteger()
 				};
 
-		wvTupleDefinition.forEach( x ->
+		vTupleDefinition.forEach( x ->
 								   {
 									   	assertEquals(expectedTypes[actualCount[0]], x);
 										actualCount[0]++;
@@ -122,8 +122,8 @@ class TupleDefinitionTest
 		expectedTypes[0] = getJavaTDouble();
 
 
-		wvTupleDefinition = wvTupleIterator.next();
-		wvTupleDefinition.forEach( x ->
+		vTupleDefinition = vTupleIterator.next();
+		vTupleDefinition.forEach( x ->
 								   {
 									   assertEquals(expectedTypes[actualCount[0]], x);
 									   actualCount[0]++;
@@ -132,25 +132,25 @@ class TupleDefinitionTest
 		assertEquals(expectedCount, actualCount[0]);
 
 
-		assertFalse(wvTupleIterator.hasNext());
+		assertFalse(vTupleIterator.hasNext());
 	}
 
 	@Test
 	void TupleDefinition_ReverseIterator_Ok()
 	{
-		Settings wvSettings = getSettings();
+		Settings vSettings = getSettings();
 
-		Iterable<TupleDefinition> wvDefinitions = wvSettings.getTupleDefinitions();
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
 
-		Iterator<TupleDefinition> wvTupleIterator = wvDefinitions.iterator();
+		Iterator<TupleDefinition> vTupleIterator = vDefinitions.iterator();
 
-		TupleDefinition wvTupleDefinition = wvTupleIterator.next();
+		TupleDefinition vTupleDefinition = vTupleIterator.next();
 
-		assertTrue(expectedCount == wvTupleDefinition.getArity());
-		assertEquals("tupleOne", wvTupleDefinition.getName());
+		assertTrue(expectedCount == vTupleDefinition.getArity());
+		assertEquals("tupleOne", vTupleDefinition.getName());
 
 		final TType[] expectedTypes =
 				{
@@ -160,7 +160,7 @@ class TupleDefinitionTest
 						getJavaTInteger()
 				};
 
-		wvTupleDefinition.reverseIterator().forEachRemaining( x ->
+		vTupleDefinition.reverseIterator().forEachRemaining( x ->
 								   {
 									   assertEquals(expectedTypes[actualCount[0]], x);
 									   actualCount[0]++;
@@ -173,8 +173,8 @@ class TupleDefinitionTest
 		expectedTypes[0] = getJavaTDouble();
 
 
-		wvTupleDefinition = wvTupleIterator.next();
-		wvTupleDefinition.reverseIterator().forEachRemaining( x ->
+		vTupleDefinition = vTupleIterator.next();
+		vTupleDefinition.reverseIterator().forEachRemaining( x ->
 								   {
 									   assertEquals(expectedTypes[actualCount[0]], x);
 									   actualCount[0]++;
@@ -183,25 +183,25 @@ class TupleDefinitionTest
 		assertEquals(expectedCount, actualCount[0]);
 
 
-		assertFalse(wvTupleIterator.hasNext());
+		assertFalse(vTupleIterator.hasNext());
 	}
 
 	@Test
 	void TupleDefinition_CIterator_Ok()
 	{
-		Settings wvSettings = getSettings();
+		Settings vSettings = getSettings();
 
-		Iterable<TupleDefinition> wvDefinitions = wvSettings.getTupleDefinitions();
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
 
-		Iterator<TupleDefinition> wvTupleIterator = wvDefinitions.iterator();
+		Iterator<TupleDefinition> vTupleIterator = vDefinitions.iterator();
 
-		TupleDefinition wvTupleDefinition = wvTupleIterator.next();
+		TupleDefinition vTupleDefinition = vTupleIterator.next();
 
-		assertTrue(expectedCount == wvTupleDefinition.getArity());
-		assertEquals("tupleOne", wvTupleDefinition.getName());
+		assertTrue(expectedCount == vTupleDefinition.getArity());
+		assertEquals("tupleOne", vTupleDefinition.getName());
 
 		final TType[] expectedTypes =
 				{
@@ -211,7 +211,7 @@ class TupleDefinitionTest
 						getCTInteger()
 				};
 
-		wvTupleDefinition.cIterator().forEachRemaining( x ->
+		vTupleDefinition.cIterator().forEachRemaining( x ->
 								   {
 									   assertEquals(expectedTypes[actualCount[0]], x);
 									   actualCount[0]++;
@@ -224,8 +224,8 @@ class TupleDefinitionTest
 		expectedTypes[0] = getCTDouble();
 
 
-		wvTupleDefinition = wvTupleIterator.next();
-		wvTupleDefinition.cIterator().forEachRemaining( x ->
+		vTupleDefinition = vTupleIterator.next();
+		vTupleDefinition.cIterator().forEachRemaining( x ->
 								   {
 									   assertEquals(expectedTypes[actualCount[0]], x);
 									   actualCount[0]++;
@@ -234,25 +234,25 @@ class TupleDefinitionTest
 		assertEquals(expectedCount, actualCount[0]);
 
 
-		assertFalse(wvTupleIterator.hasNext());
+		assertFalse(vTupleIterator.hasNext());
 	}
 
 	@Test
 	void TupleDefinition_ReverseCIterator_Ok()
 	{
-		Settings wvSettings = getSettings();
+		Settings vSettings = getSettings();
 
-		Iterable<TupleDefinition> wvDefinitions = wvSettings.getTupleDefinitions();
+		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
 
-		Iterator<TupleDefinition> wvTupleIterator = wvDefinitions.iterator();
+		Iterator<TupleDefinition> vTupleIterator = vDefinitions.iterator();
 
-		TupleDefinition wvTupleDefinition = wvTupleIterator.next();
+		TupleDefinition vTupleDefinition = vTupleIterator.next();
 
-		assertTrue(expectedCount == wvTupleDefinition.getArity());
-		assertEquals("tupleOne", wvTupleDefinition.getName());
+		assertTrue(expectedCount == vTupleDefinition.getArity());
+		assertEquals("tupleOne", vTupleDefinition.getName());
 
 		final TType[] expectedTypes =
 				{
@@ -262,7 +262,7 @@ class TupleDefinitionTest
 						getCTInteger()
 				};
 
-		wvTupleDefinition.cReverseIterator().forEachRemaining( x ->
+		vTupleDefinition.cReverseIterator().forEachRemaining( x ->
 															  {
 																  assertEquals(expectedTypes[actualCount[0]], x);
 																  actualCount[0]++;
@@ -275,8 +275,8 @@ class TupleDefinitionTest
 		expectedTypes[0] = getCTDouble();
 
 
-		wvTupleDefinition = wvTupleIterator.next();
-		wvTupleDefinition.cReverseIterator().forEachRemaining( x ->
+		vTupleDefinition = vTupleIterator.next();
+		vTupleDefinition.cReverseIterator().forEachRemaining( x ->
 															  {
 																  assertEquals(expectedTypes[actualCount[0]], x);
 																  actualCount[0]++;
@@ -285,7 +285,7 @@ class TupleDefinitionTest
 		assertEquals(expectedCount, actualCount[0]);
 
 
-		assertFalse(wvTupleIterator.hasNext());
+		assertFalse(vTupleIterator.hasNext());
 	}
 
 }

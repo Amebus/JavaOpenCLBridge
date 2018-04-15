@@ -2,23 +2,21 @@
   "oclSettings" : {
 
   },
-  "tuples": [{
-    "name": "tupleOne",
-    "types": {
+  "tuples": {
+    "tupleOne": {
       "t1": "int",
       "t2": "string",
       "t3": "double",
       "t4": "char"
-    }}, {
-    "name": "tupleTwo",
-    "types": {
+    },
+    "tupleTwo": {
       "t1": "int",
       "t2": "string",
       "t3": "int",
       "t4": "char"
-    }}, {
-    "name": "tupleThree",
-    "types": {
+    },
+    "tupleThree": {
       "t1": "double"
-    }}]
+    }
+  }
 }
