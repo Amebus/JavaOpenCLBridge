@@ -1,10 +1,6 @@
 package flinkOcl.buildEngine;
 
-import Commons.IBuilder;
-import configuration.OclSettings;
-import configuration.TupleDefinition;
-import configuration.TupleDefinitions;
-import flinkOcl.IUserFunction;
+import configuration.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,22 +32,30 @@ public class KernelCodeBuilderEngine
 		return new CppLibraryInfo();
 	}
 	
-	public OclKernel generateKernel(IUserFunction pUserFunction)
+	private OclKernel generateKernel(IUserFunction pUserFunction)
 	{
 		TupleDefinition vInput = mTupleDefinitions.getTupleDefinition(pUserFunction.getInputTupleName());
 		TupleDefinition vOutput = mTupleDefinitions.getTupleDefinition(pUserFunction.getOutputTupleName());
 		
-		IUserFunction.IType vKernelType = pUserFunction.getType();
 		String vKernelName = new StringBuilder()
-				.append(vKernelType.toString())
+				.append(pUserFunction.getType())
 				.append("_")
 				.append(pUserFunction.getName())
 				.toString();
-		StringBuilder vKernelCode = new StringBuilder();
 		
-		//TODO generare codice kernel ocl
-		
-		return new OclKernel(vKernelName, vKernelCode.toString());
+		return new OclKernel(vKernelName, generateKernelCode(pUserFunction, vInput, vOutput));
 	}
 	
+	private String generateKernelCode(IUserFunction pFunction, TupleDefinition pInput, TupleDefinition pOutput)
+	{
+		OclContextOptions vContextOptions = mSettings.getContextOptions();
+		OclKernelOptions vKernelOptions = mSettings.getOclKernelOptions();
+		StringBuilder vKernelCode = new StringBuilder();
+		
+		
+		
+		
+		
+		return vKernelCode.toString();
+	}
 }

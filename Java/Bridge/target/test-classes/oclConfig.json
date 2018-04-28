@@ -2,6 +2,9 @@
   "oclSettings" : {
     "contextOptions": {
       "kernelsBuildFolder" : "oclKernels"
+    },
+    "kernelOptions": {
+
     }
   },
   "tuples":{

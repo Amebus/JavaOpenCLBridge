@@ -51,6 +51,11 @@ public abstract class TType
 		return mMaxByteDimension;
 	}
 
+	public abstract boolean isInteger();
+	public abstract boolean isDouble();
+	public abstract boolean isString();
+	public abstract boolean isUnknown();
+	
 	@Override
 	public int hashCode()
 	{

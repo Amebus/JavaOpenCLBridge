@@ -1,7 +1,8 @@
 package configuration;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import Commons.IJsonLoaderOptionsBuilder;
+import Commons.JsonLoader;
+import Commons.JsonLoaderOptions;
 import io.gsonfire.GsonFireBuilder;
 
 import java.io.File;
@@ -27,20 +28,21 @@ public final class SettingsLoader
 
 	public static Settings loadSettings(String pConfigFileDirectory, String pFileName) throws FileNotFoundException
 	{
-		return loadSettings(Paths.get(pConfigFileDirectory).normalize().resolve(pFileName).toAbsolutePath());
+		return loadSettings(new JsonLoaderOptions.JsonLoaderOptionsBuilder<Settings>().setSource(pConfigFileDirectory, pFileName));
 	}
 
 	public static Settings loadSettings(Path pPathToConfigFile) throws FileNotFoundException
 	{
-		return loadSettings(pPathToConfigFile.toFile());
+		return loadSettings(new JsonLoaderOptions.JsonLoaderOptionsBuilder<Settings>().setSource(pPathToConfigFile));
 	}
 
 	public static Settings loadSettings(File pConfigFile) throws FileNotFoundException
 	{
-		FileReader vReader = new FileReader(pConfigFile);
-		return new GsonFireBuilder()
-				.enableHooks(Settings.class)
-				.createGson()
-				.fromJson(vReader, Settings.class);
+		return loadSettings(new JsonLoaderOptions.JsonLoaderOptionsBuilder<Settings>().setSource(pConfigFile));
+	}
+	
+	private static Settings loadSettings(IJsonLoaderOptionsBuilder<Settings> pOptions) throws FileNotFoundException
+	{
+		return JsonLoader.loadJsonObject(pOptions.setBeanClass(Settings.class).build());
 	}
 }

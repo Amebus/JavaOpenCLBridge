@@ -1,10 +1,14 @@
 package flinkOcl;
 
+import flinkOcl.buildEngine.IUserFunction;
+
+import java.util.Collection;
+
 public interface IUserFunctionReadRepository
 {
 
 	IUserFunction getUserFunctionByName(String pUserFunctionName);
 	
-	Iterable<? extends IUserFunction> getUserFunctions();
+	Collection<IUserFunction> getUserFunctions();
 
 }

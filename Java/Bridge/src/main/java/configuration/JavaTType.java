@@ -14,7 +14,31 @@ public class JavaTType extends TType
 	{
 		super(pType, pByteDimension, pMaxByteDimension);
 	}
-
+	
+	@Override
+	public boolean isInteger()
+	{
+		return getT().equals(JavaTypes.INTEGER);
+	}
+	
+	@Override
+	public boolean isDouble()
+	{
+		return getT().equals(JavaTypes.DOUBLE);
+	}
+	
+	@Override
+	public boolean isString()
+	{
+		return getT().equals(JavaTypes.STRING);
+	}
+	
+	@Override
+	public boolean isUnknown()
+	{
+		return !(isInteger() || isDouble() || isString());
+	}
+	
 	public static class Builder extends TTypeBuilder
 	{
 		public Builder(String pType)
