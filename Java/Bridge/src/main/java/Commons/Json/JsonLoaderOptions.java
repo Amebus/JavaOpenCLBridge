@@ -1,4 +1,6 @@
-package Commons;
+package Commons.Json;
+
+import Commons.IBuilder;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -37,7 +39,7 @@ public class JsonLoaderOptions<T>
 		return mBeanClass;
 	}
 	
-	public static class JsonLoaderOptionsBuilder<T> implements IJsonLoaderOptionsBuilder<T>
+	public static class JsonLoaderOptionsBuilder<T> implements IBuilder<JsonLoaderOptions<T>>
 	{
 		
 		private File mSource;
@@ -51,26 +53,23 @@ public class JsonLoaderOptions<T>
 			mClassSet = new HashSet<>();
 		}
 		
-		@Override
-		public IJsonLoaderOptionsBuilder<T> setSource(String pFileDirectory, String pFileName)
+		public JsonLoaderOptionsBuilder<T> setSource(String pFileDirectory, String pFileName)
 		{
 			return setSource(Paths.get(pFileDirectory).normalize().resolve(pFileName).toAbsolutePath());
 		}
 		
-		@Override
-		public IJsonLoaderOptionsBuilder<T> setSource(Path pPathFile)
+		public JsonLoaderOptionsBuilder<T> setSource(Path pPathFile)
 		{
 			return setSource(pPathFile.toFile());
 		}
 		
-		@Override
-		public IJsonLoaderOptionsBuilder<T> setSource(File pFile)
+		public JsonLoaderOptionsBuilder<T> setSource(File pFile)
 		{
 			mSource = pFile;
 			return this;
 		}
 		
-		private IJsonLoaderOptionsBuilder<T> addClassToHook(Class pClass)
+		private JsonLoaderOptionsBuilder<T> addClassToHook(Class pClass)
 		{
 			if (!mClassSet.contains(pClass))
 			{
@@ -80,21 +79,18 @@ public class JsonLoaderOptions<T>
 			return this;
 		}
 		
-		@Override
-		public IJsonLoaderOptionsBuilder<T> shouldHookClass(Class pClassToHook)
+		public JsonLoaderOptionsBuilder<T> shouldHookClass(Class pClassToHook)
 		{
 			return addClassToHook(pClassToHook);
 		}
 		
-		@Override
-		public IJsonLoaderOptionsBuilder<T> shouldHookClasses(Iterable<Class> pClassesToHook)
+		public JsonLoaderOptionsBuilder<T> shouldHookClasses(Iterable<Class> pClassesToHook)
 		{
 			pClassesToHook.forEach(this::addClassToHook);
 			return this;
 		}
 		
-		@Override
-		public IJsonLoaderOptionsBuilder<T> setBeanClass(Class<T> pBeanClass)
+		public JsonLoaderOptionsBuilder<T> setBeanClass(Class<T> pBeanClass)
 		{
 			mBeanClass = pBeanClass;
 			return shouldHookClass(pBeanClass);

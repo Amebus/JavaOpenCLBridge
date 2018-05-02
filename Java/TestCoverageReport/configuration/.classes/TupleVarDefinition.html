@@ -61,7 +61,7 @@
     100%
   </span>
   <span class="absValue">
-    (23/ 23)
+    (27/ 27)
   </span>
 </td>
 </tr>
@@ -85,15 +85,15 @@
 <i>11</i>&nbsp;	private CTType mCTType;
 <i>12</i>&nbsp;	private transient int mHashCode;
 <i>13</i>&nbsp;
-<i>14</i>&nbsp;	public TupleVarDefinition(String prmJsonVarType)
+<i>14</i>&nbsp;	public TupleVarDefinition(String pJsonVarType)
 <b class="fc"><i>15</i>&nbsp;	{</b>
-<b class="fc"><i>16</i>&nbsp;		setInternalValues(prmJsonVarType);</b>
-<i>17</i>&nbsp;	}
+<b class="fc"><i>16</i>&nbsp;		setInternalValues(pJsonVarType);</b>
+<b class="fc"><i>17</i>&nbsp;	}</b>
 <i>18</i>&nbsp;
-<i>19</i>&nbsp;	public TupleVarDefinition(TupleVarDefinition prmVarDefinition)
+<i>19</i>&nbsp;	public TupleVarDefinition(TupleVarDefinition pVarDefinition)
 <b class="fc"><i>20</i>&nbsp;	{</b>
-<b class="fc"><i>21</i>&nbsp;		setInternalValues(prmVarDefinition.getJavaT());</b>
-<i>22</i>&nbsp;	}
+<b class="fc"><i>21</i>&nbsp;		setInternalValues(pVarDefinition.getJavaT());</b>
+<b class="fc"><i>22</i>&nbsp;	}</b>
 <i>23</i>&nbsp;
 <i>24</i>&nbsp;	/**
 <i>25</i>&nbsp;	 * Return the Java equivalent type
@@ -113,19 +113,19 @@
 <b class="fc"><i>39</i>&nbsp;		return mCTType;</b>
 <i>40</i>&nbsp;	}
 <i>41</i>&nbsp;
-<i>42</i>&nbsp;	private void setInternalValues(String prmJsonVarType)
+<i>42</i>&nbsp;	private void setInternalValues(String pJsonVarType)
 <i>43</i>&nbsp;	{
-<b class="fc"><i>44</i>&nbsp;		setInternalValues(new CTType.Builder(prmJsonVarType).build());</b>
-<i>45</i>&nbsp;	}
+<b class="fc"><i>44</i>&nbsp;		setInternalValues(new CTType.Builder(pJsonVarType).build());</b>
+<b class="fc"><i>45</i>&nbsp;	}</b>
 <i>46</i>&nbsp;
-<i>47</i>&nbsp;	private void setInternalValues (TType prmType)
+<i>47</i>&nbsp;	private void setInternalValues (TType pType)
 <i>48</i>&nbsp;	{
-<b class="fc"><i>49</i>&nbsp;		mCTType = new CTType.Builder(prmType).build();</b>
-<b class="fc"><i>50</i>&nbsp;		mJavaTType = new JavaTType.Builder(prmType).build();</b>
+<b class="fc"><i>49</i>&nbsp;		mCTType = new CTType.Builder(pType).build();</b>
+<b class="fc"><i>50</i>&nbsp;		mJavaTType = new JavaTType.Builder(pType).build();</b>
 <b class="fc"><i>51</i>&nbsp;		mHashCode = new HashCodeBuilder()</b>
 <b class="fc"><i>52</i>&nbsp;				.append(getJavaT())</b>
 <b class="fc"><i>53</i>&nbsp;				.toHashCode();</b>
-<i>54</i>&nbsp;	}
+<b class="fc"><i>54</i>&nbsp;	}</b>
 <i>55</i>&nbsp;
 <i>56</i>&nbsp;	@Override
 <i>57</i>&nbsp;	public int hashCode()
@@ -134,21 +134,21 @@
 <i>60</i>&nbsp;	}
 <i>61</i>&nbsp;
 <i>62</i>&nbsp;	@Override
-<i>63</i>&nbsp;	public boolean equals(Object prmOther)
+<i>63</i>&nbsp;	public boolean equals(Object pOther)
 <i>64</i>&nbsp;	{
-<b class="fc"><i>65</i>&nbsp;		if (prmOther == null)</b>
+<b class="fc"><i>65</i>&nbsp;		if (pOther == null)</b>
 <i>66</i>&nbsp;		{
 <b class="fc"><i>67</i>&nbsp;			return false;</b>
 <i>68</i>&nbsp;		}
-<b class="fc"><i>69</i>&nbsp;		if (prmOther == this)</b>
+<b class="fc"><i>69</i>&nbsp;		if (pOther == this)</b>
 <i>70</i>&nbsp;		{
 <b class="fc"><i>71</i>&nbsp;			return true;</b>
 <i>72</i>&nbsp;		}
-<b class="fc"><i>73</i>&nbsp;		if (!(prmOther instanceof TupleVarDefinition))</b>
+<b class="fc"><i>73</i>&nbsp;		if (!(pOther instanceof TupleVarDefinition))</b>
 <i>74</i>&nbsp;		{
 <b class="fc"><i>75</i>&nbsp;			return false;</b>
 <i>76</i>&nbsp;		}
-<b class="fc"><i>77</i>&nbsp;		TupleVarDefinition rhs = ((TupleVarDefinition) prmOther);</b>
+<b class="fc"><i>77</i>&nbsp;		TupleVarDefinition rhs = ((TupleVarDefinition) pOther);</b>
 <i>78</i>&nbsp;
 <b class="fc"><i>79</i>&nbsp;		return new EqualsBuilder()</b>
 <b class="fc"><i>80</i>&nbsp;				.append(getJavaT(), rhs.getJavaT())</b>
@@ -160,7 +160,7 @@
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-03-25 15:52</div>
+    <div style="float:right;">generated on 2018-04-29 15:34</div>
 </div>
 </body>
 </html>

@@ -50,7 +50,7 @@
     100%
   </span>
   <span class="absValue">
-    (27/ 27)
+    (28/ 28)
   </span>
 </td>
 </tr>
@@ -88,7 +88,7 @@
     100%
   </span>
   <span class="absValue">
-    (30/ 30)
+    (37/ 37)
   </span>
 </td>
   </tr>
@@ -104,10 +104,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    98.3%
+    98.5%
   </span>
   <span class="absValue">
-    (58/ 59)
+    (66/ 67)
   </span>
 </td>
 </tr>
@@ -143,16 +143,16 @@
 <i>24</i>&nbsp;	private int mByteDimension;
 <i>25</i>&nbsp;	private int mMaxByteDimension;
 <i>26</i>&nbsp;
-<i>27</i>&nbsp;	protected TType(String prmType, int prmByteDimension, int prmMaxByteDimension)
+<i>27</i>&nbsp;	protected TType(String pType, int pByteDimension, int pMaxByteDimension)
 <b class="fc"><i>28</i>&nbsp;	{</b>
-<b class="fc"><i>29</i>&nbsp;		mType = prmType;</b>
-<b class="fc"><i>30</i>&nbsp;		mByteDimension = prmByteDimension;</b>
-<b class="fc"><i>31</i>&nbsp;		mMaxByteDimension = prmMaxByteDimension;</b>
-<i>32</i>&nbsp;	}
+<b class="fc"><i>29</i>&nbsp;		mType = pType;</b>
+<b class="fc"><i>30</i>&nbsp;		mByteDimension = pByteDimension;</b>
+<b class="fc"><i>31</i>&nbsp;		mMaxByteDimension = pMaxByteDimension;</b>
+<b class="fc"><i>32</i>&nbsp;	}</b>
 <i>33</i>&nbsp;
-<i>34</i>&nbsp;	// protected TType(TType prmTType)
+<i>34</i>&nbsp;	// protected TType(TType pTType)
 <i>35</i>&nbsp;	// {
-<i>36</i>&nbsp;	// 	this(prmTType.getT(), prmTType.getByteDimension(), prmTType.getMaxByteDimension());
+<i>36</i>&nbsp;	// 	this(pTType.getT(), pTType.getByteDimension(), pTType.getMaxByteDimension());
 <i>37</i>&nbsp;	// }
 <i>38</i>&nbsp;
 <i>39</i>&nbsp;	public String getT()
@@ -170,151 +170,156 @@
 <b class="fc"><i>51</i>&nbsp;		return mMaxByteDimension;</b>
 <i>52</i>&nbsp;	}
 <i>53</i>&nbsp;
-<i>54</i>&nbsp;	@Override
-<i>55</i>&nbsp;	public int hashCode()
-<i>56</i>&nbsp;	{
-<b class="fc"><i>57</i>&nbsp;		return new HashCodeBuilder()</b>
-<b class="fc"><i>58</i>&nbsp;				.append(getByteDimension())</b>
-<b class="fc"><i>59</i>&nbsp;				.append(getMaxByteDimension())</b>
-<b class="fc"><i>60</i>&nbsp;				.append(getT())</b>
-<b class="fc"><i>61</i>&nbsp;				.toHashCode();</b>
-<i>62</i>&nbsp;	}
-<i>63</i>&nbsp;
-<i>64</i>&nbsp;
-<i>65</i>&nbsp;	@Override
-<i>66</i>&nbsp;	public boolean equals(Object prmOther)
-<i>67</i>&nbsp;	{
-<b class="pc"><i>68</i>&nbsp;		return prmOther != null &amp;&amp; prmOther instanceof TType &amp;&amp; equals((TType) prmOther);</b>
-<i>69</i>&nbsp;	}
-<i>70</i>&nbsp;
-<i>71</i>&nbsp;	public boolean equals(TType prmOther)
+<i>54</i>&nbsp;	public abstract boolean isInteger();
+<i>55</i>&nbsp;	public abstract boolean isDouble();
+<i>56</i>&nbsp;	public abstract boolean isString();
+<i>57</i>&nbsp;	public abstract boolean isUnknown();
+<i>58</i>&nbsp;	
+<i>59</i>&nbsp;	@Override
+<i>60</i>&nbsp;	public int hashCode()
+<i>61</i>&nbsp;	{
+<b class="fc"><i>62</i>&nbsp;		return new HashCodeBuilder()</b>
+<b class="fc"><i>63</i>&nbsp;				.append(getByteDimension())</b>
+<b class="fc"><i>64</i>&nbsp;				.append(getMaxByteDimension())</b>
+<b class="fc"><i>65</i>&nbsp;				.append(getT())</b>
+<b class="fc"><i>66</i>&nbsp;				.toHashCode();</b>
+<i>67</i>&nbsp;	}
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;	@Override
+<i>71</i>&nbsp;	public boolean equals(Object pOther)
 <i>72</i>&nbsp;	{
-<b class="fc"><i>73</i>&nbsp;		return prmOther != null &amp;&amp;</b>
-<i>74</i>&nbsp;			   (prmOther == this ||
-<i>75</i>&nbsp;				new EqualsBuilder()
-<b class="fc"><i>76</i>&nbsp;						.append(getT(), prmOther.getT())</b>
-<b class="fc"><i>77</i>&nbsp;						.append(getByteDimension(), prmOther.getByteDimension())</b>
-<b class="fc"><i>78</i>&nbsp;						.append(getMaxByteDimension(), prmOther.getMaxByteDimension())</b>
-<b class="fc"><i>79</i>&nbsp;						.isEquals());</b>
-<i>80</i>&nbsp;	}
-<i>81</i>&nbsp;
-<i>82</i>&nbsp;	public static boolean isInteger (String prmT)
-<i>83</i>&nbsp;	{
-<b class="fc"><i>84</i>&nbsp;		if (prmT == null)</b>
-<b class="fc"><i>85</i>&nbsp;			return false;</b>
-<b class="fc"><i>86</i>&nbsp;		prmT = prmT.toLowerCase();</b>
-<b class="fc"><i>87</i>&nbsp;		return prmT.equals(ConfigTypes.INT) || prmT.equals(ConfigTypes.INTEGER);</b>
-<i>88</i>&nbsp;	}
-<i>89</i>&nbsp;
-<i>90</i>&nbsp;	public static boolean isDouble (String prmT)
-<i>91</i>&nbsp;	{
-<b class="fc"><i>92</i>&nbsp;		return prmT != null &amp;&amp; prmT.toLowerCase().equals(ConfigTypes.DOUBLE);</b>
+<b class="fc"><i>73</i>&nbsp;		return pOther != null &amp;&amp; pOther instanceof TType &amp;&amp; equals((TType) pOther);</b>
+<i>74</i>&nbsp;	}
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;	public boolean equals(TType pOther)
+<i>77</i>&nbsp;	{
+<b class="fc"><i>78</i>&nbsp;		return pOther != null &amp;&amp;</b>
+<i>79</i>&nbsp;			   (pOther == this ||
+<i>80</i>&nbsp;				new EqualsBuilder()
+<b class="fc"><i>81</i>&nbsp;						.append(getT(), pOther.getT())</b>
+<b class="fc"><i>82</i>&nbsp;						.append(getByteDimension(), pOther.getByteDimension())</b>
+<b class="fc"><i>83</i>&nbsp;						.append(getMaxByteDimension(), pOther.getMaxByteDimension())</b>
+<b class="fc"><i>84</i>&nbsp;						.isEquals());</b>
+<i>85</i>&nbsp;	}
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;	public static boolean isInteger (String pT)
+<i>88</i>&nbsp;	{
+<b class="fc"><i>89</i>&nbsp;		if (pT == null)</b>
+<b class="fc"><i>90</i>&nbsp;			return false;</b>
+<b class="fc"><i>91</i>&nbsp;		pT = pT.toLowerCase();</b>
+<b class="fc"><i>92</i>&nbsp;		return pT.equals(ConfigTypes.INT) || pT.equals(ConfigTypes.INTEGER);</b>
 <i>93</i>&nbsp;	}
 <i>94</i>&nbsp;
-<i>95</i>&nbsp;	public static boolean isString (String prmT)
+<i>95</i>&nbsp;	public static boolean isDouble (String pT)
 <i>96</i>&nbsp;	{
-<b class="fc"><i>97</i>&nbsp;		if (prmT == null)</b>
-<b class="fc"><i>98</i>&nbsp;			return false;</b>
-<b class="fc"><i>99</i>&nbsp;		prmT = prmT.toLowerCase();</b>
-<b class="fc"><i>100</i>&nbsp;		return ConfigTypes.EXPRESSION.matches(prmT);</b>
-<i>101</i>&nbsp;	}
-<i>102</i>&nbsp;
-<i>103</i>&nbsp;	protected static abstract class TTypeBuilder
-<i>104</i>&nbsp;	{
-<i>105</i>&nbsp;		private String mType;
-<i>106</i>&nbsp;		private int mByteDimension;
-<i>107</i>&nbsp;		private int mMaxByteDimension;
-<i>108</i>&nbsp;
-<i>109</i>&nbsp;
-<i>110</i>&nbsp;		public TTypeBuilder(String prmType)
-<b class="fc"><i>111</i>&nbsp;		{</b>
-<b class="fc"><i>112</i>&nbsp;			mByteDimension = 0;</b>
-<b class="fc"><i>113</i>&nbsp;			mMaxByteDimension = 100;</b>
-<b class="fc"><i>114</i>&nbsp;			mType = prmType;</b>
-<b class="fc"><i>115</i>&nbsp;			setBuildParameters(prmType);</b>
-<i>116</i>&nbsp;		}
-<i>117</i>&nbsp;
-<i>118</i>&nbsp;		public TTypeBuilder(TType prmType)
-<b class="fc"><i>119</i>&nbsp;		{</b>
-<b class="fc"><i>120</i>&nbsp;			setBuildParameters(prmType);</b>
-<i>121</i>&nbsp;		}
+<b class="fc"><i>97</i>&nbsp;		return pT != null &amp;&amp; pT.toLowerCase().equals(ConfigTypes.DOUBLE);</b>
+<i>98</i>&nbsp;	}
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;	public static boolean isString (String pT)
+<i>101</i>&nbsp;	{
+<b class="fc"><i>102</i>&nbsp;		if (pT == null)</b>
+<b class="fc"><i>103</i>&nbsp;			return false;</b>
+<b class="fc"><i>104</i>&nbsp;		pT = pT.toLowerCase();</b>
+<b class="fc"><i>105</i>&nbsp;		return ConfigTypes.EXPRESSION.matches(pT);</b>
+<i>106</i>&nbsp;	}
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;	protected static abstract class TTypeBuilder
+<i>109</i>&nbsp;	{
+<i>110</i>&nbsp;		private String mType;
+<i>111</i>&nbsp;		private int mByteDimension;
+<i>112</i>&nbsp;		private int mMaxByteDimension;
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;		public TTypeBuilder(String pType)
+<b class="fc"><i>116</i>&nbsp;		{</b>
+<b class="fc"><i>117</i>&nbsp;			mByteDimension = 0;</b>
+<b class="fc"><i>118</i>&nbsp;			mMaxByteDimension = 100;</b>
+<b class="fc"><i>119</i>&nbsp;			mType = pType;</b>
+<b class="fc"><i>120</i>&nbsp;			setBuildParameters(pType);</b>
+<b class="fc"><i>121</i>&nbsp;		}</b>
 <i>122</i>&nbsp;
-<i>123</i>&nbsp;		private void setBuildParameters(TType prmType)
-<i>124</i>&nbsp;		{
-<b class="fc"><i>125</i>&nbsp;			mByteDimension = prmType.getByteDimension();</b>
-<b class="fc"><i>126</i>&nbsp;			mMaxByteDimension = prmType.getMaxByteDimension();</b>
-<b class="fc"><i>127</i>&nbsp;			mType = prmType.getT();</b>
-<i>128</i>&nbsp;		}
-<i>129</i>&nbsp;
-<i>130</i>&nbsp;		private void setBuildParameters(String prmType)
-<i>131</i>&nbsp;		{
-<b class="fc"><i>132</i>&nbsp;			if (isString(prmType))</b>
-<i>133</i>&nbsp;			{
-<b class="fc"><i>134</i>&nbsp;				asStringType(prmType);</b>
-<i>135</i>&nbsp;			}
-<b class="fc"><i>136</i>&nbsp;			else if (isInteger(prmType))</b>
-<i>137</i>&nbsp;			{
-<b class="fc"><i>138</i>&nbsp;				asIntegerType();</b>
-<i>139</i>&nbsp;			}
-<b class="fc"><i>140</i>&nbsp;			else if (isDouble(prmType))</b>
-<i>141</i>&nbsp;			{
-<b class="fc"><i>142</i>&nbsp;				asDoubleType();</b>
-<i>143</i>&nbsp;			}
-<i>144</i>&nbsp;			else
-<i>145</i>&nbsp;			{
-<b class="fc"><i>146</i>&nbsp;				mType = &quot;&quot;;</b>
-<b class="fc"><i>147</i>&nbsp;				throw new IllegalArgumentException(&quot;Error with var type &quot; + prmType</b>
-<i>148</i>&nbsp;												   +&quot;. The var type must be one between: int|integer or char|character or double or string&quot;);
-<i>149</i>&nbsp;			}
-<i>150</i>&nbsp;		}
-<i>151</i>&nbsp;
-<i>152</i>&nbsp;		private void asStringType(String prmType)
-<i>153</i>&nbsp;		{
-<b class="fc"><i>154</i>&nbsp;			String[] wvStrings = prmType.split(COLUMN);</b>
-<b class="fc"><i>155</i>&nbsp;			mByteDimension = -1;</b>
+<i>123</i>&nbsp;		public TTypeBuilder(TType pType)
+<b class="fc"><i>124</i>&nbsp;		{</b>
+<b class="fc"><i>125</i>&nbsp;			setBuildParameters(pType);</b>
+<b class="fc"><i>126</i>&nbsp;		}</b>
+<i>127</i>&nbsp;
+<i>128</i>&nbsp;		private void setBuildParameters(TType pType)
+<i>129</i>&nbsp;		{
+<b class="fc"><i>130</i>&nbsp;			mByteDimension = pType.getByteDimension();</b>
+<b class="fc"><i>131</i>&nbsp;			mMaxByteDimension = pType.getMaxByteDimension();</b>
+<b class="fc"><i>132</i>&nbsp;			mType = pType.getT();</b>
+<b class="fc"><i>133</i>&nbsp;		}</b>
+<i>134</i>&nbsp;
+<i>135</i>&nbsp;		private void setBuildParameters(String pType)
+<i>136</i>&nbsp;		{
+<b class="fc"><i>137</i>&nbsp;			if (isString(pType))</b>
+<i>138</i>&nbsp;			{
+<b class="fc"><i>139</i>&nbsp;				asStringType(pType);</b>
+<i>140</i>&nbsp;			}
+<b class="fc"><i>141</i>&nbsp;			else if (isInteger(pType))</b>
+<i>142</i>&nbsp;			{
+<b class="fc"><i>143</i>&nbsp;				asIntegerType();</b>
+<i>144</i>&nbsp;			}
+<b class="fc"><i>145</i>&nbsp;			else if (isDouble(pType))</b>
+<i>146</i>&nbsp;			{
+<b class="fc"><i>147</i>&nbsp;				asDoubleType();</b>
+<i>148</i>&nbsp;			}
+<i>149</i>&nbsp;			else
+<i>150</i>&nbsp;			{
+<b class="fc"><i>151</i>&nbsp;				mType = &quot;&quot;;</b>
+<b class="fc"><i>152</i>&nbsp;				throw new IllegalArgumentException(&quot;Error with var type &quot; + pType</b>
+<i>153</i>&nbsp;												   +&quot;. The var type must be one between: int|integer or char|character or double or string&quot;);
+<i>154</i>&nbsp;			}
+<b class="fc"><i>155</i>&nbsp;		}</b>
 <i>156</i>&nbsp;
-<b class="fc"><i>157</i>&nbsp;			if (wvStrings.length &gt; 1)</b>
-<i>158</i>&nbsp;			{
-<b class="fc"><i>159</i>&nbsp;				mMaxByteDimension = Integer.parseInt(wvStrings[1]);</b>
-<i>160</i>&nbsp;			}
-<b class="fc"><i>161</i>&nbsp;			mType = wvStrings[0];</b>
-<i>162</i>&nbsp;		}
-<i>163</i>&nbsp;
-<i>164</i>&nbsp;		private void asIntegerType()
-<i>165</i>&nbsp;		{
-<b class="fc"><i>166</i>&nbsp;			mByteDimension = 4;</b>
-<b class="fc"><i>167</i>&nbsp;			mMaxByteDimension = 4;</b>
-<i>168</i>&nbsp;		}
-<i>169</i>&nbsp;
-<i>170</i>&nbsp;		private void asDoubleType()
-<i>171</i>&nbsp;		{
-<b class="fc"><i>172</i>&nbsp;			mByteDimension = 8;</b>
-<b class="fc"><i>173</i>&nbsp;			mMaxByteDimension = 8;</b>
-<i>174</i>&nbsp;		}
-<i>175</i>&nbsp;
-<i>176</i>&nbsp;		public String getType()
-<i>177</i>&nbsp;		{
-<b class="fc"><i>178</i>&nbsp;			return mType;</b>
-<i>179</i>&nbsp;		}
+<i>157</i>&nbsp;		private void asStringType(String pType)
+<i>158</i>&nbsp;		{
+<b class="fc"><i>159</i>&nbsp;			String[] vStrings = pType.split(COLUMN);</b>
+<b class="fc"><i>160</i>&nbsp;			mByteDimension = -1;</b>
+<i>161</i>&nbsp;
+<b class="fc"><i>162</i>&nbsp;			if (vStrings.length &gt; 1)</b>
+<i>163</i>&nbsp;			{
+<b class="fc"><i>164</i>&nbsp;				mMaxByteDimension = Integer.parseInt(vStrings[1]);</b>
+<i>165</i>&nbsp;			}
+<b class="fc"><i>166</i>&nbsp;			mType = vStrings[0];</b>
+<b class="fc"><i>167</i>&nbsp;		}</b>
+<i>168</i>&nbsp;
+<i>169</i>&nbsp;		private void asIntegerType()
+<i>170</i>&nbsp;		{
+<b class="fc"><i>171</i>&nbsp;			mByteDimension = 4;</b>
+<b class="fc"><i>172</i>&nbsp;			mMaxByteDimension = 4;</b>
+<b class="fc"><i>173</i>&nbsp;		}</b>
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;		private void asDoubleType()
+<i>176</i>&nbsp;		{
+<b class="fc"><i>177</i>&nbsp;			mByteDimension = 8;</b>
+<b class="fc"><i>178</i>&nbsp;			mMaxByteDimension = 8;</b>
+<b class="fc"><i>179</i>&nbsp;		}</b>
 <i>180</i>&nbsp;
-<i>181</i>&nbsp;		public int getByteDimension()
+<i>181</i>&nbsp;		public String getType()
 <i>182</i>&nbsp;		{
-<b class="fc"><i>183</i>&nbsp;			return mByteDimension;</b>
+<b class="fc"><i>183</i>&nbsp;			return mType;</b>
 <i>184</i>&nbsp;		}
 <i>185</i>&nbsp;
-<i>186</i>&nbsp;		public int getMaxByteDimension()
+<i>186</i>&nbsp;		public int getByteDimension()
 <i>187</i>&nbsp;		{
-<b class="fc"><i>188</i>&nbsp;			return mMaxByteDimension;</b>
+<b class="fc"><i>188</i>&nbsp;			return mByteDimension;</b>
 <i>189</i>&nbsp;		}
 <i>190</i>&nbsp;
-<i>191</i>&nbsp;	}
-<i>192</i>&nbsp;}
+<i>191</i>&nbsp;		public int getMaxByteDimension()
+<i>192</i>&nbsp;		{
+<b class="fc"><i>193</i>&nbsp;			return mMaxByteDimension;</b>
+<i>194</i>&nbsp;		}
+<i>195</i>&nbsp;
+<i>196</i>&nbsp;	}
+<i>197</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-03-25 15:52</div>
+    <div style="float:right;">generated on 2018-04-29 15:34</div>
 </div>
 </body>
 </html>

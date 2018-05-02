@@ -2,7 +2,6 @@ package flinkOcl;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import flinkOcl.buildEngine.IUserFunction;
 import flinkOcl.buildEngine.UserFunction;
 import io.gsonfire.annotations.PostDeserialize;
 

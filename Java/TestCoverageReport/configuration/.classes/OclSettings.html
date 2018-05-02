@@ -50,18 +50,18 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    33.3%
   </span>
   <span class="absValue">
-    (1/ 1)
+    (1/ 3)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    33.3%
   </span>
   <span class="absValue">
-    (1/ 1)
+    (1/ 3)
   </span>
 </td>
 </tr>
@@ -74,15 +74,35 @@
 
 <div class="sourceCode"><i>1</i>&nbsp;package configuration;
 <i>2</i>&nbsp;
-<b class="fc"><i>3</i>&nbsp;public class OclSettings</b>
-<i>4</i>&nbsp;{
-<i>5</i>&nbsp;}
+<i>3</i>&nbsp;import com.google.gson.annotations.Expose;
+<i>4</i>&nbsp;import com.google.gson.annotations.SerializedName;
+<i>5</i>&nbsp;
+<b class="fc"><i>6</i>&nbsp;public class OclSettings</b>
+<i>7</i>&nbsp;{
+<i>8</i>&nbsp;	@SerializedName(&quot;contextOptions&quot;)
+<i>9</i>&nbsp;	@Expose
+<i>10</i>&nbsp;	private OclContextOptions mContextOptions;
+<i>11</i>&nbsp;	
+<i>12</i>&nbsp;	@SerializedName(&quot;kernelOptions&quot;)
+<i>13</i>&nbsp;	@Expose
+<i>14</i>&nbsp;	private OclKernelOptions mOclKernelOptions;
+<i>15</i>&nbsp;	
+<i>16</i>&nbsp;	public OclContextOptions getContextOptions()
+<i>17</i>&nbsp;	{
+<b class="nc"><i>18</i>&nbsp;		return mContextOptions;</b>
+<i>19</i>&nbsp;	}
+<i>20</i>&nbsp;	
+<i>21</i>&nbsp;	public OclKernelOptions getOclKernelOptions()
+<i>22</i>&nbsp;	{
+<b class="nc"><i>23</i>&nbsp;		return mOclKernelOptions;</b>
+<i>24</i>&nbsp;	}
+<i>25</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-03-25 15:52</div>
+    <div style="float:right;">generated on 2018-04-29 15:34</div>
 </div>
 </body>
 </html>

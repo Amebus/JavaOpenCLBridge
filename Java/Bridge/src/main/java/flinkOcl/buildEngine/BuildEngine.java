@@ -1,8 +1,8 @@
-package flinkOcl;
+package flinkOcl.buildEngine;
 
 import configuration.OclSettings;
 import configuration.TupleDefinitions;
-import flinkOcl.buildEngine.*;
+import flinkOcl.IUserFunction;
 
 public class BuildEngine
 {
@@ -24,7 +24,7 @@ public class BuildEngine
 	
 	public void loadCppLibrary()
 	{
-		System.loadLibrary("OCL");
+//		System.loadLibrary("OCL");
 	}
 	
 }

@@ -1,15 +1,11 @@
 package configuration;
 
-import Commons.IJsonLoaderOptionsBuilder;
-import Commons.JsonLoader;
-import Commons.JsonLoaderOptions;
-import io.gsonfire.GsonFireBuilder;
+import Commons.Json.JsonLoader;
+import Commons.Json.JsonLoaderOptions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public final class SettingsLoader
 {
@@ -41,7 +37,7 @@ public final class SettingsLoader
 		return loadSettings(new JsonLoaderOptions.JsonLoaderOptionsBuilder<Settings>().setSource(pConfigFile));
 	}
 	
-	private static Settings loadSettings(IJsonLoaderOptionsBuilder<Settings> pOptions) throws FileNotFoundException
+	private static Settings loadSettings(JsonLoaderOptions.JsonLoaderOptionsBuilder<Settings> pOptions) throws FileNotFoundException
 	{
 		return JsonLoader.loadJsonObject(pOptions.setBeanClass(Settings.class).build());
 	}

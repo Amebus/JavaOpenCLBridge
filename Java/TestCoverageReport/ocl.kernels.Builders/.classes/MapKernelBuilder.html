@@ -47,10 +47,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    88.9%
+    90.7%
   </span>
   <span class="absValue">
-    (32/ 36)
+    (39/ 43)
   </span>
 </td>
 </tr>
@@ -85,10 +85,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    72.7%
+    75%
   </span>
   <span class="absValue">
-    (8/ 11)
+    (9/ 12)
   </span>
 </td>
   </tr>
@@ -104,10 +104,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    85.4%
+    87.5%
   </span>
   <span class="absValue">
-    (41/ 48)
+    (49/ 56)
   </span>
 </td>
 </tr>
@@ -154,12 +154,12 @@
 <b class="fc"><i>35</i>&nbsp;										  MAP_ASSIGNATION.length() + MAP_END.length();</b>
 <b class="fc"><i>36</i>&nbsp;		private static final int DOUBLE_MAP_LENGTH = MAP_START.length() + DOUBLE_MAP_SIGNATURE.length() + MAP_BODY.length() +</b>
 <b class="fc"><i>37</i>&nbsp;											 MAP_ASSIGNATION.length() + MAP_END.length();</b>
-<i>38</i>&nbsp;		private static final int CHAR_MAP_LENGTH = MAP_START.length() + CHAR_MAP_SIGNATURE.length() + MAP_BODY.length() +
+<b class="fc"><i>38</i>&nbsp;		private static final int CHAR_MAP_LENGTH = MAP_START.length() + CHAR_MAP_SIGNATURE.length() + MAP_BODY.length() +</b>
 <b class="fc"><i>39</i>&nbsp;												   MAP_ASSIGNATION.length() + MAP_END.length();</b>
 <i>40</i>&nbsp;
 <i>41</i>&nbsp;		static int getMapLength(EKernelReturnType returnType)
 <i>42</i>&nbsp;		{
-<b class="pc"><i>43</i>&nbsp;			switch (returnType)</b>
+<b class="fc"><i>43</i>&nbsp;			switch (returnType)</b>
 <i>44</i>&nbsp;			{
 <i>45</i>&nbsp;				case INT:
 <b class="fc"><i>46</i>&nbsp;					return INT_MAP_LENGTH;</b>
@@ -179,12 +179,12 @@
 <i>60</i>&nbsp;	public MapKernelBuilder(@NotNull String kernelName, @NotNull EKernelReturnType returnType)
 <i>61</i>&nbsp;	{
 <b class="fc"><i>62</i>&nbsp;		super(kernelName, returnType);</b>
-<i>63</i>&nbsp;	}
+<b class="fc"><i>63</i>&nbsp;	}</b>
 <i>64</i>&nbsp;
 <i>65</i>&nbsp;	public String build()
 <i>66</i>&nbsp;	{
 <i>67</i>&nbsp;
-<b class="pc"><i>68</i>&nbsp;		if (ObjectHelper.isNull(mKernelSourceBuilder))</b>
+<b class="fc"><i>68</i>&nbsp;		if (ObjectHelper.isNull(mKernelSourceBuilder))</b>
 <i>69</i>&nbsp;		{
 <i>70</i>&nbsp;
 <b class="fc"><i>71</i>&nbsp;			checkMandatoryElements();</b>
@@ -217,7 +217,7 @@
 <b class="fc"><i>98</i>&nbsp;		addPostExecutionLogicDefinition();</b>
 <i>99</i>&nbsp;
 <b class="fc"><i>100</i>&nbsp;		mKernelSourceBuilder.append(Kernels.MAP_END);</b>
-<i>101</i>&nbsp;	}
+<b class="fc"><i>101</i>&nbsp;	}</b>
 <i>102</i>&nbsp;
 <i>103</i>&nbsp;	private int getStringLength(int start)
 <i>104</i>&nbsp;	{
@@ -225,12 +225,12 @@
 <i>106</i>&nbsp;
 <b class="fc"><i>107</i>&nbsp;		result += (getKernelName().length() + getExecutionLogic().length());</b>
 <i>108</i>&nbsp;
-<b class="pc"><i>109</i>&nbsp;		if(!ObjectHelper.isNullOrWhiteSpace(getParametersDefinition()))</b>
+<b class="fc"><i>109</i>&nbsp;		if(!ObjectHelper.isNullOrWhiteSpace(getParametersDefinition()))</b>
 <i>110</i>&nbsp;		{
 <b class="nc"><i>111</i>&nbsp;			result += getParametersDefinition().length();</b>
 <i>112</i>&nbsp;		}
 <i>113</i>&nbsp;
-<b class="pc"><i>114</i>&nbsp;		if (!ObjectHelper.isNullOrWhiteSpace(getPostExecutionLogic()))</b>
+<b class="fc"><i>114</i>&nbsp;		if (!ObjectHelper.isNullOrWhiteSpace(getPostExecutionLogic()))</b>
 <i>115</i>&nbsp;		{
 <b class="nc"><i>116</i>&nbsp;			result += getPostExecutionLogic().length();</b>
 <i>117</i>&nbsp;		}
@@ -241,7 +241,7 @@
 <i>122</i>&nbsp;
 <i>123</i>&nbsp;	private void addSignature()
 <i>124</i>&nbsp;	{
-<b class="pc"><i>125</i>&nbsp;		switch (getReturnType())</b>
+<b class="fc"><i>125</i>&nbsp;		switch (getReturnType())</b>
 <i>126</i>&nbsp;		{
 <i>127</i>&nbsp;			case INT:
 <b class="fc"><i>128</i>&nbsp;				mKernelSourceBuilder.append(Kernels.INT_MAP_SIGNATURE);</b>
@@ -253,42 +253,42 @@
 <b class="fc"><i>134</i>&nbsp;				mKernelSourceBuilder.append(Kernels.DOUBLE_MAP_SIGNATURE);</b>
 <i>135</i>&nbsp;				break;
 <i>136</i>&nbsp;		}
-<i>137</i>&nbsp;	}
+<b class="fc"><i>137</i>&nbsp;	}</b>
 <i>138</i>&nbsp;
 <i>139</i>&nbsp;	private void addParametersDefinition()
 <i>140</i>&nbsp;	{
 <b class="fc"><i>141</i>&nbsp;		correctlyAddIfPassTest(getParametersDefinition());</b>
-<i>142</i>&nbsp;	}
+<b class="fc"><i>142</i>&nbsp;	}</b>
 <i>143</i>&nbsp;
 <i>144</i>&nbsp;	private void addExecutionLogicDefinition()
 <i>145</i>&nbsp;	{
 <b class="fc"><i>146</i>&nbsp;		correctlyAddIfPassTest(getExecutionLogic());</b>
-<i>147</i>&nbsp;	}
+<b class="fc"><i>147</i>&nbsp;	}</b>
 <i>148</i>&nbsp;
 <i>149</i>&nbsp;	private void addPostExecutionLogicDefinition()
 <i>150</i>&nbsp;	{
 <b class="fc"><i>151</i>&nbsp;		correctlyAddIfPassTest(getPostExecutionLogic());</b>
-<i>152</i>&nbsp;	}
+<b class="fc"><i>152</i>&nbsp;	}</b>
 <i>153</i>&nbsp;
 <i>154</i>&nbsp;	private void correctlyAddIfPassTest(String str)
 <i>155</i>&nbsp;	{
 <b class="fc"><i>156</i>&nbsp;		if(!ObjectHelper.isNullOrWhiteSpace(str))</b>
 <i>157</i>&nbsp;		{
 <b class="fc"><i>158</i>&nbsp;			mKernelSourceBuilder.append(str);</b>
-<b class="pc"><i>159</i>&nbsp;			if(!str.endsWith(&quot;;&quot;))</b>
+<b class="fc"><i>159</i>&nbsp;			if(!str.endsWith(&quot;;&quot;))</b>
 <i>160</i>&nbsp;			{
 <b class="fc"><i>161</i>&nbsp;				mKernelSourceBuilder.append(&quot;;&quot;);</b>
 <i>162</i>&nbsp;			}
 <b class="fc"><i>163</i>&nbsp;			mKernelSourceBuilder.append(&quot;\n&quot;);</b>
 <i>164</i>&nbsp;		}
-<i>165</i>&nbsp;	}
+<b class="fc"><i>165</i>&nbsp;	}</b>
 <i>166</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-03-25 15:52</div>
+    <div style="float:right;">generated on 2018-04-29 15:34</div>
 </div>
 </body>
 </html>

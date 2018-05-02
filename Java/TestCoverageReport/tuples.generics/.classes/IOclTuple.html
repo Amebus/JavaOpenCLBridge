@@ -80,23 +80,23 @@
 <i>6</i>&nbsp;{
 <i>7</i>&nbsp;	byte getArity();
 <i>8</i>&nbsp;
-<i>9</i>&nbsp;	default boolean equals(IOclTuple prmOther)
+<i>9</i>&nbsp;	default boolean equals(IOclTuple pOther)
 <i>10</i>&nbsp;	{
-<b class="fc"><i>11</i>&nbsp;		if (getArity() != prmOther.getArity())</b>
+<b class="fc"><i>11</i>&nbsp;		if (getArity() != pOther.getArity())</b>
 <i>12</i>&nbsp;		{
 <b class="fc"><i>13</i>&nbsp;			return false;</b>
 <i>14</i>&nbsp;		}
 <i>15</i>&nbsp;
-<b class="fc"><i>16</i>&nbsp;		boolean wvResult = true;</b>
+<b class="fc"><i>16</i>&nbsp;		boolean vResult = true;</b>
 <i>17</i>&nbsp;
-<b class="fc"><i>18</i>&nbsp;		Iterator wvIThis = iterator();</b>
-<b class="fc"><i>19</i>&nbsp;		Iterator wvIOther = prmOther.iterator();</b>
-<b class="fc"><i>20</i>&nbsp;		while (wvIThis.hasNext())</b>
+<b class="fc"><i>18</i>&nbsp;		Iterator vIThis = iterator();</b>
+<b class="fc"><i>19</i>&nbsp;		Iterator vIOther = pOther.iterator();</b>
+<b class="fc"><i>20</i>&nbsp;		while (vIThis.hasNext())</b>
 <i>21</i>&nbsp;		{
-<b class="fc"><i>22</i>&nbsp;			wvResult &amp;= wvIThis.next().equals(wvIOther.next());</b>
+<b class="fc"><i>22</i>&nbsp;			vResult &amp;= vIThis.next().equals(vIOther.next());</b>
 <i>23</i>&nbsp;		}
 <i>24</i>&nbsp;
-<b class="fc"><i>25</i>&nbsp;		return wvResult;</b>
+<b class="fc"><i>25</i>&nbsp;		return vResult;</b>
 <i>26</i>&nbsp;	}
 <i>27</i>&nbsp;}
 </div>
@@ -104,7 +104,7 @@
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-03-25 15:52</div>
+    <div style="float:right;">generated on 2018-04-29 15:34</div>
 </div>
 </body>
 </html>

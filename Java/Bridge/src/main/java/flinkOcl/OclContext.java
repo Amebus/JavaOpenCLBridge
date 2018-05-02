@@ -1,11 +1,13 @@
 package flinkOcl;
 
 import configuration.*;
+import flinkOcl.buildEngine.BuildEngine;
 
 import java.io.FileNotFoundException;
 
 public class OclContext
 {
+	private LoadSettingsDirective mLoadSettingsDirective;
 	private LoadSettingsDirective.ILoadSettingsFunction mLoadSettingsFunction;
 	private Settings mSettings;
 	private OclSettings mOclSettings;
@@ -13,16 +15,12 @@ public class OclContext
 	private IUserFunctionReadRepository mFunctionRepository;
 	private String mApplicationDirectory;
 	
-	public OclContext(IUserFunctionReadRepository pRepository)
-	{
-		this(pRepository, new LoadSettingsDirective(System.getProperty("user.dir")));
-	}
-	
 	public OclContext(IUserFunctionReadRepository pRepository, LoadSettingsDirective pLoadSettingsDirective)
 	{
 		mApplicationDirectory = System.getProperty("user.dir");
 		mFunctionRepository = pRepository;
-		mLoadSettingsFunction = pLoadSettingsDirective.getLoadFunction();
+		mLoadSettingsDirective = pLoadSettingsDirective;
+		mLoadSettingsFunction = mLoadSettingsDirective.getLoadFunction();
 	}
 	
 	public String getApplicationDirectory()

@@ -58,10 +58,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    77.8%
+    78.6%
   </span>
   <span class="absValue">
-    (21/ 27)
+    (22/ 28)
   </span>
 </td>
 </tr>
@@ -97,14 +97,14 @@
 <i>23</i>&nbsp;	private OclTupleIterator()
 <b class="fc"><i>24</i>&nbsp;	{</b>
 <b class="fc"><i>25</i>&nbsp;		mIndex = 0;</b>
-<i>26</i>&nbsp;	}
+<b class="fc"><i>26</i>&nbsp;	}</b>
 <i>27</i>&nbsp;
-<i>28</i>&nbsp;	public OclTupleIterator resetToArity(byte prmTupleArity){
-<b class="fc"><i>29</i>&nbsp;		if (mList == null || mList.size() != prmTupleArity)</b>
+<i>28</i>&nbsp;	public OclTupleIterator resetToArity(byte pTupleArity){
+<b class="fc"><i>29</i>&nbsp;		if (mList == null || mList.size() != pTupleArity)</b>
 <i>30</i>&nbsp;		{
-<b class="fc"><i>31</i>&nbsp;			mList = new ArrayList&lt;&gt;(prmTupleArity);</b>
+<b class="fc"><i>31</i>&nbsp;			mList = new ArrayList&lt;&gt;(pTupleArity);</b>
 <i>32</i>&nbsp;
-<b class="fc"><i>33</i>&nbsp;			for (int i = 0; i &lt; prmTupleArity; i++)</b>
+<b class="fc"><i>33</i>&nbsp;			for (int i = 0; i &lt; pTupleArity; i++)</b>
 <i>34</i>&nbsp;			{
 <b class="fc"><i>35</i>&nbsp;				mList.add(null);</b>
 <i>36</i>&nbsp;			}
@@ -113,40 +113,40 @@
 <b class="fc"><i>39</i>&nbsp;		return this;</b>
 <i>40</i>&nbsp;	}
 <i>41</i>&nbsp;
-<i>42</i>&nbsp;	public OclTupleIterator iterateOver(IOclTuple prmTuple)
+<i>42</i>&nbsp;	public OclTupleIterator iterateOver(IOclTuple pTuple)
 <i>43</i>&nbsp;	{
 <b class="fc"><i>44</i>&nbsp;		mIndex = 0;</b>
-<b class="pc"><i>45</i>&nbsp;		switch (prmTuple.getArity())</b>
+<b class="fc"><i>45</i>&nbsp;		switch (pTuple.getArity())</b>
 <i>46</i>&nbsp;		{
 <i>47</i>&nbsp;			case 1:
-<b class="fc"><i>48</i>&nbsp;				return iterateOver((Tuple1)prmTuple);</b>
+<b class="fc"><i>48</i>&nbsp;				return iterateOver((Tuple1)pTuple);</b>
 <i>49</i>&nbsp;			case 2:
-<b class="fc"><i>50</i>&nbsp;				return iterateOver((Tuple2)prmTuple);</b>
+<b class="fc"><i>50</i>&nbsp;				return iterateOver((Tuple2)pTuple);</b>
 <i>51</i>&nbsp;			case 3:
-<b class="nc"><i>52</i>&nbsp;				return iterateOver((Tuple3)prmTuple);</b>
+<b class="nc"><i>52</i>&nbsp;				return iterateOver((Tuple3)pTuple);</b>
 <i>53</i>&nbsp;			default:
 <b class="nc"><i>54</i>&nbsp;				throw new IllegalArgumentException(DIMENSION_ERROR);</b>
 <i>55</i>&nbsp;		}
 <i>56</i>&nbsp;	}
 <i>57</i>&nbsp;
-<i>58</i>&nbsp;	public OclTupleIterator iterateOver(Tuple1 prmTuple)
+<i>58</i>&nbsp;	public OclTupleIterator iterateOver(Tuple1 pTuple)
 <i>59</i>&nbsp;	{
-<b class="fc"><i>60</i>&nbsp;		mList.set(0, prmTuple.getT1());</b>
+<b class="fc"><i>60</i>&nbsp;		mList.set(0, pTuple.getT1());</b>
 <b class="fc"><i>61</i>&nbsp;		return this;</b>
 <i>62</i>&nbsp;	}
 <i>63</i>&nbsp;
-<i>64</i>&nbsp;	public OclTupleIterator iterateOver(Tuple2 prmTuple)
+<i>64</i>&nbsp;	public OclTupleIterator iterateOver(Tuple2 pTuple)
 <i>65</i>&nbsp;	{
-<b class="fc"><i>66</i>&nbsp;		mList.set(0, prmTuple.getT1());</b>
-<b class="fc"><i>67</i>&nbsp;		mList.set(1, prmTuple.getT2());</b>
+<b class="fc"><i>66</i>&nbsp;		mList.set(0, pTuple.getT1());</b>
+<b class="fc"><i>67</i>&nbsp;		mList.set(1, pTuple.getT2());</b>
 <b class="fc"><i>68</i>&nbsp;		return this;</b>
 <i>69</i>&nbsp;	}
 <i>70</i>&nbsp;
-<i>71</i>&nbsp;	public OclTupleIterator iterateOver(Tuple3 prmTuple)
+<i>71</i>&nbsp;	public OclTupleIterator iterateOver(Tuple3 pTuple)
 <i>72</i>&nbsp;	{
-<b class="nc"><i>73</i>&nbsp;		mList.set(0, prmTuple.getT1());</b>
-<b class="nc"><i>74</i>&nbsp;		mList.set(1, prmTuple.getT2());</b>
-<b class="nc"><i>75</i>&nbsp;		mList.set(3, prmTuple.getT3());</b>
+<b class="nc"><i>73</i>&nbsp;		mList.set(0, pTuple.getT1());</b>
+<b class="nc"><i>74</i>&nbsp;		mList.set(1, pTuple.getT2());</b>
+<b class="nc"><i>75</i>&nbsp;		mList.set(3, pTuple.getT3());</b>
 <b class="nc"><i>76</i>&nbsp;		return this;</b>
 <i>77</i>&nbsp;	}
 <i>78</i>&nbsp;
@@ -167,7 +167,7 @@
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-03-25 15:52</div>
+    <div style="float:right;">generated on 2018-04-29 15:34</div>
 </div>
 </body>
 </html>

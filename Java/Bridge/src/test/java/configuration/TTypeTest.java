@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static testHelpers.TTypesGetter.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TTTypeTest
+class TTypeTest
 {
 	@Test
 	void JavaTypes_Builder_Ok()

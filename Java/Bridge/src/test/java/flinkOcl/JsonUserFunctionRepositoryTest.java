@@ -1,40 +1,23 @@
 package flinkOcl;
 
-import flinkOcl.buildEngine.IUserFunction;
-import flinkOcl.buildEngine.UserFunction;
-import io.gsonfire.gson.HookInvocationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import testHelpers.Constants;
 
-import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static testHelpers.SettingsWrapper.loadSettings;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JsonUserFunctionRepositoryTest
 {
 	
-	private boolean ufEqualsToUf(IUserFunction p1, IUserFunction p2)
+	private JsonUserFunction getMap1()
 	{
-		if(p1 == p2)
-			return true;
-		
-		return p1 != null && p2!=null &&
-			   p1.getName().equals(p2.getName()) &&
-			   p1.getInputTupleName().equals(p2.getInputTupleName()) &&
-			   p1.getOutputTupleName().equals(p2.getOutputTupleName()) &&
-			   p1.getFunction().equals(p2.getFunction());
-	}
-	
-	private IUserFunction getMap1()
-	{
-		return new UserFunction()
+		return new JsonUserFunction()
 		{
 			@Override
 			public String getType()
@@ -68,9 +51,9 @@ class JsonUserFunctionRepositoryTest
 		};
 	}
 	
-	private IUserFunction getMap2()
+	private JsonUserFunction getMap2()
 	{
-		return new UserFunction()
+		return new JsonUserFunction()
 		{
 			@Override
 			public String getType()
@@ -104,18 +87,9 @@ class JsonUserFunctionRepositoryTest
 		};
 	}
 	
-	private IUserFunctionReadRepository getRepository(String pFileName)
+	private JsonUserFunctionRepository getRepository(String pFileName)
 	{
-		try
-		{
-			return new JsonUserFunctionRepository(Constants.FUNCTIONS_DIR, pFileName);
-		}
-		catch (FileNotFoundException pE)
-		{
-			pE.printStackTrace();
-			fail("The " + Constants.FUNCTIONS_DIR + " directory does not contains the specified files");
-		}
-		return null;
+		return new JsonUserFunctionRepository(Constants.FUNCTIONS_DIR, pFileName);
 	}
 	
 	private Collection<IUserFunction> getUserFunctions(String pFileName)
@@ -137,14 +111,13 @@ class JsonUserFunctionRepositoryTest
 		vOptional = userFunctions.stream().filter(x -> x.getName().equals("map1")).findFirst();
 		assertTrue(vOptional.isPresent());
 		vTempUF = vOptional.get();
-		assertTrue(ufEqualsToUf(vTempUF, getMap1()));
+		assertEquals(getMap1(), vTempUF);
 		
 		assertEquals(1L, userFunctions.stream().filter(x -> x.getName().equals("map2")).count());
 		vOptional = userFunctions.stream().filter(x -> x.getName().equals("map2")).findFirst();
 		assertTrue(vOptional.isPresent());
 		vTempUF = vOptional.get();
-		assertTrue(ufEqualsToUf(vTempUF, getMap2()));
-		
+		assertEquals(getMap2(), vTempUF);
 	}
 	
 	@Test
@@ -159,7 +132,21 @@ class JsonUserFunctionRepositoryTest
 	}
 	
 	@Test
-	void A()
+	void GetUserFunctionByName_Ok()
+	{
+		JsonUserFunctionRepository vRepo = getRepository("functions.json");
+		
+		JsonUserFunction vUserFunction = getMap1();
+		
+		assertEquals(vUserFunction, vRepo.getUserFunctionByName(vUserFunction.getName()));
+		
+		vUserFunction = getMap2();
+		
+		assertEquals(vUserFunction, vRepo.getUserFunctionByName(vUserFunction.getName()));
+	}
+	
+	@Test
+	void EmptyBodyFunction_ThrowsError_Ok()
 	{
 		boolean rightExceptionWasThrow = false;
 		try
@@ -174,7 +161,7 @@ class JsonUserFunctionRepositoryTest
 	}
 	
 	@Test
-	void B()
+	void NoOutputMapFunction_ThrowsError_Ok()
 	{
 		boolean rightExceptionWasThrow = false;
 		try
@@ -189,7 +176,7 @@ class JsonUserFunctionRepositoryTest
 	}
 	
 	@Test
-	void C()
+	void NoOutputFlatMapFunction_ThrowsError_Ok()
 	{
 		boolean rightExceptionWasThrow = false;
 		try
@@ -199,6 +186,21 @@ class JsonUserFunctionRepositoryTest
 		catch (IllegalArgumentException ex)
 		{
 			rightExceptionWasThrow = ex.getMessage().endsWith("specify an output tuple.");
+		}
+		assertTrue(rightExceptionWasThrow);
+	}
+	
+	@Test
+	void UnknownFunction_ThrowsError_Ok()
+	{
+		boolean rightExceptionWasThrow = false;
+		try
+		{
+			getUserFunctions("unknownFunction.json");
+		}
+		catch (IllegalArgumentException ex)
+		{
+			rightExceptionWasThrow = ex.getMessage().endsWith(" which is unknown.");
 		}
 		assertTrue(rightExceptionWasThrow);
 	}

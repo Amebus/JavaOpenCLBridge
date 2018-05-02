@@ -1,8 +1,7 @@
 package flinkOcl;
 
-import Commons.JsonLoader;
-import Commons.JsonLoaderOptions;
-import flinkOcl.buildEngine.IUserFunction;
+import Commons.Json.JsonLoader;
+import Commons.Json.JsonLoaderOptions;
 import io.gsonfire.gson.HookInvocationException;
 
 import java.io.FileNotFoundException;
@@ -24,12 +23,12 @@ public class JsonUserFunctionRepository implements IUserFunctionReadRepository
 	
 	private boolean mAreFunctionsNotLoadedYet;
 	
-	public JsonUserFunctionRepository(String pFilePath) throws FileNotFoundException
+	public JsonUserFunctionRepository(String pFilePath)
 	{
 		this(pFilePath, FUNCTIONS_FILE_NAME);
 	}
 	
-	public JsonUserFunctionRepository(String pFilePath, String pFileName) throws FileNotFoundException
+	public JsonUserFunctionRepository(String pFilePath, String pFileName)
 	{
 		mAreFunctionsNotLoadedYet = true;
 		mUserFunctionMap = new HashMap<>();
@@ -52,10 +51,10 @@ public class JsonUserFunctionRepository implements IUserFunctionReadRepository
 		return mUserFunctionMap.values();
 	}
 	
-	private void checkIfFileExists() throws FileNotFoundException
+	private void checkIfFileExists()
 	{
 		if(Files.notExists(Paths.get(mFilePath).normalize().resolve(mFileName).toAbsolutePath()))
-			throw new FileNotFoundException("The file \"" + mFileName + "\" can't be found under the folder \"" + mFilePath + "\".");
+			throw new IllegalArgumentException("The file \"" + mFileName + "\" can't be found under the folder \"" + mFilePath + "\".");
 	}
 	
 	private void loadFunctions()
@@ -70,7 +69,7 @@ public class JsonUserFunctionRepository implements IUserFunctionReadRepository
 											   .build()
 													  );
 			
-			mUserFunctions.forEach(x -> mUserFunctionMap.put(x.getName(), (JsonUserFunction) x));
+			mUserFunctions.forEach(x -> mUserFunctionMap.put(x.getName(), x));
 			mAreFunctionsNotLoadedYet = false;
 		}
 		catch (HookInvocationException ex)
@@ -79,7 +78,7 @@ public class JsonUserFunctionRepository implements IUserFunctionReadRepository
 		}
 		catch (FileNotFoundException pE)
 		{
-			pE.printStackTrace();
+			throw new IllegalArgumentException("The file \"" + mFileName + "\" can't be found under the folder \"" + mFilePath + "\".", pE);
 		}
 	}
 }
