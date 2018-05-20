@@ -1,14 +1,9 @@
 package flinkOcl.buildEngine.kernelBuilders;
 
-import Commons.IBuilder;
-import configuration.OclContextOptions;
-import configuration.OclKernelOptions;
-import configuration.TupleDefinition;
-import configuration.TupleDefinitions;
-import flinkOcl.IUserFunction;
+import configuration.ITupleDefinition;
+import configuration.json.JsonTupleDefinition;
 import flinkOcl.buildEngine.KernelBuilder;
 import flinkOcl.buildEngine.KernelBuilderOptions;
-import flinkOcl.buildEngine.OclKernel;
 
 public abstract class KernelWithOutputTupleBuilder extends KernelBuilder
 {
@@ -18,7 +13,7 @@ public abstract class KernelWithOutputTupleBuilder extends KernelBuilder
 		super(pKernelBuilderOptions);
 	}
 	
-	protected TupleDefinition getOutputTuple()
+	protected ITupleDefinition getOutputTuple()
 	{
 		return getTupleDefinitions().getTupleDefinition(getUserFunction().getOutputTupleName());
 	}
@@ -34,7 +29,7 @@ public abstract class KernelWithOutputTupleBuilder extends KernelBuilder
 	}
 	
 	@Override
-	protected String getOutputSection()
+	protected String getOutputVarDeclaration()
 	{
 		StringBuilder vBuilder = new StringBuilder();
 		

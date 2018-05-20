@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JsonUserFunctionRepository implements IUserFunctionReadRepository
+public class JsonUserFunctionRepository implements IUserFunctionsRepository
 {
 	public static final String FUNCTIONS_FILE_NAME = "functions.json";
 	
@@ -75,10 +75,6 @@ public class JsonUserFunctionRepository implements IUserFunctionReadRepository
 		catch (HookInvocationException ex)
 		{
 			throw new IllegalArgumentException(ex.getCause());
-		}
-		catch (FileNotFoundException pE)
-		{
-			throw new IllegalArgumentException("The file \"" + mFileName + "\" can't be found under the folder \"" + mFilePath + "\".", pE);
 		}
 	}
 }

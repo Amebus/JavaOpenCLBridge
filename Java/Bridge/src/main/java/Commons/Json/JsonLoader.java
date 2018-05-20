@@ -7,9 +7,18 @@ import java.io.FileReader;
 
 public class JsonLoader
 {
-	public static <T> T loadJsonObject(JsonLoaderOptions<T> pOptions) throws FileNotFoundException
+	public static <T> T loadJsonObject(JsonLoaderOptions<T> pOptions)
 	{
-		FileReader vReader = new FileReader(pOptions.getFile());
+		FileReader vReader;
+		try
+		{
+			vReader = new FileReader(pOptions.getFile());
+		}
+		catch (FileNotFoundException pE)
+		{
+			throw new IllegalArgumentException("The file: " + pOptions.getFile().getAbsolutePath() + " was not found", pE);
+		}
+		
 		GsonFireBuilder vBuilder = new GsonFireBuilder();
 		
 		pOptions.getClassesToHook().forEach(vBuilder::enableHooks);

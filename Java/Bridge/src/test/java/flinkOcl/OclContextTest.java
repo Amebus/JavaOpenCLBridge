@@ -1,13 +1,12 @@
 package flinkOcl;
 
-import configuration.LoadSettingsDirective;
+import configuration.json.JsonSettingsRepository;
+import configuration.json.JsonTupleDefinitionsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import testHelpers.Constants;
 
-import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.Objects;
+
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,17 +19,10 @@ public class OclContextTest
 	@Test
 	void A()
 	{
-		OclContext vContext = new OclContext(new JsonUserFunctionRepository(Constants.FUNCTIONS_DIR), new LoadSettingsDirective(Constants.RESOURCES_DIR));
-		
-		try
-		{
-			vContext.open();
-		}
-		catch (FileNotFoundException pE)
-		{
-			pE.printStackTrace();
-			fail("file no found");
-		}
+		OclContext vContext = new OclContext(new JsonSettingsRepository(Constants.FUNCTIONS_DIR),
+											 new JsonTupleDefinitionsRepository(Constants.FUNCTIONS_DIR),
+											 new JsonUserFunctionRepository(Constants.FUNCTIONS_DIR));
+		vContext.open();
 	}
 	
 }

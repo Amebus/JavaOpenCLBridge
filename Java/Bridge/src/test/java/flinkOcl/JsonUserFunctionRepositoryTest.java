@@ -34,7 +34,7 @@ class JsonUserFunctionRepositoryTest
 			@Override
 			public String getFunction()
 			{
-				return "map1_line1\nmap1_line2\nmap1_line3\n";
+				return "map1_line1;\nmap1_line2;\nmap1_line3;\n";
 			}
 			
 			@Override
@@ -70,7 +70,7 @@ class JsonUserFunctionRepositoryTest
 			@Override
 			public String getFunction()
 			{
-				return "map2_line1\nmap2_line2\nmap2_line3\n";
+				return "map2_line1;\nmap2_line2;\nmap2_line3;\n";
 			}
 			
 			@Override

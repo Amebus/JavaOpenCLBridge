@@ -10,14 +10,9 @@ public class FlatMapBuilder extends KernelWithOutputTupleBuilder
 	}
 	
 	@Override
-	protected String getKernelSignature()
+	protected String getOutputSection()
 	{
 		return null;
 	}
 	
-	@Override
-	protected String getOutputVarDeclaration()
-	{
-		return null;
-	}
 }

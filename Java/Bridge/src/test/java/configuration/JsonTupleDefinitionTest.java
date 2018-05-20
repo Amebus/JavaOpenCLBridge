@@ -1,6 +1,8 @@
 package configuration;
 
 
+import configuration.json.JsonTupleDefinition;
+import configuration.json.JsonTupleDefinitionsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import testHelpers.Constants;
@@ -11,27 +13,27 @@ import static org.junit.jupiter.api.Assertions.*;
 import static testHelpers.TTypesGetter.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TupleDefinitionTest
+class JsonTupleDefinitionTest
 {
 
 	@Test
 	void TupleDefinition_Equals_Ok()
 	{
-		LoadSettingsDirective vSettingsDirective = new LoadSettingsDirective(Constants.RESOURCES_DIR, "tupleEqualsTest.json");
-		Settings vSettings = getSettings(vSettingsDirective);
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
+		JsonTupleDefinitionsRepository vRepository =
+				new JsonTupleDefinitionsRepository(Constants.RESOURCES_DIR, "tupleEqualsTest.json");
+		Iterable<JsonTupleDefinition> vDefinitions = vRepository.getTupleDefinitions();
 
 		vDefinitions.forEach( x -> assertTrue(x.equals(x)));
 
-		vDefinitions.forEach( x -> assertTrue(x.equals(new TupleDefinition(x))));
+		vDefinitions.forEach( x -> assertTrue(x.equals(new JsonTupleDefinition(x))));
 
 		vDefinitions.forEach( x -> assertFalse(x.equals(null)));
 
 		vDefinitions.forEach( x -> assertFalse(x.equals("string")));
 
-		Iterator<TupleDefinition> vIterator = vDefinitions.iterator();
-
-		TupleDefinition vOne, vTwo;
+		Iterator<JsonTupleDefinition> vIterator = vDefinitions.iterator();
+		
+		ITupleDefinition vOne, vTwo;
 
 		vOne = vIterator.next();
 		vTwo = vIterator.next();
@@ -48,17 +50,17 @@ class TupleDefinitionTest
 	@Test
 	void TupleDefinition_HashCode_Ok()
 	{
-		LoadSettingsDirective vSettingsDirective = new LoadSettingsDirective(Constants.RESOURCES_DIR, "tupleEqualsTest.json");
-		Settings vSettings = getSettings(vSettingsDirective);
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
+		JsonTupleDefinitionsRepository vRepository =
+				new JsonTupleDefinitionsRepository(Constants.RESOURCES_DIR, "tupleEqualsTest.json");
+		Iterable<JsonTupleDefinition> vDefinitions = vRepository.getTupleDefinitions();
 
 		vDefinitions.forEach( x -> assertEquals(x.hashCode(), x.hashCode()));
 
-		vDefinitions.forEach( x -> assertEquals(x.hashCode(), new TupleDefinition(x).hashCode()));
+		vDefinitions.forEach( x -> assertEquals(x.hashCode(), new JsonTupleDefinition(x).hashCode()));
 
-		Iterator<TupleDefinition> vIterator = vDefinitions.iterator();
+		Iterator<JsonTupleDefinition> vIterator = vDefinitions.iterator();
 
-		TupleDefinition vOne, vTwo;
+		ITupleDefinition vOne, vTwo;
 
 		vOne = vIterator.next();
 		vTwo = vIterator.next();
@@ -69,34 +71,36 @@ class TupleDefinitionTest
 	@Test
 	void TupleDefinition_TWithIndexOutOfBoundIsNull_Ok()
 	{
-		Settings vSettings = getSettings();
-		Iterator<TupleDefinition> vIterator = vSettings.getTupleDefinitions().asIterable().iterator();
+		JsonTupleDefinitionsRepository vRepository =
+				new JsonTupleDefinitionsRepository(Constants.RESOURCES_DIR);
+		Iterable<JsonTupleDefinition> vDefinitions = vRepository.getTupleDefinitions();
+		Iterator<JsonTupleDefinition> vIterator = vDefinitions.iterator();
 
-		TupleDefinition vOne = vIterator.next();
+		JsonTupleDefinition vOne = vIterator.next();
 
 		assertNull(vOne.getT(5));
-		assertNull(vOne.getT(TupleDefinition.T_LIMIT + 1));
+		assertNull(vOne.getT(JsonTupleDefinition.T_LIMIT + 1));
 
 		assertNull(vOne.getJavaT(5));
-		assertNull(vOne.getJavaT(TupleDefinition.T_LIMIT + 1));
+		assertNull(vOne.getJavaT(JsonTupleDefinition.T_LIMIT + 1));
 
 		assertNull(vOne.getCT(5));
-		assertNull(vOne.getCT(TupleDefinition.T_LIMIT + 1));
+		assertNull(vOne.getCT(JsonTupleDefinition.T_LIMIT + 1));
 	}
 
 	@Test
 	void TupleDefinition_Iterator_Ok()
 	{
-		Settings vSettings = getSettings();
-
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
+		JsonTupleDefinitionsRepository vRepository =
+				new JsonTupleDefinitionsRepository(Constants.RESOURCES_DIR);
+		Iterable<JsonTupleDefinition> vDefinitions = vRepository.getTupleDefinitions();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
 
-		Iterator<TupleDefinition> vTupleIterator = vDefinitions.iterator();
+		Iterator<JsonTupleDefinition> vTupleIterator = vDefinitions.iterator();
 
-		TupleDefinition vTupleDefinition = vTupleIterator.next();
+		JsonTupleDefinition vTupleDefinition = vTupleIterator.next();
 
 		assertTrue(expectedCount == vTupleDefinition.getArity());
 		assertEquals("tupleOne", vTupleDefinition.getName());
@@ -138,16 +142,16 @@ class TupleDefinitionTest
 	@Test
 	void TupleDefinition_ReverseIterator_Ok()
 	{
-		Settings vSettings = getSettings();
-
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
+		JsonTupleDefinitionsRepository vRepository =
+				new JsonTupleDefinitionsRepository(Constants.RESOURCES_DIR);
+		Iterable<JsonTupleDefinition> vDefinitions = vRepository.getTupleDefinitions();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
 
-		Iterator<TupleDefinition> vTupleIterator = vDefinitions.iterator();
+		Iterator<JsonTupleDefinition> vTupleIterator = vDefinitions.iterator();
 
-		TupleDefinition vTupleDefinition = vTupleIterator.next();
+		JsonTupleDefinition vTupleDefinition = vTupleIterator.next();
 
 		assertTrue(expectedCount == vTupleDefinition.getArity());
 		assertEquals("tupleOne", vTupleDefinition.getName());
@@ -189,16 +193,16 @@ class TupleDefinitionTest
 	@Test
 	void TupleDefinition_CIterator_Ok()
 	{
-		Settings vSettings = getSettings();
-
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
+		JsonTupleDefinitionsRepository vRepository =
+				new JsonTupleDefinitionsRepository(Constants.RESOURCES_DIR);
+		Iterable<JsonTupleDefinition> vDefinitions = vRepository.getTupleDefinitions();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
 
-		Iterator<TupleDefinition> vTupleIterator = vDefinitions.iterator();
+		Iterator<JsonTupleDefinition> vTupleIterator = vDefinitions.iterator();
 
-		TupleDefinition vTupleDefinition = vTupleIterator.next();
+		JsonTupleDefinition vTupleDefinition = vTupleIterator.next();
 
 		assertTrue(expectedCount == vTupleDefinition.getArity());
 		assertEquals("tupleOne", vTupleDefinition.getName());
@@ -240,16 +244,16 @@ class TupleDefinitionTest
 	@Test
 	void TupleDefinition_ReverseCIterator_Ok()
 	{
-		Settings vSettings = getSettings();
-
-		Iterable<TupleDefinition> vDefinitions = vSettings.getTupleDefinitions().asIterable();
+		JsonTupleDefinitionsRepository vRepository =
+				new JsonTupleDefinitionsRepository(Constants.RESOURCES_DIR);
+		Iterable<JsonTupleDefinition> vDefinitions = vRepository.getTupleDefinitions();
 
 		int expectedCount = 4;
 		final int[] actualCount = {0};
 
-		Iterator<TupleDefinition> vTupleIterator = vDefinitions.iterator();
+		Iterator<JsonTupleDefinition> vTupleIterator = vDefinitions.iterator();
 
-		TupleDefinition vTupleDefinition = vTupleIterator.next();
+		JsonTupleDefinition vTupleDefinition = vTupleIterator.next();
 
 		assertTrue(expectedCount == vTupleDefinition.getArity());
 		assertEquals("tupleOne", vTupleDefinition.getName());

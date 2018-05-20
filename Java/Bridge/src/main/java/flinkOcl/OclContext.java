@@ -3,24 +3,23 @@ package flinkOcl;
 import configuration.*;
 import flinkOcl.buildEngine.BuildEngine;
 
-import java.io.FileNotFoundException;
-
 public class OclContext
 {
-	private LoadSettingsDirective mLoadSettingsDirective;
-	private LoadSettingsDirective.ILoadSettingsFunction mLoadSettingsFunction;
-	private Settings mSettings;
-	private OclSettings mOclSettings;
-	private TupleDefinitions mTupleDefinitions;
-	private IUserFunctionReadRepository mFunctionRepository;
+	private ISettingsRepository mSettingsRepository;
+	private ITupleDefinitionsRepository mTupleDefinitionsRepository;
+	private IUserFunctionsRepository mFunctionRepository;
+	
 	private String mApplicationDirectory;
 	
-	public OclContext(IUserFunctionReadRepository pRepository, LoadSettingsDirective pLoadSettingsDirective)
+	public OclContext(ISettingsRepository pSettingsRepository,
+					  ITupleDefinitionsRepository pTupleDefinitionsRepository,
+					  IUserFunctionsRepository pRepository)
 	{
 		mApplicationDirectory = System.getProperty("user.dir");
+		
+		mSettingsRepository = pSettingsRepository;
+		mTupleDefinitionsRepository = pTupleDefinitionsRepository;
 		mFunctionRepository = pRepository;
-		mLoadSettingsDirective = pLoadSettingsDirective;
-		mLoadSettingsFunction = mLoadSettingsDirective.getLoadFunction();
 	}
 	
 	public String getApplicationDirectory()
@@ -28,28 +27,20 @@ public class OclContext
 		return mApplicationDirectory;
 	}
 	
-	public void open() throws FileNotFoundException
+	public void open()
 	{
-		mSettings = loadSettings();
-		mOclSettings = mSettings.getOclSettings();
-		mTupleDefinitions = mSettings.getTupleDefinitions();
 		createAndBuildAndLoadKernels();
 	}
 	
-	public void close() throws FileNotFoundException
+	public void close()
 	{
 		deleteLocalFiles();
-	}
-	
-	private Settings loadSettings() throws FileNotFoundException
-	{
-		return mLoadSettingsFunction.loadSettings();
 	}
 
 	private void createAndBuildAndLoadKernels()
 	{
-		new BuildEngine(mOclSettings)
-				.generateKernels(mTupleDefinitions, mFunctionRepository.getUserFunctions())
+		new BuildEngine(mSettingsRepository)
+				.generateKernels(mTupleDefinitionsRepository, mFunctionRepository.getUserFunctions())
 				.loadCppLibrary();
 	}
 	

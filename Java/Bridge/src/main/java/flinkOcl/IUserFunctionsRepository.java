@@ -2,7 +2,7 @@ package flinkOcl;
 
 import java.util.Collection;
 
-public interface IUserFunctionReadRepository
+public interface IUserFunctionsRepository
 {
 
 	IUserFunction getUserFunctionByName(String pUserFunctionName);

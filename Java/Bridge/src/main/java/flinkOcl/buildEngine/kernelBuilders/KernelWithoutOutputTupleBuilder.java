@@ -1,9 +1,7 @@
 package flinkOcl.buildEngine.kernelBuilders;
 
-import configuration.TupleDefinition;
 import flinkOcl.buildEngine.KernelBuilder;
 import flinkOcl.buildEngine.KernelBuilderOptions;
-import flinkOcl.buildEngine.OclKernel;
 
 public abstract class KernelWithoutOutputTupleBuilder extends KernelBuilder
 {

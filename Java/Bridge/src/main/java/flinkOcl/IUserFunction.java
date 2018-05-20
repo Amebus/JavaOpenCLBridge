@@ -66,7 +66,8 @@ public interface IUserFunction
 		if(this == pOther)
 			return true;
 		
-		return getName().equals(pOther.getName()) &&
+		return getType().equals(pOther.getType()) &&
+			   getName().equals(pOther.getName()) &&
 			   getInputTupleName().equals(pOther.getInputTupleName()) &&
 			   getOutputTupleName().equals(pOther.getOutputTupleName()) &&
 			   getFunction().equals(pOther.getFunction());

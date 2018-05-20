@@ -9,9 +9,4 @@ public class ReduceBuilder extends KernelWithoutOutputTupleBuilder
 		super(pKernelBuilderOptions);
 	}
 	
-	@Override
-	protected String getKernelSignature()
-	{
-		return null;
-	}
 }

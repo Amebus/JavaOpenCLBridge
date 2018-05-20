@@ -1,5 +1,6 @@
 package configuration;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
@@ -77,31 +78,31 @@ public class LoadSettingsDirective
 		return getFile() != null;
 	}
 
-	public ILoadSettingsFunction getLoadFunction()
-	{
-		ILoadSettingsFunction vLoadFunction;
-
-		if (loadWithFileName())
-		{
-			vLoadFunction = () -> SettingsLoader.loadSettings(mFileDirectory, mFileName);
-		}
-		else if (loadWithPath())
-		{
-			vLoadFunction = () -> SettingsLoader.loadSettings(mPath);
-		}
-		else if (loadWithFile())
-		{
-			vLoadFunction = () -> SettingsLoader.loadSettings(mFile);
-		}
-		else
-		{
-			vLoadFunction = () -> SettingsLoader.loadSettings(mFileDirectory);
-		}
-		return vLoadFunction;
-	}
-
-	public interface ILoadSettingsFunction
-	{
-		Settings loadSettings() throws FileNotFoundException;
-	}
+//	public ILoadSettingsFunction getLoadFunction()
+//	{
+//		ILoadSettingsFunction vLoadFunction;
+//
+//		if (loadWithFileName())
+//		{
+//			vLoadFunction = () -> SettingsLoader.loadSettings(mFileDirectory, mFileName);
+//		}
+//		else if (loadWithPath())
+//		{
+//			vLoadFunction = () -> SettingsLoader.loadSettings(mPath);
+//		}
+//		else if (loadWithFile())
+//		{
+//			vLoadFunction = () -> SettingsLoader.loadSettings(mFile);
+//		}
+//		else
+//		{
+//			vLoadFunction = () -> SettingsLoader.loadSettings(mFileDirectory);
+//		}
+//		return vLoadFunction;
+//	}
+//
+//	public interface ILoadSettingsFunction
+//	{
+//		TupleDefinitions loadSettings() throws FileNotFoundException;
+//	}
 }

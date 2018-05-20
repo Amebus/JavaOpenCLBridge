@@ -1,6 +1,6 @@
 package flinkOcl.buildEngine;
 
-import configuration.OclSettings;
+import configuration.json.OclSettings;
 
 public class OclCodeBuilderEngine
 {

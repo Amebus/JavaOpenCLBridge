@@ -1,7 +1,7 @@
 package flinkOcl.buildEngine;
 
 import configuration.TType;
-import configuration.TupleDefinition;
+import configuration.json.JsonTupleDefinition;
 
 import java.util.Iterator;
 
@@ -30,7 +30,7 @@ public class TupleCodeGenerator
 											  	"__global signed char* _result" +
 											  ")\n";
 	
-	public String GetDeserialzationCode(TupleDefinition pTupleDefinition)
+	public String GetDeserialzationCode(JsonTupleDefinition pTupleDefinition)
 	{
 		StringBuilder vVariableDefinitions = new StringBuilder();
 		StringBuilder  vDeserializationCode = new StringBuilder();
@@ -67,7 +67,7 @@ public class TupleCodeGenerator
 		return vBuilder.toString();
 	}
 	
-	public String GetSerialzationCode(TupleDefinition pTupleDefinition)
+	public String GetSerialzationCode(JsonTupleDefinition pTupleDefinition)
 	{
 		StringBuilder vBuilder = new StringBuilder();
 		

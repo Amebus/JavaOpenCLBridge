@@ -1,26 +1,26 @@
 package flinkOcl.buildEngine;
 
 import Commons.IBuilder;
-import configuration.OclContextOptions;
-import configuration.OclKernelOptions;
-import configuration.TupleDefinitions;
+import configuration.IOclContextOptions;
+import configuration.IOclKernelsOptions;
+import configuration.ITupleDefinitionsRepository;
 import flinkOcl.IUserFunction;
 
 public class KernelBuilderOptions
 {
 	private IUserFunction mUserFunction;
-	private TupleDefinitions mTupleDefinitions;
-	private OclContextOptions mContextOptions;
-	private OclKernelOptions mKernelOptions;
+	private ITupleDefinitionsRepository mTupleDefinitionsRepository;
+	private IOclContextOptions mContextOptions;
+	private IOclKernelsOptions mKernelOptions;
 	
 	public KernelBuilderOptions(
 			IUserFunction pUserFunction,
-			TupleDefinitions pTupleDefinitions,
-			OclContextOptions pContextOptions,
-			OclKernelOptions pKernelOptions)
+			ITupleDefinitionsRepository pTupleDefinitionsRepository,
+			IOclContextOptions pContextOptions,
+			IOclKernelsOptions pKernelOptions)
 	{
 		mUserFunction = pUserFunction;
-		mTupleDefinitions = pTupleDefinitions;
+		mTupleDefinitionsRepository = pTupleDefinitionsRepository;
 		mContextOptions = pContextOptions;
 		mKernelOptions = pKernelOptions;
 	}
@@ -30,17 +30,17 @@ public class KernelBuilderOptions
 		return mUserFunction;
 	}
 	
-	public TupleDefinitions getTupleDefinitions()
+	public ITupleDefinitionsRepository getTupleDefinitionsRepository()
 	{
-		return mTupleDefinitions;
+		return mTupleDefinitionsRepository;
 	}
 	
-	public OclContextOptions getContextOptions()
+	public IOclContextOptions getContextOptions()
 	{
 		return mContextOptions;
 	}
 	
-	public OclKernelOptions getKernelOptions()
+	public IOclKernelsOptions getKernelOptions()
 	{
 		return mKernelOptions;
 	}
@@ -48,9 +48,9 @@ public class KernelBuilderOptions
 	public static class KernelOptionsBuilder implements IBuilder<KernelBuilderOptions>
 	{
 		private IUserFunction mUserFunction;
-		private TupleDefinitions mTupleDefinitions;
-		private OclContextOptions mContextOptions;
-		private OclKernelOptions mKernelOptions;
+		private ITupleDefinitionsRepository mTupleDefinitionsRepository;
+		private IOclContextOptions mContextOptions;
+		private IOclKernelsOptions mKernelOptions;
 		
 		public KernelOptionsBuilder setUserFunction(IUserFunction pUserFunction)
 		{
@@ -58,19 +58,19 @@ public class KernelBuilderOptions
 			return this;
 		}
 		
-		public KernelOptionsBuilder setTupleDefinitions(TupleDefinitions pTupleDefinitions)
+		public KernelOptionsBuilder setTupleDefinitionsRepository(ITupleDefinitionsRepository pTupleDefinitionsRepository)
 		{
-			mTupleDefinitions = pTupleDefinitions;
+			mTupleDefinitionsRepository = pTupleDefinitionsRepository;
 			return this;
 		}
 		
-		public KernelOptionsBuilder setContextOptions(OclContextOptions pContextOptions)
+		public KernelOptionsBuilder setContextOptions(IOclContextOptions pContextOptions)
 		{
 			mContextOptions = pContextOptions;
 			return this;
 		}
 		
-		public KernelOptionsBuilder setKernelOptions(OclKernelOptions pKernelOptions)
+		public KernelOptionsBuilder setKernelOptions(IOclKernelsOptions pKernelOptions)
 		{
 			mKernelOptions = pKernelOptions;
 			return this;
@@ -81,7 +81,7 @@ public class KernelBuilderOptions
 		{
 			return new KernelBuilderOptions(
 					mUserFunction,
-					mTupleDefinitions,
+					mTupleDefinitionsRepository,
 					mContextOptions,
 					mKernelOptions
 			);

@@ -1,7 +1,7 @@
 package Commons.mappers;
 
 import Commons.IMapper;
-import Commons.Lazy;
+import Commons.OnDemandLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,22 +9,22 @@ import java.util.Map;
 public abstract class AbstractMapper<K, T, O> implements IMapper<K, T, O>
 {
 	
-	private Map<K, Lazy<T, O>> mLazyMap;
+	private Map<K, OnDemandLoader<T, O>> mOnDemandLoaderMap;
 	
 	public AbstractMapper()
 	{
-		mLazyMap = new HashMap<>();
+		mOnDemandLoaderMap = new HashMap<>();
 	}
 	
 	@Override
-	public T get(K pKey, O pOptions)
+	public T resolve(K pKey, O pOptions)
 	{
-		return mLazyMap.get(pKey).get(pOptions);
+		return mOnDemandLoaderMap.get(pKey).get(pOptions);
 	}
 	
 	@Override
-	public void register(K pKey, Lazy<T, O> pLazyContainer)
+	public void register(K pKey, OnDemandLoader<T, O> pOnDemandLoaderContainer)
 	{
-		mLazyMap.put(pKey, pLazyContainer);
+		mOnDemandLoaderMap.put(pKey, pOnDemandLoaderContainer);
 	}
 }

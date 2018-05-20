@@ -1,0 +1,10 @@
+{
+  "oclSettings" : {
+    "contextOptions": {
+      "kernelsBuildFolder" : "oclKernels"
+    },
+    "kernelOptions": {
+
+    }
+  }
+}

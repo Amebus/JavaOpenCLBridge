@@ -1,11 +1,6 @@
 package flinkOcl.buildEngine.kernelBuilders;
 
-import configuration.OclContextOptions;
-import configuration.OclKernelOptions;
-import configuration.TupleDefinitions;
-import flinkOcl.IUserFunction;
 import flinkOcl.buildEngine.KernelBuilderOptions;
-import flinkOcl.buildEngine.OclKernel;
 
 public class MapBuilder extends KernelWithOutputTupleBuilder
 {
@@ -16,14 +11,9 @@ public class MapBuilder extends KernelWithOutputTupleBuilder
 	}
 	
 	@Override
-	protected String getKernelSignature()
+	protected String getOutputSection()
 	{
 		return null;
 	}
 	
-	@Override
-	protected String getOutputVarDeclaration()
-	{
-		return null;
-	}
 }

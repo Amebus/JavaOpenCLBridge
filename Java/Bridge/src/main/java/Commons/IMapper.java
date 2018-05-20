@@ -2,9 +2,9 @@ package Commons;
 
 public interface IMapper<K, T, O>
 {
-//	Map<String, Lazy<T, O>> mLazyMap;
-	T get(K pKey, O pOptions);
 
-	void register(K pKey, Lazy<T, O> pLazyContainer);
+	T resolve(K pKey, O pOptions);
+
+	void register(K pKey, OnDemandLoader<T, O> pOnDemandLoaderContainer);
 	
 }

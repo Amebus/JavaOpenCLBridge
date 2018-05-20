@@ -1,6 +1,6 @@
 package flinkOcl.buildEngine;
 
-import Commons.Lazy;
+import Commons.OnDemandLoader;
 import Commons.mappers.StringKeyMapper;
 import configuration.*;
 import flinkOcl.IUserFunction;
@@ -15,23 +15,23 @@ import java.util.List;
 public class KernelCodeBuilderEngine
 {
 	
-	private OclSettings mSettings;
-	private TupleDefinitions mTupleDefinitions;
+	private ISettingsRepository mSettingsRepository;
+	private ITupleDefinitionsRepository mTupleDefinitionsRepository;
 	private Iterable<? extends IUserFunction> mUserFunctions;
 	private KernelBuilderOptions.KernelOptionsBuilder mKernelBuilderOptionsBuilder;
 	private StringKeyMapper<KernelBuilder, KernelBuilderOptions> mTypeKernelBuilderMapper;
 	
 	
-	public KernelCodeBuilderEngine(OclSettings pSettings, TupleDefinitions pTupleDefinitions, Iterable<? extends IUserFunction> pUserFunctions)
+	public KernelCodeBuilderEngine(ISettingsRepository pSettingsRepository, ITupleDefinitionsRepository pTupleDefinitionsRepository, Iterable<? extends IUserFunction> pUserFunctions)
 	{
-		mSettings = pSettings;
-		mTupleDefinitions = pTupleDefinitions;
+		mSettingsRepository = pSettingsRepository;
+		mTupleDefinitionsRepository = pTupleDefinitionsRepository;
 		mUserFunctions = pUserFunctions;
 		
 		mKernelBuilderOptionsBuilder = new KernelBuilderOptions.KernelOptionsBuilder()
-				.setTupleDefinitions(mTupleDefinitions)
-				.setContextOptions(mSettings.getContextOptions())
-				.setKernelOptions(mSettings.getOclKernelOptions());
+				.setTupleDefinitionsRepository(mTupleDefinitionsRepository)
+				.setContextOptions(mSettingsRepository.getContextOptions())
+				.setKernelOptions(mSettingsRepository.getKernelsOptions());
 		
 		setUpMapper();
 	}
@@ -41,12 +41,12 @@ public class KernelCodeBuilderEngine
 		mTypeKernelBuilderMapper = new StringKeyMapper<>();
 		
 		//Transformations
-		mTypeKernelBuilderMapper.register(IUserFunction.MAP, new Lazy<>(MapBuilder::new));
-		mTypeKernelBuilderMapper.register(IUserFunction.FLAT_MAP, new Lazy<>(FlatMapBuilder::new));
-		mTypeKernelBuilderMapper.register(IUserFunction.FILTER, new Lazy<>(FilterBuilder::new));
+		mTypeKernelBuilderMapper.register(IUserFunction.MAP, new OnDemandLoader<>(MapBuilder::new));
+		mTypeKernelBuilderMapper.register(IUserFunction.FLAT_MAP, new OnDemandLoader<>(FlatMapBuilder::new));
+		mTypeKernelBuilderMapper.register(IUserFunction.FILTER, new OnDemandLoader<>(FilterBuilder::new));
 		
 		//Actions
-		mTypeKernelBuilderMapper.register(IUserFunction.REDUCE, new Lazy<>(ReduceBuilder::new));
+		mTypeKernelBuilderMapper.register(IUserFunction.REDUCE, new OnDemandLoader<>(ReduceBuilder::new));
 	}
 	
 	public CppLibraryInfo generateKernels()
@@ -64,10 +64,10 @@ public class KernelCodeBuilderEngine
 	
 	private OclKernel generateKernel(IUserFunction pUserFunction)
 	{
-		return mTypeKernelBuilderMapper.get( pUserFunction.getType(),
-											 mKernelBuilderOptionsBuilder
+		return mTypeKernelBuilderMapper.resolve(pUserFunction.getType(),
+												mKernelBuilderOptionsBuilder
 													.setUserFunction(pUserFunction)
 													.build()
-										   ).build();
+											   ).build();
 	}
 }

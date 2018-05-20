@@ -1,10 +1,10 @@
 package Commons;
 
-public class Lazy<T, O>
+public class OnDemandLoader<T, O>
 {
 	private ISupplier<T, O> mSupplier;
 	
-	public Lazy(ISupplier<T, O> pSupplier) {
+	public OnDemandLoader(ISupplier<T, O> pSupplier) {
 		mSupplier = pSupplier;
 	}
 	
