@@ -4,28 +4,60 @@ package flinkOcl.buildEngine;
 import Commons.IBuilder;
 import configuration.*;
 import flinkOcl.IUserFunction;
+import flinkOcl.buildEngine.kernelBuilders.utility.DoubleVarDefinitionLine;
+import flinkOcl.buildEngine.kernelBuilders.utility.IntVarDefinitionLine;
+import flinkOcl.buildEngine.kernelBuilders.utility.StringVarDefinitionLine;
+import flinkOcl.buildEngine.tupleVariables.InputVarDefinition;
+import flinkOcl.buildEngine.tupleVariables.OutputVarDefinition;
+import flinkOcl.buildEngine.tupleVariables.VarDefinition;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.function.Consumer;
 
 public abstract class KernelBuilder implements IBuilder<OclKernel>
 {
 	
-	public final String G_ID = "_gId";
-	public final String RESULT = "_result";
-	public final String K_RESULT = RESULT + "[" + G_ID + "]";
-	public final String DATA = "_data";
+	public static final String G_ID = "_gId";
+	public static final String INDEX = "_i";
+	
+	public static final String RESULT = "_result";
+	public static final String K_RESULT = RESULT + "[" + G_ID + "]";
+	
+	public static final String DATA = "_data";
+	public static final String DATA_INDEXES = "_dataIndexes";
+	
+	public static final String LONG_TEMP = "_l";
+	public static final String ARITY = "_arity";
 	
 	public static final class MACRO
 	{
-		public static final String SER_INT = "#define SER_INT(r, num, i)          \\\n" +
-											 "        r[i] = (num >> 24) & 0xFF;  \\\n" +
-											 "        i++;                        \\\n" +
-											 "        r[i] = (num >> 16) & 0xFF;  \\\n" +
-											 "        i++;                        \\\n" +
-											 "        r[i] = (num >> 8) & 0xFF;   \\\n" +
-											 "        i++;                        \\\n" +
-											 "        r[i] = num & 0xFF;          \\";
+		public static final String SER_INT = "#define SER_INT(i, si, r)          \\\n" +
+											 "        r[si] = (i >> 24) & 0xFF;  \\\n" +
+											 "        si++;                      \\\n" +
+											 "        r[si] = (i >> 16) & 0xFF;  \\\n" +
+											 "        si++;                      \\\n" +
+											 "        r[si] = (i >> 8) & 0xFF;   \\\n" +
+											 "        si++;                      \\\n" +
+											 "        r[si] = i & 0xFF;          \\\n";
+		
+		public static final String SER_DOUBLE = "#define SER_DOUBLE(d, si, r, t)     \\\n" +
+												"        t = (long) d;               \\\n" +
+												"        r[si] = (t >> 56) & 0xFF;   \\\n" +
+												"        si++;                       \\\n" +
+												"        r[si] = (t >> 48) & 0xFF;   \\\n" +
+												"        si++;                       \\\n" +
+												"        r[si] = (t >> 40) & 0xFF;   \\\n" +
+												"        si++;                       \\\n" +
+												"        r[si] = (t >> 32) & 0xFF;   \\\n" +
+												"        si++;                       \\\n" +
+												"        r[si] = (t >> 24) & 0xFF;   \\\n" +
+												"        si++;                       \\\n" +
+												"        r[si] = (t >> 16) & 0xFF;   \\\n" +
+												"        si++;                       \\\n" +
+												"        r[si] = (t >> 8) & 0xFF;    \\\n" +
+												"        si++;                       \\\n" +
+												"        r[si] = t & 0xFF;           \\\n";
 		
 		public static final String DESER_INT = "#define DESER_INT(d, si, r) \\\n" +
 											   "            r <<= 8;        \\\n" +
@@ -38,13 +70,65 @@ public abstract class KernelBuilder implements IBuilder<OclKernel>
 											   "            r |= d[si];     \\\n" +
 											   "            si++;           \\\n" +
 											   "            r <<= 8;        \\\n" +
-											   "            r |= d[si];     \\";
+											   "            r |= d[si];     \\\n";
 		
-		public static final String DESER_NUM = "#define DESER_NUM(d, si, r, dim)            \\\n" +
-											   "        for (int i = 0 ; i != dim ; i++) {  \\\n" +
-											   "            r <<= 8;                        \\\n" +
-											   "            r |= d[si+i];                   \\\n" +
-											   "        }";
+		public static final String DESER_DOUBLE = "#define DESER_DOUBLE(d, si, r, t)   \\\n" +
+												  "            t <<= 8;                \\\n" +
+												  "            t |= d[si];             \\\n" +
+												  "            si++;                   \\\n" +
+												  "            t <<= 8;                \\\n" +
+												  "            t |= d[si];             \\\n" +
+												  "            si++;                   \\\n" +
+												  "            t <<= 8;                \\\n" +
+												  "            t |= d[si];             \\\n" +
+												  "            si++;                   \\\n" +
+												  "            t <<= 8;                \\\n" +
+												  "            t |= d[si];             \\\n" +
+												  "            si++;                   \\\n" +
+												  "            t <<= 8;                \\\n" +
+												  "            t |= d[si];             \\\n" +
+												  "            si++;                   \\\n" +
+												  "            t <<= 8;                \\\n" +
+												  "            t |= d[si];             \\\n" +
+												  "            si++;                   \\\n" +
+												  "            t <<= 8;                \\\n" +
+												  "            t |= d[si];             \\\n" +
+												  "            si++;                   \\\n" +
+												  "            t <<= 8;                \\\n" +
+												  "            t |= d[si];             \\\n" +
+												  "            r = (double)t;          \\\n";
+		
+		public static final String DESER_STRING = "#define DESER_STRING(d, si, rs, ri) \\\n" +
+												  "            DESER_INT(d, si, ri);   \\\n" +
+												  "            si++;                   \\\n" +
+												  "            rs = d[si];             \\\n";
+	}
+	
+	public static final class MACRO_CALL
+	{
+		public static final String P1 = "$1";
+		public static final String P2 = "$2";
+		public static final String P3 = "$3";
+		
+		public static final String DESER_INT = "DESER_INT( " +
+											   DATA + ", " +
+											   INDEX + ", " +
+											   P1 +
+											   " );";
+		
+		public static final String DESER_DOUBLE = "DESER_DOUBLE( " +
+												  DATA + ", " +
+												  INDEX + ", " +
+												  P1 + ", " +
+												  LONG_TEMP +
+												  " );";
+		
+		public static final String DESER_STRING = "DESER_STRING( " +
+												  DATA + ", " +
+												  INDEX + ", " +
+												  P1 + ", " +
+												  P2 +
+												  " );";
 	}
 	
 	private IUserFunction mUserFunction;
@@ -75,6 +159,24 @@ public abstract class KernelBuilder implements IBuilder<OclKernel>
 	}
 	
 	
+	protected String dataOf(int pI)
+	{
+		return dataOf(Integer.toString(pI));
+	}
+	protected String dataOf(String pS)
+	{
+		return DATA + "[" + pS + "]";
+	}
+	
+	protected String dataIndexOf(int pI)
+	{
+		return dataOf(Integer.toString(pI));
+	}
+	protected String dataIndexOf(String pS)
+	{
+		return DATA_INDEXES + "[" + pS + "]";
+	}
+	
 	protected ITupleDefinitionsRepository getTupleDefinitions()
 	{
 		return mTupleDefinitions;
@@ -84,19 +186,28 @@ public abstract class KernelBuilder implements IBuilder<OclKernel>
 		return mTupleDefinitions.getTupleDefinition(mUserFunction.getInputTupleName());
 	}
 	
-	protected Iterable<String> getInputTupleVariablesAsInput()
+	protected Iterable<VarDefinition> getInputTupleVariablesForInput()
 	{
-		return getTupleVariables(getInputTuple(), "t");
+		return getTupleVariables(getInputTuple(),
+								 (r, t, i) -> r.add(new InputVarDefinition(t, i)));
 	}
-	protected Iterable<String> getInputTupleVariablesAsResult()
+	
+	protected Iterable<VarDefinition> getInputTupleVariablesForResult()
 	{
-		return getTupleVariables(getInputTuple(), "r");
+		return getTupleVariables(getInputTuple(),
+								 (r, t, i) -> r.add(new OutputVarDefinition(t, i)));
 	}
-	protected Iterable<String> getTupleVariables(ITupleDefinition pTuple, String pName)
+	
+	protected Iterable<VarDefinition> getTupleVariables(ITupleDefinition pTuple,
+												   ITupleVariableAdder pResultAdder)
 	{
 		final int[] vIndex = {0};
-		List<String> vResult = new ArrayList<>(pTuple.getArity());
-		getInputTuple().cIterator().forEachRemaining( t -> vResult.add(t.getT() + " _" + pName + vIndex[0]++));
+		Collection<VarDefinition> vResult = new ArrayList<>(pTuple.getArity());
+		pTuple.cIterator().forEachRemaining( t ->
+											 {
+												 pResultAdder.addTo(vResult, (CTType) t, vIndex[0]);
+												 vIndex[0]++;
+											 });
 		return vResult;
 	}
 	
@@ -113,8 +224,8 @@ public abstract class KernelBuilder implements IBuilder<OclKernel>
 			   getKernelSignature() +
 			   "\n{\n" +
 			   getUtilityVars() + "\n" +
-			   getOutputVarDeclaration() + "\n" +
 			   getInputSection() + "\n" +
+			   getOutputVarDeclaration() + "\n" +
 			   getUserFunction().getFunction() + "\n" +
 			   getOutputSection() +
 			   "\n}\n";
@@ -128,37 +239,37 @@ public abstract class KernelBuilder implements IBuilder<OclKernel>
 	
 	protected String getDeserializationMacroForInt()
 	{
-		return MACRO.SER_INT;
+		return MACRO.DESER_INT;
 	}
 	protected String getDeserializationMacroForDouble()
 	{
-		return "";
+		return MACRO.DESER_DOUBLE;
 	}
 	protected String getDeserializationMacroForString()
 	{
-		return "";
+		return MACRO.DESER_STRING;
 	}
 	
 	protected String getSerializationMacroForInt()
 	{
-		return MACRO.DESER_INT;
+		return MACRO.SER_INT;
 	}
 	protected String getSerializationMacroForDouble()
 	{
-		return "";
+		return MACRO.SER_DOUBLE;
 	}
 	protected String getSerializationMacroForString()
 	{
 		return "";
 	}
 	
-	private String getSerializationMacros()
+	protected String getSerializationMacros()
 	{
 		return getSerializationMacroForInt() + "\n" +
 			   getSerializationMacroForDouble() + "\n" +
 			   getSerializationMacroForString() + "\n";
 	}
-	private String getDeserializationMacros()
+	protected String getDeserializationMacros()
 	{
 		return getDeserializationMacroForInt() + "\n" +
 			   getDeserializationMacroForDouble() + "\n" +
@@ -169,27 +280,84 @@ public abstract class KernelBuilder implements IBuilder<OclKernel>
 	{
 		return "__kernel void " +
 			   getKernelName() +
-			   "(__global unsigned char* " + DATA + ", " +
-			   "__global int _dataIndexes, " +
-			   "__global unsigned char* " + RESULT + ", " +
-			   "__local unsigned char*" +
+			   "(\n" +
+			   "\t__global unsigned char* " + DATA + ", \n" +
+			   "\t__global int* " + DATA_INDEXES +", \n" +
+			   "\t__global unsigned char* " + RESULT + ", \n" +
+			   "\t__local int " + INDEX + "\n" +
+			   "\t__local long " + LONG_TEMP + "\n" +
 			   ")";
 	}
 	
 	protected String getUtilityVars()
 	{
-		return "int " + G_ID + " = get_global_id(0);\n";
+		return "int " + G_ID + " = get_global_id(0);\n" +
+			   "unsigned char " + ARITY + " = " + dataOf(0) + ";\n" +
+			   INDEX + " = " + dataIndexOf(G_ID) + ";" +
+			   "\n";
 	}
 	
 	protected String getInputSection()
 	{
+		return getInputDeclarationVariables() +
+			   getInputDeserialization();
+	}
+	
+	protected String getInputDeclarationVariables()
+	{
+		Iterable<VarDefinition> vDefinitions = getInputTupleVariablesForInput();
+		
+		return getDeclarationLineForInteger(vDefinitions) +
+			   getDeclarationLineForDouble(vDefinitions) +
+			   getDeclarationLineForString(vDefinitions) +
+			   "\n";
+	}
+	
+	protected String getDeclarationLineForInteger(Iterable<VarDefinition> pDefinitions)
+	{
+		return new IntVarDefinitionLine(pDefinitions).toKernelLine();
+	}
+	protected String getDeclarationLineForDouble(Iterable<VarDefinition> pDefinitions)
+	{
+		return new DoubleVarDefinitionLine(pDefinitions).toKernelLine();
+	}
+	protected String getDeclarationLineForString(Iterable<VarDefinition> pDefinitions)
+	{
+		return new StringVarDefinitionLine(pDefinitions).toKernelLine();
+	}
+	
+	protected String getInputDeserialization()
+	{
 		StringBuilder vBuilder = new StringBuilder();
+		Iterable<VarDefinition> vDefinitions = getInputTupleVariablesForInput();
 		
-		getInputTupleVariablesAsInput().forEach( x -> vBuilder.append(x)
-															  .append(";\n"));
 		
+		vDefinitions.forEach(x ->
+							 {
+								 if(x.getCType().isInteger())
+								 {
+									 vBuilder.append(MACRO_CALL.DESER_INT.replace(MACRO_CALL.P1, x.getName()))
+											 .append("\n");
+								 }
+								 else if(x.getCType().isDouble())
+								 {
+									 vBuilder.append(MACRO_CALL.DESER_DOUBLE.replace(MACRO_CALL.P1, x.getName()))
+											 .append("\n");
+								 }
+								 else if(x.getCType().isString())
+								 {
+									 String vDimName = "_sl" + x.getIndex();
+									 vBuilder.append(MACRO_CALL.DESER_STRING
+															 .replace(MACRO_CALL.P1, x.getName())
+															 .replace(MACRO_CALL.P2, vDimName)
+													)
+											 .append("\n");
+									 
+								 }
+							 });
 		return vBuilder.toString();
 	}
+	
 	protected abstract String getOutputVarDeclaration();
 	protected abstract String getOutputSection();
 }

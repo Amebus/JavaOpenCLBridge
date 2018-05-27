@@ -3,6 +3,8 @@ package flinkOcl.buildEngine.kernelBuilders;
 import flinkOcl.buildEngine.KernelBuilder;
 import flinkOcl.buildEngine.KernelBuilderOptions;
 
+import java.util.ArrayList;
+
 public abstract class KernelWithoutOutputTupleBuilder extends KernelBuilder
 {
 	public KernelWithoutOutputTupleBuilder(KernelBuilderOptions pKernelBuilderOptions)
@@ -34,6 +36,7 @@ public abstract class KernelWithoutOutputTupleBuilder extends KernelBuilder
 	
 	protected Iterable<String> getOutputSectionLines()
 	{
-		return getInputTupleVariablesAsResult();
+//		getInputTupleVariablesAsResult()
+		return new ArrayList<>();
 	}
 }

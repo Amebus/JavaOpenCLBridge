@@ -20,4 +20,10 @@ public class FilterBuilder extends MapBuilder
 	{
 		return K_RESULT + " = _r0;";
 	}
+	
+	@Override
+	protected String getSerializationMacros()
+	{
+		return "";
+	}
 }

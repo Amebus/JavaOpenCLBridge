@@ -4,6 +4,9 @@ import configuration.ITupleDefinition;
 import configuration.json.JsonTupleDefinition;
 import flinkOcl.buildEngine.KernelBuilder;
 import flinkOcl.buildEngine.KernelBuilderOptions;
+import flinkOcl.buildEngine.tupleVariables.OutputVarDefinition;
+
+import java.util.ArrayList;
 
 public abstract class KernelWithOutputTupleBuilder extends KernelBuilder
 {
@@ -20,12 +23,16 @@ public abstract class KernelWithOutputTupleBuilder extends KernelBuilder
 	
 	protected Iterable<String> getOutputTupleVariablesAsInput()
 	{
-		return getTupleVariables(getOutputTuple(), "t");
+//		return getTupleVariables(getOutputTuple(),
+//								 (r, t, i) -> r.add(new OutputVarDefinition(t, i)));
+		return new ArrayList<>();
 	}
 	
 	protected Iterable<String> getOutputTupleVariablesAsResult()
 	{
-		return getTupleVariables(getOutputTuple(), "r");
+//		return getTupleVariables(getInputTuple(),
+//								 (r, t, i) -> r.add(new OutputVarDefinition(t, i)));
+		return new ArrayList<>();
 	}
 	
 	@Override

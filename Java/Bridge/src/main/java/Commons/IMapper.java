@@ -1,10 +1,10 @@
 package Commons;
 
-public interface IMapper<K, T, O>
+public interface IMapper<K, V, O>
 {
 
-	T resolve(K pKey, O pOptions);
+	V resolve(K pKey, O pOptions);
 
-	void register(K pKey, OnDemandLoader<T, O> pOnDemandLoaderContainer);
+	void register(K pKey, OnDemandLoader<V, O> pOnDemandLoaderContainer);
 	
 }
