@@ -1,28 +1,35 @@
 package flinkOcl;
 
 import configuration.*;
+import flinkOcl.buildEngine.BuildEngine;
+import flinkOcl.buildEngine.CppLibraryInfo;
+import oclBridge.OclBridge;
 
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 public class OclContext
 {
-	private LoadSettingsDirective.ILoadSettingsFunction mLoadSettingsFunction;
-	private Settings mSettings;
-	private OclSettings mOclSettings;
-	private TupleDefinitions mTupleDefinitions;
-	private IUserFunctionReadRepository mFunctionRepository;
+	private ISettingsRepository mSettingsRepository;
+	private ITupleDefinitionsRepository mTupleDefinitionsRepository;
+	private IUserFunctionsRepository mFunctionRepository;
+	
 	private String mApplicationDirectory;
+	private CppLibraryInfo mCppLibraryInfo;
 	
-	public OclContext(IUserFunctionReadRepository pRepository)
-	{
-		this(pRepository, new LoadSettingsDirective(System.getProperty("user.dir")));
-	}
+	private OclBridge mOclBridgeContext;
 	
-	public OclContext(IUserFunctionReadRepository pRepository, LoadSettingsDirective pLoadSettingsDirective)
+	public OclContext(ISettingsRepository pSettingsRepository,
+					  ITupleDefinitionsRepository pTupleDefinitionsRepository,
+					  IUserFunctionsRepository pRepository)
 	{
 		mApplicationDirectory = System.getProperty("user.dir");
+		
+		mSettingsRepository = pSettingsRepository;
+		mTupleDefinitionsRepository = pTupleDefinitionsRepository;
 		mFunctionRepository = pRepository;
-		mLoadSettingsFunction = pLoadSettingsDirective.getLoadFunction();
 	}
 	
 	public String getApplicationDirectory()
@@ -30,33 +37,46 @@ public class OclContext
 		return mApplicationDirectory;
 	}
 	
-	public void open() throws FileNotFoundException
+	public void open()
 	{
-		mSettings = loadSettings();
-		mOclSettings = mSettings.getOclSettings();
-		mTupleDefinitions = mSettings.getTupleDefinitions();
 		createAndBuildAndLoadKernels();
+		
+		mOclBridgeContext.initialize();
 	}
 	
-	public void close() throws FileNotFoundException
+	public void close()
 	{
-		deleteLocalFiles();
-	}
-	
-	private Settings loadSettings() throws FileNotFoundException
-	{
-		return mLoadSettingsFunction.loadSettings();
+		mOclBridgeContext.dispose();
+		
+		if(mSettingsRepository.getContextOptions().hasToRemoveTempFoldersOnClose())
+			deleteLocalFiles();
 	}
 
 	private void createAndBuildAndLoadKernels()
 	{
-		new BuildEngine(mOclSettings)
-				.generateKernels(mTupleDefinitions, mFunctionRepository.getUserFunctions())
-				.loadCppLibrary();
+		BuildEngine vBuildEngine = new BuildEngine(mSettingsRepository)
+				.generateKernels(mTupleDefinitionsRepository, mFunctionRepository.getUserFunctions());
+		
+		vBuildEngine.loadCppLibrary();
+		mCppLibraryInfo = vBuildEngine.getCppLibraryInfo();
 	}
 	
 	private void deleteLocalFiles()
 	{
-		//TODO usare getApplicationDirectory per eliminare i file aggiunti
+		Path vKernelsFolder = Paths.get(mCppLibraryInfo.getKernelsFolder());
+		
+		File vToFile = vKernelsFolder.toFile();
+		
+		if (vToFile.isFile())
+			return;
+		
+		boolean vAllFilesDeleted = true;
+		for (File vFile : Objects.requireNonNull(vToFile.listFiles()))
+		{
+			vAllFilesDeleted &= vFile.delete();
+		}
+		
+		if (vAllFilesDeleted)
+			vToFile.delete();
 	}
 }

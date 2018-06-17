@@ -1,44 +1,75 @@
 package flinkOcl;
 
-import Commons.IBuilder;
-
-import javax.validation.constraints.NotNull;
-
 public interface IUserFunction
 {
-	IType getType();
+	String getType();
+	
 	String getName();
-	
 	String getFunction();
-	
 	String getInputTupleName();
 	String getOutputTupleName();
 	
-	interface IUserFunctionBuilder extends IBuilder<IUserFunction>
+	
+	//Transformations
+	String MAP = "map";
+	String FLAT_MAP = "flatMap";
+	String FILTER = "filter";
+	
+	default boolean isMap()
 	{
-		IUserFunctionBuilder setTpe(@NotNull IType pType);
-		IUserFunctionBuilder setName(@NotNull String pName);
-		IUserFunctionBuilder setInputTupleName(@NotNull String pTupleName);
-		IUserFunctionBuilder setOutputTupleName(@NotNull String pTupleName);
-		
-		IUserFunctionBuilder addUserFunctionLine(@NotNull String pLine);
+		return getType().equals(MAP);
+	}
+	default boolean isFlatMap()
+	{
+		return getType().equals(FLAT_MAP);
+	}
+	default boolean isFilter()
+	{
+		return getType().equals(FILTER);
 	}
 	
-	interface IType
+	//Actions
+	String REDUCE = "reduce";
+	
+	default boolean isReduce()
 	{
-		String map = "map";
-		String faltMap = "flatMap";
-		String filter = "filter";
-		String reduce = "reduce";
+		return getType().equals(REDUCE);
+	}
+	
+	default boolean hasOutputTuple()
+	{
+		return isMap() || isFlatMap();
+	}
+	
+	default boolean isTransformation()
+	{
+		return isMap() || isFlatMap() || isFilter();
+	}
+	
+	default boolean isAction()
+	{
+		return  isReduce();
+	}
+	
+	default boolean isOfKnownType()
+	{
+		return isTransformation() || isAction();
+	}
+	
+	default boolean isOfUnknownType()
+	{
+		return !isOfKnownType();
+	}
+	
+	default boolean equals(IUserFunction pOther)
+	{
+		if(this == pOther)
+			return true;
 		
-		//Transformations
-		boolean isMap();
-		boolean isFlatMap();
-		boolean isFilter();
-		
-		//Actions
-		boolean isReduce();
-		
-		String toString();
+		return getType().equals(pOther.getType()) &&
+			   getName().equals(pOther.getName()) &&
+			   getInputTupleName().equals(pOther.getInputTupleName()) &&
+			   getOutputTupleName().equals(pOther.getOutputTupleName()) &&
+			   getFunction().equals(pOther.getFunction());
 	}
 }

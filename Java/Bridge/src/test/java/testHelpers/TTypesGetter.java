@@ -2,20 +2,8 @@ package testHelpers;
 
 import configuration.*;
 
-import static testHelpers.SettingsWrapper.loadSettings;
-
 public class TTypesGetter
 {
-	public static Settings getSettings()
-	{
-		return loadSettings().getSettings();
-	}
-
-	public static Settings getSettings(LoadSettingsDirective pDirective)
-	{
-		return loadSettings(pDirective).getSettings();
-	}
-
 	public static JavaTType getJavaTInteger()
 	{
 		return new JavaTType.Builder(TType.ConfigTypes.INTEGER).build();

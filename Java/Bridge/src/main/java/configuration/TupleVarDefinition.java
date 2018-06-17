@@ -11,9 +11,9 @@ public class TupleVarDefinition
 	private CTType mCTType;
 	private transient int mHashCode;
 
-	public TupleVarDefinition(String pJsonVarType)
+	public TupleVarDefinition(String pVarType)
 	{
-		setInternalValues(pJsonVarType);
+		setInternalValues(pVarType);
 	}
 
 	public TupleVarDefinition(TupleVarDefinition pVarDefinition)
@@ -39,9 +39,9 @@ public class TupleVarDefinition
 		return mCTType;
 	}
 
-	private void setInternalValues(String pJsonVarType)
+	private void setInternalValues(String pVarType)
 	{
-		setInternalValues(new CTType.Builder(pJsonVarType).build());
+		setInternalValues(new CTType.Builder(pVarType).build());
 	}
 
 	private void setInternalValues (TType pType)

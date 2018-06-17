@@ -19,7 +19,7 @@ public abstract class Ocl
 	protected final native int[] OclMap(int[] data, @NotNull String kernelName, @NotNull String kernel);
 	protected final native double[] OclMap(double[] data, @NotNull String kernelName, @NotNull String kernel);
 
-	//filter
+	//FILTER
 //	public native char[] OclFilter(char[] data, String parameterDefinition, String filterLogic);
 //	public native int[] OclFilter(int[] data, String parameterDefinition, String filterLogic);
 //	public native double[] OclFilter(double[] data, String parameterDefinition, String filterLogic);

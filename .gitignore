@@ -6,6 +6,7 @@
 
 # Compiled class file
 **/*.class
+Java/**/target/
 
 # Log file
 **/*.log
@@ -78,3 +79,5 @@
 **/crashlytics.properties
 **/crashlytics-build.properties
 **/fabric.properties
+
+Java/TestCoverageReport/

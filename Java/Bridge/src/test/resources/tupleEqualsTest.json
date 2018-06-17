@@ -1,22 +1,17 @@
 {
-  "oclSettings" : {
-
+  "tupleOne": {
+    "t1": "int",
+    "t2": "string",
+    "t3": "double",
+    "t4": "char"
   },
-  "tuples": {
-    "tupleOne": {
-      "t1": "int",
-      "t2": "string",
-      "t3": "double",
-      "t4": "char"
-    },
-    "tupleTwo": {
-      "t1": "int",
-      "t2": "string",
-      "t3": "int",
-      "t4": "char"
-    },
-    "tupleThree": {
-      "t1": "double"
-    }
+  "tupleTwo": {
+    "t1": "int",
+    "t2": "string",
+    "t3": "int",
+    "t4": "char"
+  },
+  "tupleThree": {
+    "t1": "double"
   }
 }
