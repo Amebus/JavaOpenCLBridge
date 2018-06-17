@@ -9,6 +9,11 @@ import flinkOcl.buildEngine.kernelBuilders.FlatMapBuilder;
 import flinkOcl.buildEngine.kernelBuilders.MapBuilder;
 import flinkOcl.buildEngine.kernelBuilders.ReduceBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,8 +63,50 @@ public class KernelCodeBuilderEngine
 		}
 		
 		//TODO salvare codice dei kernel su files
+//		String vKernelsFolder = System.getProperty("user.home") + "/" +
+//				   mSettingsRepository.getContextOptions().getKernelsBuildFolder();
+		String vKernelsFolderPrefix = mSettingsRepository.getContextOptions().getKernelsBuildFolder();
+		Path vKernelsFolder;
+		try
+		{
+			vKernelsFolder = Files.createTempDirectory(vKernelsFolderPrefix);
+		}
+		catch (IOException pE)
+		{
+			throw new IllegalArgumentException("It was not possible to create a temporary folder with the specified" +
+											   "prefix: " + vKernelsFolderPrefix, pE);
+		}
 		
-		return new CppLibraryInfo();
+		saveKernelsFiles(vKernelsFolder, vResult);
+		
+		return new CppLibraryInfo(vKernelsFolder.toAbsolutePath().toString());
+	}
+	
+	private void saveKernelsFiles(Path pKernelsFolder, List<OclKernel> pKernels)
+	{
+//		Path vFolder = Paths.get(pKernelsFolder);
+		pKernels.forEach( k ->
+						  {
+						  	Path vFile = pKernelsFolder.resolve(k.getName() + ".knl");
+						  	List<String> lines = new ArrayList<>(1);
+						  	lines.add(k.getCode());
+						  	System.out.println(vFile.toAbsolutePath().toString());
+						  	try
+							{
+								if(Files.exists(vFile))
+								{
+									Files.delete(vFile);
+									
+								}
+								
+								Files.write(vFile, lines);
+							}
+							catch (IOException pE)
+							{
+								throw new IllegalArgumentException("It was not possible to create the kernel file: " +
+																    vFile.toAbsolutePath(), pE);
+							}
+						  });
 	}
 	
 	private OclKernel generateKernel(IUserFunction pUserFunction)

@@ -19,7 +19,7 @@ public abstract class TType
 		static final RegularExpression EXPRESSION = new RegularExpression(REGEX_STRING, "i");
 	}
 
-	static final String COLUMN = ":";
+	private static final String COLUMN = ":";
 	private String mType;
 	private int mByteDimension;
 	private int mMaxByteDimension;
@@ -70,7 +70,7 @@ public abstract class TType
 	@Override
 	public boolean equals(Object pOther)
 	{
-		return pOther != null && pOther instanceof TType && equals((TType) pOther);
+		return pOther instanceof TType && equals((TType) pOther);
 	}
 
 	public boolean equals(TType pOther)
@@ -89,20 +89,20 @@ public abstract class TType
 		if (pT == null)
 			return false;
 		pT = pT.toLowerCase();
-		return pT.equals(ConfigTypes.INT) || pT.equals(ConfigTypes.INTEGER);
+		return pT.equalsIgnoreCase(ConfigTypes.INT) || pT.equalsIgnoreCase(ConfigTypes.INTEGER);
 	}
 
 	public static boolean isDouble (String pT)
 	{
-		return pT != null && pT.toLowerCase().equals(ConfigTypes.DOUBLE);
+		return pT != null && pT.equalsIgnoreCase(ConfigTypes.DOUBLE);
 	}
 
 	public static boolean isString (String pT)
 	{
 		if (pT == null)
 			return false;
-		pT = pT.toLowerCase();
-		return ConfigTypes.EXPRESSION.matches(pT);
+		String vT = pT.toLowerCase();
+		return ConfigTypes.EXPRESSION.matches(vT);
 	}
 
 	protected static abstract class TTypeBuilder

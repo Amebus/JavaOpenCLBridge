@@ -16,7 +16,7 @@ public class OclCodeBuilderEngine
 	
 	public CppLibraryInfo generateCppLibraryCode()
 	{
-		CppLibraryInfo vResult = new CppLibraryInfo();
+		CppLibraryInfo vResult = new CppLibraryInfo("");
 		
 		//TODO generare libreria cpp da compilare
 		

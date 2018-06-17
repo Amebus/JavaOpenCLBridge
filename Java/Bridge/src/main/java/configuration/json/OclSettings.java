@@ -16,6 +16,12 @@ public class OclSettings implements IOclSettings
 	@Expose
 	private OclKernelsOptions mOclKernelOptions;
 	
+	public OclSettings()
+	{
+		mContextOptions = new OclContextOptions();
+		mOclKernelOptions = new OclKernelsOptions();
+	}
+	
 	@Override
 	public IOclContextOptions getContextOptions()
 	{

@@ -47,5 +47,9 @@ class FilterBuilderTest
 		System.out.println();
 		System.out.println(vKernel.getCode());
 		
+		System.out.println();
+		System.out.println(System.getProperty("user.home"));
+		System.out.println();
+		
 	}
 }

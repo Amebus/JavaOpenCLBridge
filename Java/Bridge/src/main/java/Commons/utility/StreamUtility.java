@@ -1,4 +1,4 @@
-package Commons;
+package Commons.utility;
 
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;

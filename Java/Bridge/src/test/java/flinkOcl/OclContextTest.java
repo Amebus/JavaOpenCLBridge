@@ -19,10 +19,15 @@ public class OclContextTest
 	@Test
 	void A()
 	{
-		OclContext vContext = new OclContext(new JsonSettingsRepository(Constants.FUNCTIONS_DIR),
-											 new JsonTupleDefinitionsRepository(Constants.FUNCTIONS_DIR),
-											 new JsonUserFunctionRepository(Constants.FUNCTIONS_DIR));
+		OclContext vContext = new OclContext(new JsonSettingsRepository(Constants.RESOURCES_DIR),
+											 new JsonTupleDefinitionsRepository(Constants.RESOURCES_DIR),
+											 new JsonUserFunctionRepository(Constants.FUNCTIONS_DIR,
+																			"filterFunction.json"));
 		vContext.open();
+		
+		int i = 0;
+		
+		vContext.close();
 	}
 	
 }

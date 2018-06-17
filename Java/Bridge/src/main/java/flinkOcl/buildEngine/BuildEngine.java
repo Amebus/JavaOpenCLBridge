@@ -27,4 +27,8 @@ public class BuildEngine
 //		System.loadLibrary("OCL");
 	}
 	
+	public CppLibraryInfo getCppLibraryInfo()
+	{
+		return mCppLibraryInfo;
+	}
 }
