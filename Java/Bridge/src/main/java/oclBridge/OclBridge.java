@@ -11,7 +11,7 @@ public class OclBridge extends AbstractOclBridge
 	
 	public OclBridge()
 	{
-		super();
+		super("OclBridge");
 	}
 	
 	public void initialize(String pKernelsFolders) { super.Initialize(pKernelsFolders); }

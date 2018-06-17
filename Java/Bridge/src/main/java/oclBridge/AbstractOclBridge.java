@@ -3,9 +3,9 @@ package oclBridge;
 public abstract class AbstractOclBridge
 {
 	
-	protected AbstractOclBridge()
+	protected AbstractOclBridge(String pLibraryName)
 	{
-		System.loadLibrary("AbstractOclBridge");
+		System.loadLibrary(pLibraryName);
 	}
 	
 	

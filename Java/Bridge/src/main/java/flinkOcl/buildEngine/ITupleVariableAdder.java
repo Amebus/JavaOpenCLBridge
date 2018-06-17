@@ -2,7 +2,6 @@ package flinkOcl.buildEngine;
 
 import configuration.CTType;
 import flinkOcl.buildEngine.tupleVariables.VarDefinition;
-import flinkOcl.buildEngine.tupleVariables.VarDefinitions;
 
 import java.util.Collection;
 
