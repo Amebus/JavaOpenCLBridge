@@ -17,6 +17,11 @@ public class OclBridge extends AbstractOclBridge
 	public void initialize(String pKernelsFolders) { super.Initialize(pKernelsFolders); }
 	public void dispose() { super.Dispose(); }
 	
+	public void listDevices()
+	{
+		ListDevices();
+	}
+	
 	public boolean[] filter(String pUserFunctionName, List< ? extends IOclTuple> pTuples)
 	{
 		StreamWriterResult vWriterResult =

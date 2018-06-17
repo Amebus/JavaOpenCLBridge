@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     oclBridge_AbstractOclBridge
+ * Method:    ListDevices
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_oclBridge_AbstractOclBridge_ListDevices
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     oclBridge_AbstractOclBridge
  * Method:    Initialize
  * Signature: (Ljava/lang/String;)V
  */
