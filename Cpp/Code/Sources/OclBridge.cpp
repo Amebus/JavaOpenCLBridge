@@ -4,11 +4,13 @@
 //#include <CL/cl.hpp>
 #include <cstdio>
 #include <sstream>
+#include <fstream>
+#include <iostream>
+#include <dirent.h>
 #include <iomanip>
 #include <vector>
-#include <CL/cl.h>
-#include <iostream>
 #include <unordered_map>
+#include <CL/cl.h>
 
 void printStatus(const cl_int status, const int line)
 {
@@ -175,6 +177,63 @@ cl_command_queue gCommandQueue;
 cl_int gStatus;
 
 
+std::string GetSourceCode(std::string pFile)
+{
+    std::ifstream vSourceFile(pFile);
+
+    std::string vSourceCode(std::istreambuf_iterator<char>(vSourceFile),(std::istreambuf_iterator<char>()));
+
+    std::cout << vSourceCode << "\n";
+
+    return vSourceCode;
+}
+
+cl_kernel CompileKernel(std::string pSourceCode, std::string pKernelName)
+{
+    const char* vSourceCode = pSourceCode.c_str();
+
+    std::cout << "KernelName: " << pKernelName << "\n";
+
+    cl_program vProgram = clCreateProgramWithSource(gContext, 1, (const char **)&vSourceCode, NULL, &gStatus);
+    printStatus(gStatus);
+
+    gStatus = clBuildProgram(vProgram, 1, &gDefaultDevice, NULL, NULL, NULL);
+    printStatus(gStatus);
+
+    cl_kernel vKernel = clCreateKernel(vProgram, pKernelName.c_str(), &gStatus);
+    printStatus(gStatus);
+
+    //TODO check that the kernel run
+    clReleaseProgram(vProgram);
+}
+
+void StoreKernel(std::string pKernelName, cl_kernel pKernel)
+{
+
+    std::unordered_map<std::string,cl_kernel>::const_iterator vIter = gKernelsList.find(pKernelName);
+	if(vIter == gKernelsList.end())
+	{
+        gKernelsList[pKernelName] = pKernel;
+        std::cout << "kernels count" << gKernelsList.size() << "\n";
+	}
+}
+
+void CompileAndStoreOclKernel(std::string pKernelsFolder, std::string pKernelName)
+{
+    std::string vFullName(pKernelsFolder + "/" + pKernelName);
+
+    int vDotIndex = pKernelName.find(".");
+
+    std::string vKernelName = pKernelName.substr(0, vDotIndex);
+
+    std::string vSourceCode = GetSourceCode(vFullName);
+
+    cl_kernel vKernel = CompileKernel(vSourceCode, vKernelName);
+    
+    StoreKernel(vKernelName, vKernel);
+}
+
+
 JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobject pObj)
 {
     cl_uint numPlatforms = 0;
@@ -205,7 +264,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 		gStatus = clGetPlatformInfo(platformId, CL_PLATFORM_NAME, 0, NULL, &stringLength);
 		printStatus(gStatus);
 
-		// Now, that we know the platform's name string length, we can allocate enough space before read it
+		// Now, that we know the platform's name string length, we can allocate enough space before read vEntry
 	    std::vector<char> platformName(stringLength);
 
 		// Read the platform's name string
@@ -236,7 +295,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 		gStatus = clGetPlatformInfo(platformId, CL_PLATFORM_VERSION, 0, NULL, &stringLength);
 		printStatus(gStatus);
 
-		// Now, that we know the platform's version string length, we can allocate enough space before read it
+		// Now, that we know the platform's version string length, we can allocate enough space before read vEntry
 	    std::vector<char> platformVersion(stringLength);
 
 		// Read the platform's version string
@@ -279,7 +338,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 		    gStatus = clGetDeviceInfo(device, CL_DEVICE_OPENCL_C_VERSION, 0, NULL, &stringLength);
 			printStatus(gStatus);
 
-			// Now, that we know the device's OpenCL C version string length, we can allocate enough space before read it
+			// Now, that we know the device's OpenCL C version string length, we can allocate enough space before read vEntry
 			std::vector<char> compilerVersion(stringLength);
 
 			// Read the device's OpenCL C version string
@@ -302,7 +361,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 	}
 }
 
-JNIEXPORT void Java_oclBridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject pObj, jstring pKernelName)
+JNIEXPORT void Java_oclBridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject pObj, jstring pKernelsfolder)
 {
     //TODO improve to accepet external parameters
     gStatus = clGetPlatformIDs(1, &gPlatform, NULL);
@@ -313,6 +372,31 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject
     printStatus(gStatus);
     gCommandQueue = clCreateCommandQueueWithProperties(gContext, gDefaultDevice, 0, &gStatus);
     printStatus(gStatus);
+
+
+    const char *kFolder = pEnv->GetStringUTFChars(pKernelsfolder, NULL);
+
+    std::cout << "Kernels Folder:" << kFolder << '\n' << '\n';
+
+    DIR *vDirectory;
+    struct dirent *vFile;
+
+    std::string dot (".");
+    std::string dotDot ("..");
+
+    if ((vDirectory = opendir(kFolder)) != NULL) 
+    {
+        /* print all the files and directories within directory */
+        while ((vFile = readdir (vDirectory)) != NULL) 
+        {
+            if (dot.compare(vFile->d_name) != 0 && dotDot.compare(vFile->d_name) != 0)
+            {
+                printf ("%s\n", vFile->d_name);
+                CompileAndStoreOclKernel(kFolder, vFile->d_name);
+            }
+        }
+        closedir (vDirectory);
+    }
 }
 
 JNIEXPORT void Java_oclBridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject pObj)
@@ -320,6 +404,14 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject pO
     //delete kernelsList;
     //delete platforms;
     //delete devices;
+
+    for (auto vEntry : gKernelsList) 
+    {
+        clReleaseKernel(vEntry.second);
+    }
+    gKernelsList.clear();
+
+    std::cout << "kernels count" << gKernelsList.size() << "\n";
 
     clReleaseCommandQueue(gCommandQueue);
     clReleaseContext(gContext);

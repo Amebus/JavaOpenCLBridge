@@ -5,9 +5,9 @@
       "name":"filterFunction",
       "input":"tupleOne",
       "function": [
-        "filter1_line1",
-        "filter1_line2",
-        "filter1_line3"
+        "_r0 = 5",
+        "_r0 = 2",
+        "_r0 = 9"
       ]
     }
   ]

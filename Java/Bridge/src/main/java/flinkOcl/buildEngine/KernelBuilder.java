@@ -224,11 +224,20 @@ public abstract class KernelBuilder implements IBuilder<OclKernel>
 			   getKernelSignature() +
 			   "\n{\n" +
 			   getUtilityVars() + "\n" +
-			   getInputSection() + "\n" +
 			   getOutputVarDeclaration() + "\n" +
+			   getInputSection() + "\n" +
 			   getUserFunction().getFunction() + "\n" +
 			   getOutputSection() +
-			   "\n}\n";
+			   "\n};\n";
+//		return "__kernel \n" +
+//			   "void filterFunction(__global int *A, \n" +
+//			   "                    __global int *B, \n" +
+//			   "                    __global int *C) \n" +
+//			   "{\n" +
+//			   "\t\n" +
+//			   "\tint idx = get_global_id(0);\n" +
+//			   "\tC[idx] = A[idx] + B[idx];\n" +
+//			   "}\n;";
 	}
 	
 	@Override
@@ -284,9 +293,8 @@ public abstract class KernelBuilder implements IBuilder<OclKernel>
 			   "\t__global unsigned char* " + DATA + ", \n" +
 			   "\t__global int* " + DATA_INDEXES +", \n" +
 			   "\t__global unsigned char* " + RESULT + ", \n" +
-			   "\t__local int " + INDEX + "\n" +
-			   "\t__local long " + LONG_TEMP + "\n" +
-			   ")";
+			   "\t\t\t\tint " + INDEX + ", \n" +
+			   "\t\t\t\tlong " + LONG_TEMP + ")";
 	}
 	
 	protected String getUtilityVars()

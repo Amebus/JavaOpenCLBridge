@@ -20,7 +20,7 @@ public class OclContextTest
 	@Test
 	void A()
 	{
-		new OclBridge().listDevices();
+		//new OclBridge().listDevices();
 		
 		OclContext vContext = new OclContext(new JsonSettingsRepository(Constants.RESOURCES_DIR),
 											 new JsonTupleDefinitionsRepository(Constants.RESOURCES_DIR),

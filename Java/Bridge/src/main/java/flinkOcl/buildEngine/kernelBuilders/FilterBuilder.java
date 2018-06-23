@@ -13,6 +13,7 @@ public class FilterBuilder extends MapBuilder
 	protected String getOutputVarDeclaration()
 	{
 		return "unsigned char _r0 = 0;\n";
+//		return "";
 	}
 	
 	@Override
