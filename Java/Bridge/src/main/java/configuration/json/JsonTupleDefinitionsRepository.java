@@ -1,7 +1,7 @@
 package configuration.json;
 
-import Commons.Json.JsonLoader;
-import Commons.Json.JsonLoaderOptions;
+import commons.json.JsonLoader;
+import commons.json.JsonLoaderOptions;
 import configuration.ITupleDefinitionsRepository;
 
 import java.util.HashMap;

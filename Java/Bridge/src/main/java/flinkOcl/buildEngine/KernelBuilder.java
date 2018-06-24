@@ -1,7 +1,7 @@
 package flinkOcl.buildEngine;
 
 
-import Commons.IBuilder;
+import commons.IBuilder;
 import configuration.*;
 import flinkOcl.IUserFunction;
 import flinkOcl.buildEngine.kernelBuilders.utility.DoubleVarDefinitionLine;
@@ -13,7 +13,6 @@ import flinkOcl.buildEngine.tupleVariables.VarDefinition;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Consumer;
 
 public abstract class KernelBuilder implements IBuilder<OclKernel>
 {

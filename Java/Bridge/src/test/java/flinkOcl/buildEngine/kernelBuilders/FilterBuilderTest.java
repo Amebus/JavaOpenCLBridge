@@ -1,7 +1,7 @@
 package flinkOcl.buildEngine.kernelBuilders;
 
 
-import Commons.IBuilder;
+import commons.IBuilder;
 import configuration.ISettingsRepository;
 import configuration.ITupleDefinitionsRepository;
 import configuration.json.JsonSettingsRepository;

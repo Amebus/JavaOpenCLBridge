@@ -1,4 +1,4 @@
-package Commons.Json;
+package commons.json;
 
 import io.gsonfire.GsonFireBuilder;
 

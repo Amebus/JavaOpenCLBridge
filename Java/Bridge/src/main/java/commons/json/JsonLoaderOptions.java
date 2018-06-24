@@ -1,6 +1,6 @@
-package Commons.Json;
+package commons.json;
 
-import Commons.IBuilder;
+import commons.IBuilder;
 
 import java.io.File;
 import java.nio.file.Path;

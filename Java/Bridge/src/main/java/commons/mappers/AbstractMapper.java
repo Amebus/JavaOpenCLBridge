@@ -1,7 +1,7 @@
-package Commons.mappers;
+package commons.mappers;
 
-import Commons.IMapper;
-import Commons.OnDemandLoader;
+import commons.IMapper;
+import commons.OnDemandLoader;
 
 import java.util.HashMap;
 import java.util.Map;

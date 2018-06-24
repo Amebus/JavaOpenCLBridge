@@ -1,6 +1,6 @@
 package flinkOcl.buildEngine.kernelBuilders.utility;
 
-import Commons.utility.StreamUtility;
+import commons.utility.StreamUtility;
 import java.util.List;
 import java.util.stream.Collectors;
 

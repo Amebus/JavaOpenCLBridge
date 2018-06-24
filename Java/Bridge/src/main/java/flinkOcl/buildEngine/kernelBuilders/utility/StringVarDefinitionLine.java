@@ -1,6 +1,6 @@
 package flinkOcl.buildEngine.kernelBuilders.utility;
 
-import Commons.utility.StreamUtility;
+import commons.utility.StreamUtility;
 import configuration.CTType;
 import flinkOcl.buildEngine.tupleVariables.VarDefinition;
 

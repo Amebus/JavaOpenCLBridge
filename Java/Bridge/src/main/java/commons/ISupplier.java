@@ -1,4 +1,4 @@
-package Commons;
+package commons;
 
 @FunctionalInterface
 public interface ISupplier<T, O>

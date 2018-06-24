@@ -1,6 +1,6 @@
 package flinkOcl.buildEngine;
 
-import Commons.IBuilder;
+import commons.IBuilder;
 import configuration.IOclContextOptions;
 import configuration.IOclKernelsOptions;
 import configuration.ITupleDefinitionsRepository;

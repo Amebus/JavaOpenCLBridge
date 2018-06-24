@@ -388,7 +388,6 @@ std::vector<std::string> GetKernelsSourceFiles(std::string pKernelsFolder)
     std::cout << "Kernels Folder:" << pKernelsFolder << '\n' << '\n';
 
     DIR *vDirectory;
-    struct dirent *vFile;
 
     std::string vDot (".");
     std::string vDotDot ("..");
@@ -396,6 +395,8 @@ std::vector<std::string> GetKernelsSourceFiles(std::string pKernelsFolder)
 
     if ((vDirectory = opendir(pKernelsFolder.c_str())) != NULL) 
     {
+        struct dirent *vFile;
+        
         /* print all the files and directories within directory */
         while ((vFile = readdir (vDirectory)) != NULL) 
         {
