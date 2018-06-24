@@ -1,5 +1,5 @@
 #define __CL_ENABLE_EXCEPTIONS
-#include "../Headers/oclBridge_AbstractOclBridge.h"
+#include "../Headers/ocl_bridge_AbstractOclBridge.h"
 #include "../Headers/OclUtility.h"
 #include "../Headers/JniUtility.h"
 //#include <CL/cl.hpp>
@@ -185,7 +185,7 @@ void DisposeContext();
 
 #pragma region Java native implementation
 
-JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobject pObj)
+JNIEXPORT void Java_ocl_bridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobject pObj)
 {
     cl_uint numPlatforms = 0;
     gStatus = CL_SUCCESS;
@@ -312,7 +312,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 	}
 }
 
-JNIEXPORT void Java_oclBridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject pObj, jstring pKernelsFolder)
+JNIEXPORT void Java_ocl_bridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject pObj, jstring pKernelsFolder)
 {
     //TODO improve to accepet external parameters
     gStatus = clGetPlatformIDs(1, &gPlatform, NULL);
@@ -331,7 +331,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject
     CompileAndStoreOclKernels(vKernelsFolder, vKernelsfiles);
 }
 
-JNIEXPORT void Java_oclBridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject pObj)
+JNIEXPORT void Java_ocl_bridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject pObj)
 {
     DisposeKernels();
     DisposeDevices();
@@ -396,7 +396,7 @@ std::vector<std::string> GetKernelsSourceFiles(std::string pKernelsFolder)
     if ((vDirectory = opendir(pKernelsFolder.c_str())) != NULL) 
     {
         struct dirent *vFile;
-        
+
         /* print all the files and directories within directory */
         while ((vFile = readdir (vDirectory)) != NULL) 
         {
