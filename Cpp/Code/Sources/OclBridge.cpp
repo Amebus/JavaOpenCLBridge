@@ -174,6 +174,15 @@ cl_context gContext;
 cl_command_queue gCommandQueue;
 cl_int gStatus;
 
+#pragma region dispose definition
+
+void DisposeKernels();
+void DisposeDevices();
+void DisposeCommandQueue();
+void DisposeContext();
+
+#pragma endregion
+
 #pragma region Java native implementation
 
 JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobject pObj)
@@ -324,19 +333,43 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject
 
 JNIEXPORT void Java_oclBridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject pObj)
 {
-    //delete kernelsList;
-    //delete platforms;
-    //delete devices;
+    DisposeKernels();
+    DisposeDevices();
+    
+    DisposeCommandQueue();
+    DisposeContext();
+}
 
+#pragma endregion
+
+#pragma region Dispose implementation
+
+void DisposeKernels()
+{
     for (auto vEntry : gKernelsList) 
     {
         clReleaseKernel(vEntry.second);
     }
     gKernelsList.clear();
+}
 
-    std::cout << "kernels count" << gKernelsList.size() << "\n";
+void DisposeDevices()
+{
+    for(auto vDevice : gDevices)
+    {
+        clReleaseDevice(vDevice);
+    }
+    gDevices.clear();
+    clReleaseDevice(gDefaultDevice);
+}
 
+void DisposeCommandQueue()
+{
     clReleaseCommandQueue(gCommandQueue);
+}
+
+void DisposeContext()
+{
     clReleaseContext(gContext);
 }
 
