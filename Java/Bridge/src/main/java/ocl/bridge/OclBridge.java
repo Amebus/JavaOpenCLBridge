@@ -1,4 +1,4 @@
-package oclBridge;
+package ocl.bridge;
 
 import tuples.generics.IOclTuple;
 import tuples.serialization.StreamWriter;

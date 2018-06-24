@@ -2,15 +2,9 @@ package flinkOcl;
 
 import configuration.json.JsonSettingsRepository;
 import configuration.json.JsonTupleDefinitionsRepository;
-import oclBridge.OclBridge;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import testHelpers.Constants;
-
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

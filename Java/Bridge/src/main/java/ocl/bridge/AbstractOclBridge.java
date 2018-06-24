@@ -1,4 +1,4 @@
-package oclBridge;
+package ocl.bridge;
 
 public abstract class AbstractOclBridge
 {

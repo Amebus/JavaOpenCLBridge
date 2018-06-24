@@ -3,7 +3,7 @@ package flinkOcl;
 import configuration.*;
 import flinkOcl.buildEngine.BuildEngine;
 import flinkOcl.buildEngine.CppLibraryInfo;
-import oclBridge.OclBridge;
+import ocl.bridge.OclBridge;
 
 import java.io.File;
 import java.nio.file.Path;
