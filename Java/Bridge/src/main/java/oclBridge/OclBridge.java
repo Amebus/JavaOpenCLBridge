@@ -11,11 +11,16 @@ public class OclBridge extends AbstractOclBridge
 	
 	public OclBridge()
 	{
-		super();
+		super("OclBridge");
 	}
 	
 	public void initialize(String pKernelsFolders) { super.Initialize(pKernelsFolders); }
 	public void dispose() { super.Dispose(); }
+	
+	public void listDevices()
+	{
+		ListDevices();
+	}
 	
 	public boolean[] filter(String pUserFunctionName, List< ? extends IOclTuple> pTuples)
 	{

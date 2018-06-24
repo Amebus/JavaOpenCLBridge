@@ -16,7 +16,7 @@ public class OclContext
 	private ITupleDefinitionsRepository mTupleDefinitionsRepository;
 	private IUserFunctionsRepository mFunctionRepository;
 	
-	private String mApplicationDirectory;
+//	private String mApplicationDirectory;
 	private CppLibraryInfo mCppLibraryInfo;
 	
 	private OclBridge mOclBridgeContext;
@@ -25,23 +25,24 @@ public class OclContext
 					  ITupleDefinitionsRepository pTupleDefinitionsRepository,
 					  IUserFunctionsRepository pRepository)
 	{
-		mApplicationDirectory = System.getProperty("user.dir");
+//		mApplicationDirectory = System.getProperty("user.dir");
 		
 		mSettingsRepository = pSettingsRepository;
 		mTupleDefinitionsRepository = pTupleDefinitionsRepository;
 		mFunctionRepository = pRepository;
+		mOclBridgeContext = new OclBridge();
 	}
 	
-	public String getApplicationDirectory()
-	{
-		return mApplicationDirectory;
-	}
+//	public String getApplicationDirectory()
+//	{
+//		return mApplicationDirectory;
+//	}
 	
 	public void open()
 	{
 		createAndBuildAndLoadKernels();
 		
-		mOclBridgeContext.initialize();
+		mOclBridgeContext.initialize(mCppLibraryInfo.getKernelsFolder());
 	}
 	
 	public void close()
