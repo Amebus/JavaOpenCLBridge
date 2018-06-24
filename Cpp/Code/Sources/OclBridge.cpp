@@ -1,16 +1,14 @@
 #define __CL_ENABLE_EXCEPTIONS
 #include "../Headers/oclBridge_AbstractOclBridge.h"
 #include "../Headers/OclUtility.h"
+#include "../Headers/JniUtility.h"
 //#include <CL/cl.hpp>
 #include <cstdio>
-#include <sstream>
 #include <fstream>
 #include <iostream>
 #include <dirent.h>
 #include <iomanip>
-#include <vector>
 #include <unordered_map>
-#include <CL/cl.h>
 
 void printStatus(const cl_int status, const int line)
 {
@@ -20,144 +18,144 @@ void printStatus(const cl_int status, const int line)
         msg << "Line " << std::setw(4) << line << ": ";
         switch (status)
         {
-        case CL_DEVICE_NOT_FOUND:
-            msg << "Device not found.";
-            break;
-        case CL_DEVICE_NOT_AVAILABLE:
-            msg << "Device not available";
-            break;
-        case CL_COMPILER_NOT_AVAILABLE:
-            msg << "Compiler not available";
-            break;
-        case CL_MEM_OBJECT_ALLOCATION_FAILURE:
-            msg << "Memory object allocation failure";
-            break;
-        case CL_OUT_OF_RESOURCES:
-            msg << "Out of resources";
-            break;
-        case CL_OUT_OF_HOST_MEMORY:
-            msg << "Out of host memory";
-            break;
-        case CL_PROFILING_INFO_NOT_AVAILABLE:
-            msg << "Profiling information not available";
-            break;
-        case CL_MEM_COPY_OVERLAP:
-            msg << "Memory copy overlap";
-            break;
-        case CL_IMAGE_FORMAT_MISMATCH:
-            msg << "Image format mismatch";
-            break;
-        case CL_IMAGE_FORMAT_NOT_SUPPORTED:
-            msg << "Image format not supported";
-            break;
-        case CL_BUILD_PROGRAM_FAILURE:
-            msg << "Program build failure";
-            break;
-        case CL_MAP_FAILURE:
-            msg << "Map failure";
-            break;
-        case CL_INVALID_VALUE:
-            msg << "Invalid value";
-            break;
-        case CL_INVALID_DEVICE_TYPE:
-            msg << "Invalid device type";
-            break;
-        case CL_INVALID_PLATFORM:
-            msg << "Invalid platform";
-            break;
-        case CL_INVALID_DEVICE:
-            msg << "Invalid device";
-            break;
-        case CL_INVALID_CONTEXT:
-            msg << "Invalid context";
-            break;
-        case CL_INVALID_QUEUE_PROPERTIES:
-            msg << "Invalid queue properties";
-            break;
-        case CL_INVALID_COMMAND_QUEUE:
-            msg << "Invalid command queue";
-            break;
-        case CL_INVALID_HOST_PTR:
-            msg << "Invalid host pointer";
-            break;
-        case CL_INVALID_MEM_OBJECT:
-            msg << "Invalid memory object";
-            break;
-        case CL_INVALID_IMAGE_FORMAT_DESCRIPTOR:
-            msg << "Invalid image format descriptor";
-            break;
-        case CL_INVALID_IMAGE_SIZE:
-            msg << "Invalid image size";
-            break;
-        case CL_INVALID_SAMPLER:
-            msg << "Invalid sampler";
-            break;
-        case CL_INVALID_BINARY:
-            msg << "Invalid binary";
-            break;
-        case CL_INVALID_BUILD_OPTIONS:
-            msg << "Invalid build options";
-            break;
-        case CL_INVALID_PROGRAM:
-            msg << "Invalid program";
-            break;
-        case CL_INVALID_PROGRAM_EXECUTABLE:
-            msg << "Invalid program executable";
-            break;
-        case CL_INVALID_KERNEL_NAME:
-            msg << "Invalid kernel name";
-            break;
-        case CL_INVALID_KERNEL_DEFINITION:
-            msg << "Invalid kernel definition";
-            break;
-        case CL_INVALID_KERNEL:
-            msg << "Invalid kernel";
-            break;
-        case CL_INVALID_ARG_INDEX:
-            msg << "Invalid argument index";
-            break;
-        case CL_INVALID_ARG_VALUE:
-            msg << "Invalid argument value";
-            break;
-        case CL_INVALID_ARG_SIZE:
-            msg << "Invalid argument size";
-            break;
-        case CL_INVALID_KERNEL_ARGS:
-            msg << "Invalid kernel arguments";
-            break;
-        case CL_INVALID_WORK_DIMENSION:
-            msg << "Invalid work dimension";
-            break;
-        case CL_INVALID_WORK_GROUP_SIZE:
-            msg << "Invalid work group size";
-            break;
-        case CL_INVALID_WORK_ITEM_SIZE:
-            msg << "Invalid work item size";
-            break;
-        case CL_INVALID_GLOBAL_OFFSET:
-            msg << "Invalid global offset";
-            break;
-        case CL_INVALID_EVENT_WAIT_LIST:
-            msg << "Invalid event wait list";
-            break;
-        case CL_INVALID_EVENT:
-            msg << "Invalid event";
-            break;
-        case CL_INVALID_OPERATION:
-            msg << "Invalid operation";
-            break;
-        case CL_INVALID_GL_OBJECT:
-            msg << "Invalid OpenGL object";
-            break;
-        case CL_INVALID_BUFFER_SIZE:
-            msg << "Invalid buffer size";
-            break;
-        case CL_INVALID_MIP_LEVEL:
-            msg << "Invalid mip-map level";
-            break;
-        default:
-            msg << "Unknown";
-            break;
+            case CL_DEVICE_NOT_FOUND:
+                msg << "Device not found.";
+                break;
+            case CL_DEVICE_NOT_AVAILABLE:
+                msg << "Device not available";
+                break;
+            case CL_COMPILER_NOT_AVAILABLE:
+                msg << "Compiler not available";
+                break;
+            case CL_MEM_OBJECT_ALLOCATION_FAILURE:
+                msg << "Memory object allocation failure";
+                break;
+            case CL_OUT_OF_RESOURCES:
+                msg << "Out of resources";
+                break;
+            case CL_OUT_OF_HOST_MEMORY:
+                msg << "Out of host memory";
+                break;
+            case CL_PROFILING_INFO_NOT_AVAILABLE:
+                msg << "Profiling information not available";
+                break;
+            case CL_MEM_COPY_OVERLAP:
+                msg << "Memory copy overlap";
+                break;
+            case CL_IMAGE_FORMAT_MISMATCH:
+                msg << "Image format mismatch";
+                break;
+            case CL_IMAGE_FORMAT_NOT_SUPPORTED:
+                msg << "Image format not supported";
+                break;
+            case CL_BUILD_PROGRAM_FAILURE:
+                msg << "Program build failure";
+                break;
+            case CL_MAP_FAILURE:
+                msg << "Map failure";
+                break;
+            case CL_INVALID_VALUE:
+                msg << "Invalid value";
+                break;
+            case CL_INVALID_DEVICE_TYPE:
+                msg << "Invalid device type";
+                break;
+            case CL_INVALID_PLATFORM:
+                msg << "Invalid platform";
+                break;
+            case CL_INVALID_DEVICE:
+                msg << "Invalid device";
+                break;
+            case CL_INVALID_CONTEXT:
+                msg << "Invalid context";
+                break;
+            case CL_INVALID_QUEUE_PROPERTIES:
+                msg << "Invalid queue properties";
+                break;
+            case CL_INVALID_COMMAND_QUEUE:
+                msg << "Invalid command queue";
+                break;
+            case CL_INVALID_HOST_PTR:
+                msg << "Invalid host pointer";
+                break;
+            case CL_INVALID_MEM_OBJECT:
+                msg << "Invalid memory object";
+                break;
+            case CL_INVALID_IMAGE_FORMAT_DESCRIPTOR:
+                msg << "Invalid image format descriptor";
+                break;
+            case CL_INVALID_IMAGE_SIZE:
+                msg << "Invalid image size";
+                break;
+            case CL_INVALID_SAMPLER:
+                msg << "Invalid sampler";
+                break;
+            case CL_INVALID_BINARY:
+                msg << "Invalid binary";
+                break;
+            case CL_INVALID_BUILD_OPTIONS:
+                msg << "Invalid build options";
+                break;
+            case CL_INVALID_PROGRAM:
+                msg << "Invalid program";
+                break;
+            case CL_INVALID_PROGRAM_EXECUTABLE:
+                msg << "Invalid program executable";
+                break;
+            case CL_INVALID_KERNEL_NAME:
+                msg << "Invalid kernel name";
+                break;
+            case CL_INVALID_KERNEL_DEFINITION:
+                msg << "Invalid kernel definition";
+                break;
+            case CL_INVALID_KERNEL:
+                msg << "Invalid kernel";
+                break;
+            case CL_INVALID_ARG_INDEX:
+                msg << "Invalid argument index";
+                break;
+            case CL_INVALID_ARG_VALUE:
+                msg << "Invalid argument value";
+                break;
+            case CL_INVALID_ARG_SIZE:
+                msg << "Invalid argument size";
+                break;
+            case CL_INVALID_KERNEL_ARGS:
+                msg << "Invalid kernel arguments";
+                break;
+            case CL_INVALID_WORK_DIMENSION:
+                msg << "Invalid work dimension";
+                break;
+            case CL_INVALID_WORK_GROUP_SIZE:
+                msg << "Invalid work group size";
+                break;
+            case CL_INVALID_WORK_ITEM_SIZE:
+                msg << "Invalid work item size";
+                break;
+            case CL_INVALID_GLOBAL_OFFSET:
+                msg << "Invalid global offset";
+                break;
+            case CL_INVALID_EVENT_WAIT_LIST:
+                msg << "Invalid event wait list";
+                break;
+            case CL_INVALID_EVENT:
+                msg << "Invalid event";
+                break;
+            case CL_INVALID_OPERATION:
+                msg << "Invalid operation";
+                break;
+            case CL_INVALID_GL_OBJECT:
+                msg << "Invalid OpenGL object";
+                break;
+            case CL_INVALID_BUFFER_SIZE:
+                msg << "Invalid buffer size";
+                break;
+            case CL_INVALID_MIP_LEVEL:
+                msg << "Invalid mip-map level";
+                break;
+            default:
+                msg << "Unknown";
+                break;
         }
         msg << "\n";
         std::cout << msg.str().c_str();
@@ -176,63 +174,7 @@ cl_context gContext;
 cl_command_queue gCommandQueue;
 cl_int gStatus;
 
-
-std::string GetSourceCode(std::string pFile)
-{
-    std::ifstream vSourceFile(pFile);
-
-    std::string vSourceCode(std::istreambuf_iterator<char>(vSourceFile),(std::istreambuf_iterator<char>()));
-
-    std::cout << vSourceCode << "\n";
-
-    return vSourceCode;
-}
-
-cl_kernel CompileKernel(std::string pSourceCode, std::string pKernelName)
-{
-    const char* vSourceCode = pSourceCode.c_str();
-
-    std::cout << "KernelName: " << pKernelName << "\n";
-
-    cl_program vProgram = clCreateProgramWithSource(gContext, 1, (const char **)&vSourceCode, NULL, &gStatus);
-    printStatus(gStatus);
-
-    gStatus = clBuildProgram(vProgram, 1, &gDefaultDevice, NULL, NULL, NULL);
-    printStatus(gStatus);
-
-    cl_kernel vKernel = clCreateKernel(vProgram, pKernelName.c_str(), &gStatus);
-    printStatus(gStatus);
-
-    //TODO check that the kernel run
-    clReleaseProgram(vProgram);
-}
-
-void StoreKernel(std::string pKernelName, cl_kernel pKernel)
-{
-
-    std::unordered_map<std::string,cl_kernel>::const_iterator vIter = gKernelsList.find(pKernelName);
-	if(vIter == gKernelsList.end())
-	{
-        gKernelsList[pKernelName] = pKernel;
-        std::cout << "kernels count" << gKernelsList.size() << "\n";
-	}
-}
-
-void CompileAndStoreOclKernel(std::string pKernelsFolder, std::string pKernelName)
-{
-    std::string vFullName(pKernelsFolder + "/" + pKernelName);
-
-    int vDotIndex = pKernelName.find(".");
-
-    std::string vKernelName = pKernelName.substr(0, vDotIndex);
-
-    std::string vSourceCode = GetSourceCode(vFullName);
-
-    cl_kernel vKernel = CompileKernel(vSourceCode, vKernelName);
-    
-    StoreKernel(vKernelName, vKernel);
-}
-
+#pragma region Java native implementation
 
 JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobject pObj)
 {
@@ -361,7 +303,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 	}
 }
 
-JNIEXPORT void Java_oclBridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject pObj, jstring pKernelsfolder)
+JNIEXPORT void Java_oclBridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject pObj, jstring pKernelsFolder)
 {
     //TODO improve to accepet external parameters
     gStatus = clGetPlatformIDs(1, &gPlatform, NULL);
@@ -373,30 +315,11 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject
     gCommandQueue = clCreateCommandQueueWithProperties(gContext, gDefaultDevice, 0, &gStatus);
     printStatus(gStatus);
 
+    std::string vKernelsFolder = GetStringFromJavaString(pEnv, pKernelsFolder);
 
-    const char *kFolder = pEnv->GetStringUTFChars(pKernelsfolder, NULL);
-
-    std::cout << "Kernels Folder:" << kFolder << '\n' << '\n';
-
-    DIR *vDirectory;
-    struct dirent *vFile;
-
-    std::string dot (".");
-    std::string dotDot ("..");
-
-    if ((vDirectory = opendir(kFolder)) != NULL) 
-    {
-        /* print all the files and directories within directory */
-        while ((vFile = readdir (vDirectory)) != NULL) 
-        {
-            if (dot.compare(vFile->d_name) != 0 && dotDot.compare(vFile->d_name) != 0)
-            {
-                printf ("%s\n", vFile->d_name);
-                CompileAndStoreOclKernel(kFolder, vFile->d_name);
-            }
-        }
-        closedir (vDirectory);
-    }
+    std::vector<std::string> vKernelsfiles = GetKernelsSourceFiles(vKernelsFolder);
+    
+    CompileAndStoreOclKernels(vKernelsFolder, vKernelsfiles);
 }
 
 JNIEXPORT void Java_oclBridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject pObj)
@@ -416,3 +339,112 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject pO
     clReleaseCommandQueue(gCommandQueue);
     clReleaseContext(gContext);
 }
+
+#pragma endregion
+
+#pragma region Kernels build and storage
+
+std::string GetKernelNameFromKernelFileName(std::string pKernelName)
+{
+    int vDotIndex = pKernelName.find(".");
+    return pKernelName.substr(0, vDotIndex);
+}
+
+std::vector<std::string> GetKernelsSourceFiles(std::string pKernelsFolder)
+{
+    std::cout << "Kernels Folder:" << pKernelsFolder << '\n' << '\n';
+
+    DIR *vDirectory;
+    struct dirent *vFile;
+
+    std::string vDot (".");
+    std::string vDotDot ("..");
+    std::vector<std::string> vFiles;
+
+    if ((vDirectory = opendir(pKernelsFolder.c_str())) != NULL) 
+    {
+        /* print all the files and directories within directory */
+        while ((vFile = readdir (vDirectory)) != NULL) 
+        {
+            if (vDot.compare(vFile->d_name) != 0 && vDotDot.compare(vFile->d_name) != 0)
+            {
+                printf ("%s\n", vFile->d_name);
+                vFiles.push_back(vFile->d_name);          
+            }
+        }
+        closedir (vDirectory);
+    }
+
+    return vFiles;
+}
+
+std::string GetKernelSourceCode(std::string pFile)
+{
+    std::ifstream vSourceFile(pFile);
+
+    std::string vSourceCode(std::istreambuf_iterator<char>(vSourceFile),(std::istreambuf_iterator<char>()));
+
+    std::cout << vSourceCode << "\n";
+
+    return vSourceCode;
+}
+
+cl_kernel CompileKernel(std::string pSourceCode, std::string pKernelName)
+{
+    const char* vSourceCode = pSourceCode.c_str();
+
+    std::cout << "KernelName: " << pKernelName << "\n";
+
+    cl_program vProgram = clCreateProgramWithSource(gContext, 1, (const char **)&vSourceCode, NULL, &gStatus);
+    printStatus(gStatus);
+
+    gStatus = clBuildProgram(vProgram, 1, &gDefaultDevice, NULL, NULL, NULL);
+    printStatus(gStatus);
+
+    cl_kernel vKernel = clCreateKernel(vProgram, pKernelName.c_str(), &gStatus);
+    printStatus(gStatus);
+
+    //TODO check that the kernel run
+    clReleaseProgram(vProgram);
+}
+
+void StoreKernel(std::string pKernelName, cl_kernel pKernel)
+{
+
+    std::unordered_map<std::string,cl_kernel>::const_iterator vIter = gKernelsList.find(pKernelName);
+	if(vIter == gKernelsList.end())
+	{
+        gKernelsList[pKernelName] = pKernel;
+        std::cout << "kernels count" << gKernelsList.size() << "\n";
+	}
+}
+
+void CompileAndStoreOclKernel(std::string pKernelsFolder, std::string pKernelName)
+{
+    std::string vFullName(pKernelsFolder + "/" + pKernelName);
+
+    std::string vKernelName = GetKernelNameFromKernelFileName(pKernelName);
+
+    std::string vSourceCode = GetKernelSourceCode(vFullName);
+
+    cl_kernel vKernel = CompileKernel(vSourceCode, vKernelName);
+    
+    StoreKernel(vKernelName, vKernel);
+}
+
+void CompileAndStoreOclKernels(std::string pKernelsFolder, std::vector<std::string> pKernelsFiles)
+{
+    for(auto vkernelFile: pKernelsFiles) 
+    {
+        CompileAndStoreOclKernel(pKernelsFolder, vkernelFile);
+    }
+}
+
+#pragma endregion
+
+#pragma region Jni utility
+std::string GetStringFromJavaString(JNIEnv *pEnv, jstring pString)
+{
+    return pEnv->GetStringUTFChars(pString, NULL);
+}
+#pragma endregion
