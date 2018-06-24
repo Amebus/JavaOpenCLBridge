@@ -5,12 +5,12 @@ import configuration.json.JsonTupleDefinition;
 import configuration.json.JsonTupleDefinitionsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import testHelpers.Constants;
+import test.helpers.Constants;
 
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static testHelpers.TTypesGetter.*;
+import static test.helpers.TTypesGetter.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JsonTupleDefinitionTest

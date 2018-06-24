@@ -1,4 +1,4 @@
-package testHelpers;
+package test.helpers;
 
 import tuples.generics.IOclTuple;
 import tuples.serialization.StreamReader;

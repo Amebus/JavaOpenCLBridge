@@ -2,7 +2,7 @@ package configuration;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import static testHelpers.TTypesGetter.*;
+import static test.helpers.TTypesGetter.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 

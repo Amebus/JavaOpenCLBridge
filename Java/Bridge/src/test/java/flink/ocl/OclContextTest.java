@@ -4,7 +4,7 @@ import configuration.json.JsonSettingsRepository;
 import configuration.json.JsonTupleDefinitionsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import testHelpers.Constants;
+import test.helpers.Constants;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

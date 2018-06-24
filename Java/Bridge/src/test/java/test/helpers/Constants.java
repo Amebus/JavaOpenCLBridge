@@ -1,4 +1,4 @@
-package testHelpers;
+package test.helpers;
 
 public class Constants
 {

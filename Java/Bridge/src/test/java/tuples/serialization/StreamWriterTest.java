@@ -10,9 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static testHelpers.StreamsGetter.*;
-import static testHelpers.Constants.*;
-import static testHelpers.TupleGetters.*;
+import static test.helpers.StreamsGetter.*;
+import static test.helpers.Constants.*;
+import static test.helpers.TupleGetters.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StreamWriterTest

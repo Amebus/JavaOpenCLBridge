@@ -12,7 +12,7 @@ import flink.ocl.build.engine.OclKernel;
 import flink.ocl.JsonUserFunctionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import testHelpers.Constants;
+import test.helpers.Constants;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

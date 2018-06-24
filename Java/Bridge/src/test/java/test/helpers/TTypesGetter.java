@@ -1,4 +1,4 @@
-package testHelpers;
+package test.helpers;
 
 import configuration.*;
 

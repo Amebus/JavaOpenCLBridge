@@ -2,7 +2,7 @@ package flink.ocl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import testHelpers.Constants;
+import test.helpers.Constants;
 
 import java.util.Collection;
 import java.util.Objects;

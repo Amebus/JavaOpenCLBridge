@@ -1,12 +1,10 @@
-package testHelpers;
+package test.helpers;
 
 import tuples.generics.*;
 import tuples.serialization.Dimensions;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static testHelpers.Constants.*;
 
 public class TupleGetters
 {
@@ -77,10 +75,10 @@ public class TupleGetters
 	{
 		List<Tuple1<Integer>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple1<>(ITV_1));
-		vResult.add(new Tuple1<>(ITV_2));
-		vResult.add(new Tuple1<>(ITV_3));
-		vResult.add(new Tuple1<>(ITV_4));
+		vResult.add(new Tuple1<>(Constants.ITV_1));
+		vResult.add(new Tuple1<>(Constants.ITV_2));
+		vResult.add(new Tuple1<>(Constants.ITV_3));
+		vResult.add(new Tuple1<>(Constants.ITV_4));
 
 		return vResult;
 	}
@@ -89,10 +87,10 @@ public class TupleGetters
 	{
 		List<Tuple1<Double>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple1<>(DTV_1));
-		vResult.add(new Tuple1<>(DTV_2));
-		vResult.add(new Tuple1<>(DTV_3));
-		vResult.add(new Tuple1<>(DTV_4));
+		vResult.add(new Tuple1<>(Constants.DTV_1));
+		vResult.add(new Tuple1<>(Constants.DTV_2));
+		vResult.add(new Tuple1<>(Constants.DTV_3));
+		vResult.add(new Tuple1<>(Constants.DTV_4));
 
 		return vResult;
 	}
@@ -101,10 +99,10 @@ public class TupleGetters
 	{
 		List<Tuple1<String>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple1<>(STV_1));
-		vResult.add(new Tuple1<>(STV_2));
-		vResult.add(new Tuple1<>(STV_3));
-		vResult.add(new Tuple1<>(STV_4));
+		vResult.add(new Tuple1<>(Constants.STV_1));
+		vResult.add(new Tuple1<>(Constants.STV_2));
+		vResult.add(new Tuple1<>(Constants.STV_3));
+		vResult.add(new Tuple1<>(Constants.STV_4));
 
 		return vResult;
 	}
@@ -113,10 +111,10 @@ public class TupleGetters
 	{
 		List<Tuple2<Integer, Integer>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(ITV_1, ITV_4));
-		vResult.add(new Tuple2<>(ITV_2, ITV_3));
-		vResult.add(new Tuple2<>(ITV_3, ITV_2));
-		vResult.add(new Tuple2<>(ITV_4, ITV_1));
+		vResult.add(new Tuple2<>(Constants.ITV_1, Constants.ITV_4));
+		vResult.add(new Tuple2<>(Constants.ITV_2, Constants.ITV_3));
+		vResult.add(new Tuple2<>(Constants.ITV_3, Constants.ITV_2));
+		vResult.add(new Tuple2<>(Constants.ITV_4, Constants.ITV_1));
 
 		return vResult;
 	}
@@ -125,10 +123,10 @@ public class TupleGetters
 	{
 		List<Tuple2<Integer, Double>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(ITV_1, DTV_4));
-		vResult.add(new Tuple2<>(ITV_2, DTV_3));
-		vResult.add(new Tuple2<>(ITV_3, DTV_2));
-		vResult.add(new Tuple2<>(ITV_4, DTV_1));
+		vResult.add(new Tuple2<>(Constants.ITV_1, Constants.DTV_4));
+		vResult.add(new Tuple2<>(Constants.ITV_2, Constants.DTV_3));
+		vResult.add(new Tuple2<>(Constants.ITV_3, Constants.DTV_2));
+		vResult.add(new Tuple2<>(Constants.ITV_4, Constants.DTV_1));
 
 		return vResult;
 	}
@@ -137,10 +135,10 @@ public class TupleGetters
 	{
 		List<Tuple2<Integer, String>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(ITV_1, STV_4));
-		vResult.add(new Tuple2<>(ITV_2, STV_3));
-		vResult.add(new Tuple2<>(ITV_3, STV_2));
-		vResult.add(new Tuple2<>(ITV_4, STV_1));
+		vResult.add(new Tuple2<>(Constants.ITV_1, Constants.STV_4));
+		vResult.add(new Tuple2<>(Constants.ITV_2, Constants.STV_3));
+		vResult.add(new Tuple2<>(Constants.ITV_3, Constants.STV_2));
+		vResult.add(new Tuple2<>(Constants.ITV_4, Constants.STV_1));
 
 		return vResult;
 	}
@@ -149,10 +147,10 @@ public class TupleGetters
 	{
 		List<Tuple2<Double, Double>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(DTV_1, DTV_4));
-		vResult.add(new Tuple2<>(DTV_2, DTV_3));
-		vResult.add(new Tuple2<>(DTV_3, DTV_2));
-		vResult.add(new Tuple2<>(DTV_4, DTV_1));
+		vResult.add(new Tuple2<>(Constants.DTV_1, Constants.DTV_4));
+		vResult.add(new Tuple2<>(Constants.DTV_2, Constants.DTV_3));
+		vResult.add(new Tuple2<>(Constants.DTV_3, Constants.DTV_2));
+		vResult.add(new Tuple2<>(Constants.DTV_4, Constants.DTV_1));
 
 		return vResult;
 	}
@@ -161,10 +159,10 @@ public class TupleGetters
 	{
 		List<Tuple2<Double, Integer>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(DTV_1, ITV_4));
-		vResult.add(new Tuple2<>(DTV_2, ITV_3));
-		vResult.add(new Tuple2<>(DTV_3, ITV_2));
-		vResult.add(new Tuple2<>(DTV_4, ITV_1));
+		vResult.add(new Tuple2<>(Constants.DTV_1, Constants.ITV_4));
+		vResult.add(new Tuple2<>(Constants.DTV_2, Constants.ITV_3));
+		vResult.add(new Tuple2<>(Constants.DTV_3, Constants.ITV_2));
+		vResult.add(new Tuple2<>(Constants.DTV_4, Constants.ITV_1));
 
 		return vResult;
 	}
@@ -173,10 +171,10 @@ public class TupleGetters
 	{
 		List<Tuple2<Double, String>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(DTV_1, STV_4));
-		vResult.add(new Tuple2<>(DTV_2, STV_3));
-		vResult.add(new Tuple2<>(DTV_3, STV_2));
-		vResult.add(new Tuple2<>(DTV_4, STV_1));
+		vResult.add(new Tuple2<>(Constants.DTV_1, Constants.STV_4));
+		vResult.add(new Tuple2<>(Constants.DTV_2, Constants.STV_3));
+		vResult.add(new Tuple2<>(Constants.DTV_3, Constants.STV_2));
+		vResult.add(new Tuple2<>(Constants.DTV_4, Constants.STV_1));
 
 		return vResult;
 	}
@@ -185,10 +183,10 @@ public class TupleGetters
 	{
 		List<Tuple2<String, String>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(STV_1, STV_4));
-		vResult.add(new Tuple2<>(STV_2, STV_3));
-		vResult.add(new Tuple2<>(STV_3, STV_2));
-		vResult.add(new Tuple2<>(STV_4, STV_1));
+		vResult.add(new Tuple2<>(Constants.STV_1, Constants.STV_4));
+		vResult.add(new Tuple2<>(Constants.STV_2, Constants.STV_3));
+		vResult.add(new Tuple2<>(Constants.STV_3, Constants.STV_2));
+		vResult.add(new Tuple2<>(Constants.STV_4, Constants.STV_1));
 
 		return vResult;
 	}
@@ -197,10 +195,10 @@ public class TupleGetters
 	{
 		List<Tuple2<String, Integer>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(STV_1, ITV_4));
-		vResult.add(new Tuple2<>(STV_2, ITV_3));
-		vResult.add(new Tuple2<>(STV_3, ITV_2));
-		vResult.add(new Tuple2<>(STV_4, ITV_1));
+		vResult.add(new Tuple2<>(Constants.STV_1, Constants.ITV_4));
+		vResult.add(new Tuple2<>(Constants.STV_2, Constants.ITV_3));
+		vResult.add(new Tuple2<>(Constants.STV_3, Constants.ITV_2));
+		vResult.add(new Tuple2<>(Constants.STV_4, Constants.ITV_1));
 
 		return vResult;
 	}
@@ -209,10 +207,10 @@ public class TupleGetters
 	{
 		List<Tuple2<String, Double>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(STV_1, DTV_4));
-		vResult.add(new Tuple2<>(STV_2, DTV_3));
-		vResult.add(new Tuple2<>(STV_3, DTV_2));
-		vResult.add(new Tuple2<>(STV_4, DTV_1));
+		vResult.add(new Tuple2<>(Constants.STV_1, Constants.DTV_4));
+		vResult.add(new Tuple2<>(Constants.STV_2, Constants.DTV_3));
+		vResult.add(new Tuple2<>(Constants.STV_3, Constants.DTV_2));
+		vResult.add(new Tuple2<>(Constants.STV_4, Constants.DTV_1));
 
 		return vResult;
 	}

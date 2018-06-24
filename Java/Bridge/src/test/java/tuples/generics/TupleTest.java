@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static testHelpers.Constants.*;
+import static test.helpers.Constants.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TupleTest
