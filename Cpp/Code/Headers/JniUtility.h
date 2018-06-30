@@ -7,6 +7,4 @@
 
 std::string GetStringFromJavaString(JNIEnv *pEnv, jstring pString);
 
-
-
 #endif //JniUtility_H

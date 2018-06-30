@@ -33,13 +33,13 @@ sudo execstack -c $OutFile
 echo "done"
 
 
-OutFile=../Cpp/Out/libOclBridge.so
+# OutFile=../Cpp/Out/libOclBridge.so
 
-echo "compiling..."
-g++ -std=c++11 -fPIC -shared $SDir/OclBridge.cpp -o $OutFile -lOpenCL -I$JAVA_HOME/include -I$JAVA_HOME/include/linux
-echo "done"
+# echo "compiling..."
+# g++ -std=c++11 -fPIC -shared $SDir/OclBridge.cpp -o $OutFile -lOpenCL -I$JAVA_HOME/include -I$JAVA_HOME/include/linux
+# echo "done"
 
-echo "execstack..."
-sudo execstack -c $OutFile
-echo "done"
+# echo "execstack..."
+# sudo execstack -c $OutFile
+# echo "done"
 

@@ -291,16 +291,15 @@ public abstract class KernelBuilder implements IBuilder<OclKernel>
 			   "(\n" +
 			   "\t__global unsigned char* " + DATA + ", \n" +
 			   "\t__global int* " + DATA_INDEXES +", \n" +
-			   "\t__global unsigned char* " + RESULT + ", \n" +
-			   "\t\t\t\tint " + INDEX + ", \n" +
-			   "\t\t\t\tlong " + LONG_TEMP + ")";
+			   "\t__global unsigned char* " + RESULT + ")";
 	}
 	
 	protected String getUtilityVars()
 	{
 		return "int " + G_ID + " = get_global_id(0);\n" +
 			   "unsigned char " + ARITY + " = " + dataOf(0) + ";\n" +
-			   INDEX + " = " + dataIndexOf(G_ID) + ";" +
+			   "int " + INDEX + " = " + dataIndexOf(G_ID) + ";\n" +
+			   "long " + LONG_TEMP + " = 0;"+
 			   "\n";
 	}
 	

@@ -4,10 +4,13 @@ import configuration.*;
 import flink.ocl.build.engine.BuildEngine;
 import flink.ocl.build.engine.CppLibraryInfo;
 import ocl.bridge.OclBridge;
+import tuples.generics.IOclTuple;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class OclContext
@@ -79,5 +82,20 @@ public class OclContext
 		
 		if (vAllFilesDeleted)
 			vToFile.delete();
+	}
+	
+	public List< ? extends IOclTuple> Filter(String pUserFunctionName, List< ? extends IOclTuple> pTuples)
+	{
+		boolean[] vFilter = mOclBridgeContext.filter(pUserFunctionName, pTuples);
+		List<IOclTuple> vResult = new LinkedList<>();
+		int i = 0;
+		
+		for (IOclTuple vTuple : pTuples)
+		{
+			if(vFilter[i])
+				vResult.add(vTuple);
+			i++;
+		}
+		return vResult;
 	}
 }

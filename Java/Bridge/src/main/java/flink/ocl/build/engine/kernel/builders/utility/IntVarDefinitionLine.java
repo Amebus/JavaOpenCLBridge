@@ -19,7 +19,7 @@ public class IntVarDefinitionLine extends VarDefinitionKernelLine
 	{
 		String vResult = "";
 		if(StreamUtility.streamFrom(pVarDefinitions)
-						.anyMatch( x -> x.getCType().isDouble() || x.getCType().isString()))
+						.anyMatch( x -> x.getCType().isInteger() || x.getCType().isString()))
 		{
 			vResult = CTType.CTypes.INTEGER;
 		}

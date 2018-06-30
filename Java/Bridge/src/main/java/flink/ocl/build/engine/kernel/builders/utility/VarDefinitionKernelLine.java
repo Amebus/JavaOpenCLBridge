@@ -32,9 +32,11 @@ public abstract class VarDefinitionKernelLine
 	
 	public String toKernelLine()
 	{
+		if(mType.equals(""))
+			return "";
 		return mType +
 			   " " +
-			   StreamUtility.streamFrom(mVarNames).reduce((x, y) -> x + ", " + y).orElseGet( () ->"") +
+			   StreamUtility.streamFrom(mVarNames).reduce((x, y) -> x + ", " + y).orElse("") +
 			   ";\n";
 	}
 }
