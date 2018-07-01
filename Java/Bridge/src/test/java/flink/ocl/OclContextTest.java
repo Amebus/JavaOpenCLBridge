@@ -35,7 +35,7 @@ public class OclContextTest
 		vTuples.add(new Tuple1<>(2));
 		vTuples.add(new Tuple1<>(3));
 		
-		List<? extends IOclTuple> vResult = vContext.Filter("filterFunction", vTuples);
+		List<? extends IOclTuple> vResult = vContext.filter("filterFunction", vTuples);
 
 		System.out.println(vResult.size());
 

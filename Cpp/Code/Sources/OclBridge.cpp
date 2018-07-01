@@ -2,7 +2,6 @@
 #include "../Headers/ocl_bridge_AbstractOclBridge.h"
 #include "../Headers/OclUtility.h"
 #include "../Headers/JniUtility.h"
-//#include <CL/cl.hpp>
 #include <cstdio>
 #include <fstream>
 #include <iostream>
@@ -346,17 +345,7 @@ JNIEXPORT void Java_ocl_bridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject p
 JNIEXPORT jbooleanArray JNICALL 
 Java_ocl_bridge_AbstractOclBridge_OclFilter(JNIEnv *pEnv, jobject pObj, jstring pKernelName, jbyteArray pStream, jintArray pIndexes)
 {
-    std::cout << "filter" << std::endl;
-    for (auto vEntry : gProgrmasList) 
-    {
-        std::cout << vEntry.first << std::endl;
-        std::cout << vEntry.second << std::endl;
-    }
-
-
     std::string vKernelName = GetStringFromJavaString(pEnv, pKernelName);
-    cl_kernel vKernel = clCreateKernel(gProgrmasList[vKernelName], vKernelName.c_str(), &gStatus);
-    printStatus();
 
     unsigned char* vStream;
     int* vIndexes;
@@ -376,6 +365,8 @@ Java_ocl_bridge_AbstractOclBridge_OclFilter(JNIEnv *pEnv, jobject pObj, jstring 
     vResultSize = sizeof(unsigned char) * vResultLength;
     unsigned char* vResult = new unsigned char[vResultLength];
 
+    cl_kernel vKernel = clCreateKernel(gProgrmasList[vKernelName], vKernelName.c_str(), &gStatus);
+    printStatus();
 
     cl_mem vStreamBuffer = clCreateBuffer(gContext, CL_MEM_READ_ONLY, vStreamSize, NULL, &gStatus);
 	printStatus();
@@ -518,12 +509,9 @@ std::string GetKernelSourceCode(std::string pFile)
     return vSourceCode;
 }
 
-cl_program CompileKernelProgram(std::string pSourceCode, std::string pKernelName)
+cl_program CompileKernelProgram(std::string pSourceCode)
 {
     const char* vSourceCode = pSourceCode.c_str();
-
-    std::cout << "KernelName: " << pKernelName << "\n";
-    //std::cout << "vSourceCode: " << vSourceCode << "\n";
 
     cl_program vProgram = clCreateProgramWithSource(gContext, 1, (const char **)&vSourceCode, NULL, &gStatus);
     printStatus();
@@ -532,8 +520,6 @@ cl_program CompileKernelProgram(std::string pSourceCode, std::string pKernelName
     printStatus();
 
     return vProgram;
-    //TODO check that the kernel run
-    //clReleaseProgram(vProgram);
 }
 
 void StoreKernelProgram(std::string pKernelName, cl_program pKernel)
@@ -555,7 +541,7 @@ void CompileAndStoreOclKernel(std::string pKernelsFolder, std::string pKernelNam
 
     std::string vSourceCode = GetKernelSourceCode(vFullName);
 
-    cl_program vProgram = CompileKernelProgram(vSourceCode, vKernelName);
+    cl_program vProgram = CompileKernelProgram(vSourceCode);
     std::cout << "CompileAndStoreOclKernel: " << vProgram << std::endl;
     StoreKernelProgram(vKernelName, vProgram);
 }

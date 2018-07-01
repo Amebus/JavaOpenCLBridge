@@ -84,7 +84,7 @@ public class OclContext
 			vToFile.delete();
 	}
 	
-	public List< ? extends IOclTuple> Filter(String pUserFunctionName, List< ? extends IOclTuple> pTuples)
+	public List< ? extends IOclTuple> filter(String pUserFunctionName, List< ? extends IOclTuple> pTuples)
 	{
 		boolean[] vFilter = mOclBridgeContext.filter(pUserFunctionName, pTuples);
 		List<IOclTuple> vResult = new LinkedList<>();
