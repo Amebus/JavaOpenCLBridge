@@ -289,9 +289,9 @@ public abstract class KernelBuilder implements IBuilder<OclKernel>
 		return "__kernel void " +
 			   getKernelName() +
 			   "(\n" +
-			   "\t__global unsigned char* " + DATA + ", \n" +
-			   "\t__global int* " + DATA_INDEXES +", \n" +
-			   "\t__global unsigned char* " + RESULT + ")";
+			   "\t__global unsigned char *" + DATA + ", \n" +
+			   "\t__global int *" + DATA_INDEXES +", \n" +
+			   "\t__global unsigned char *" + RESULT + ")";
 	}
 	
 	protected String getUtilityVars()

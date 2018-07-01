@@ -2,7 +2,6 @@
 #include "../Headers/ocl_bridge_AbstractOclBridge.h"
 #include "../Headers/OclUtility.h"
 #include "../Headers/JniUtility.h"
-#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <dirent.h>
@@ -161,17 +160,21 @@ void printStatus(const cl_int status, const int line)
     }
 }
 
+void PrintClError(cl::Error* error)
+{
+	std::cout << "Error" << std::endl;
+	std::cout << error->what() << "(" << error->err() << ")" << std::endl;
+}
 
-
-std::unordered_map<std::string, cl_program> gProgrmasList;
+std::unordered_map<std::string, cl::Program> gProgrmasList;
 //std::unordered_map<std::string, cl_program> gProgramsList;
-std::vector<cl_platform_id> gPlatforms;
-std::vector<cl_device_id> gDevices;
+std::vector<cl::Platform> gPlatforms;
+std::vector<cl::Device> gDevices;
 
-cl_platform_id gPlatform;
-cl_device_id gDefaultDevice;
-cl_context gContext;
-cl_command_queue gCommandQueue;
+cl::Platform gPlatform;
+cl::Device gDefaultDevice;
+cl::Context gContext;
+cl::CommandQueue gCommandQueue;
 cl_int gStatus;
 
 #define printStatus() printStatus(gStatus, __LINE__)
@@ -183,6 +186,127 @@ void DisposeDevices();
 void DisposeCommandQueue();
 void DisposeContext();
 
+#pragma endregion
+
+#pragma region Classes
+
+class OclKernelExecutionInfo
+{
+    protected:
+
+        JNIEnv *mEnv;
+        jobject mObj;
+        std::string mKernelName;
+
+        unsigned char *mStream, *mResult;
+        int* mIndexes;
+
+        int mStreamLength, mIndexesLegth, mResultLength;
+        size_t mStreamSize, mIndexesSize, mResultSize;
+
+        void SetUpStream(jbyteArray pStream)
+        {
+            mStreamLength = mEnv->GetArrayLength(pStream);
+            mStream = (unsigned char *)mEnv->GetByteArrayElements(pStream, 0);
+            mStreamSize = sizeof(unsigned char) * mStreamLength;
+        }
+
+        void SetUpIndexes(jintArray pIndexes)
+        {
+            mIndexesLegth = mEnv->GetArrayLength(pIndexes);
+            mIndexes = mEnv->GetIntArrayElements(pIndexes, 0);
+            mIndexesSize = sizeof(int) * mIndexesLegth;
+        }
+
+        virtual void SetUpResult()
+        {
+
+        };
+
+    public:
+        OclKernelExecutionInfo (JNIEnv *pEnv, jobject pObj, jstring pKernelName, jbyteArray pStream, jintArray pIndexes)
+        {
+            mEnv = pEnv;
+            mObj = pObj;
+            mKernelName = GetStringFromJavaString(mEnv, pKernelName);
+
+            SetUpStream(pStream);
+
+            SetUpIndexes(pIndexes);
+
+            SetUpResult();
+        }
+
+        virtual ~OclKernelExecutionInfo ()
+        {
+        }
+
+        std::string GetKernelName()
+        {
+            return mKernelName;
+        }
+        const char* GetCharKernelName()
+        {
+            return mKernelName.c_str();
+        }
+
+        unsigned char* GetStream()
+        {
+            return mStream;
+        }
+        size_t GetStreamSize()
+        {
+            return mStreamSize;
+        }
+        int GetStreamLength();
+
+
+        int* GetIndexes()
+        {
+            return mIndexes;
+        }
+        size_t GetIndexesSize()
+        {
+            return mIndexesSize;
+        }
+        int GetIndexesLength()
+        {
+            return mIndexesLegth;
+        }
+
+        unsigned char* GetResult()
+        {
+            return mResult;
+        }
+        size_t GetResultSize()
+        {
+            return mResultSize;
+        }
+        int GetResultLength()
+        {
+            return mResultLength;
+        }
+
+        jbooleanArray ToJBooleanArray();
+        jbyteArray ToJbyteArray();
+};
+
+class OclFilterExecutionInfo : public OclKernelExecutionInfo
+{
+    protected:
+        void SetUpResult()
+        {
+            mResultLength = mIndexesLegth;
+            mResultSize = sizeof(unsigned char) * mResultLength;
+            mResult = new unsigned char[mResultLength];
+        }
+    public:
+        OclFilterExecutionInfo (JNIEnv *pEnv, jobject pObj, jstring pKernelName, jbyteArray pStream, jintArray pIndexes)
+            : OclKernelExecutionInfo (pEnv, pObj, pKernelName, pStream, pIndexes)
+        {
+            
+        }
+};
 #pragma endregion
 
 #pragma region Java native implementation
@@ -317,20 +441,23 @@ JNIEXPORT void Java_ocl_bridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobje
 JNIEXPORT void Java_ocl_bridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject pObj, jstring pKernelsFolder)
 {
     //TODO improve to accepet external parameters
-    gStatus = clGetPlatformIDs(1, &gPlatform, NULL);
-    printStatus();
-    gStatus = clGetDeviceIDs(gPlatform, CL_DEVICE_TYPE_ALL, 1, &gDefaultDevice, NULL);
-    printStatus();
-    gContext = clCreateContext(NULL, 1, &gDefaultDevice, NULL, NULL, &gStatus);
-    printStatus();
-    gCommandQueue = clCreateCommandQueueWithProperties(gContext, gDefaultDevice, 0, &gStatus);
-    printStatus();
-
     std::string vKernelsFolder = GetStringFromJavaString(pEnv, pKernelsFolder);
 
     std::vector<std::string> vKernelsfiles = GetKernelsSourceFiles(vKernelsFolder);
-    
-    CompileAndStoreOclKernels(vKernelsFolder, vKernelsfiles);
+    try
+    {
+        cl::Platform::get(&gPlatforms);
+        gPlatforms[0].getDevices(CL_DEVICE_TYPE_ALL, &gDevices);
+        gDefaultDevice = gDevices[0];
+        gContext = cl::Context(gDefaultDevice);
+	    gCommandQueue = cl::CommandQueue(gContext, gDefaultDevice);
+        CompileAndStoreOclKernels(vKernelsFolder, vKernelsfiles);
+    }
+    catch(cl::Error* vError)
+    {
+        PrintClError(vError);
+        exit(1);
+    }
 }
 
 JNIEXPORT void Java_ocl_bridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject pObj)
@@ -351,7 +478,8 @@ Java_ocl_bridge_AbstractOclBridge_OclFilter(JNIEnv *pEnv, jobject pObj, jstring 
     int* vIndexes;
 
     int vStreamLength, vIndexesLegth, vResultLength;
-    size_t vStreamSize, vIndexesSize, vResultSize, vIndexSpaceSize[1], vWorkGroupSize[1];
+    size_t vStreamSize, vIndexesSize, vResultSize;
+    OclFilterExecutionInfo *vKernelInfo = new OclFilterExecutionInfo(pEnv, pObj, pKernelName, pStream, pIndexes);
 
     vStreamLength = pEnv->GetArrayLength(pStream);
     vStream = (unsigned char *)pEnv->GetByteArrayElements(pStream, 0);
@@ -365,53 +493,39 @@ Java_ocl_bridge_AbstractOclBridge_OclFilter(JNIEnv *pEnv, jobject pObj, jstring 
     vResultSize = sizeof(unsigned char) * vResultLength;
     unsigned char* vResult = new unsigned char[vResultLength];
 
-    cl_kernel vKernel = clCreateKernel(gProgrmasList[vKernelName], vKernelName.c_str(), &gStatus);
-    printStatus();
+    try
+    {
+        cl::Kernel vKernel = cl::Kernel(gProgrmasList[vKernelName], vKernelName.c_str());
 
-    cl_mem vStreamBuffer = clCreateBuffer(gContext, CL_MEM_READ_ONLY, vStreamSize, NULL, &gStatus);
-	printStatus();
-    cl_mem vIndexesBuffer = clCreateBuffer(gContext, CL_MEM_READ_ONLY, vIndexesSize, NULL, &gStatus);
-	printStatus();
-	cl_mem vResultBuffer = clCreateBuffer(gContext, CL_MEM_WRITE_ONLY, vResultSize, NULL, &gStatus);
-	printStatus();
+        cl::Buffer vStreamBuffer(gContext, CL_MEM_READ_ONLY, vStreamSize);
+        cl::Buffer vIndexesBuffer(gContext, CL_MEM_READ_ONLY, vIndexesSize);
+        cl::Buffer vResultBuffer(gContext, CL_MEM_WRITE_ONLY, vResultSize);
 
-    gStatus = clEnqueueWriteBuffer(gCommandQueue, vStreamBuffer, CL_FALSE, 0, vStreamSize, vStream, 0, NULL, NULL);
-	printStatus();
+        gCommandQueue.enqueueWriteBuffer(vStreamBuffer, CL_TRUE, 0, vStreamSize, vStream);
+        gCommandQueue.enqueueWriteBuffer(vIndexesBuffer, CL_TRUE, 0, vIndexesSize, vIndexes);
 
-    gStatus = clEnqueueWriteBuffer(gCommandQueue, vIndexesBuffer, CL_FALSE, 0, vIndexesSize, vIndexes, 0, NULL, NULL);
-	printStatus();
+        vKernel.setArg(0, vStreamBuffer);
+        vKernel.setArg(1, vIndexesBuffer);
+        vKernel.setArg(2, vResultBuffer);
 
+        // int vIntValue = 0;
+        // long vLongValue = 0;
+        // gStatus = clSetKernelArg(vKernel, 3, sizeof(int), &vIntValue);
+        // printStatus();
+        // gStatus = clSetKernelArg(vKernel, 4, sizeof(long), &vLongValue);
+        // printStatus();
 
-    gStatus = clSetKernelArg(vKernel, 0, sizeof(cl_mem), &vStreamBuffer);
-	printStatus();
-    gStatus = clSetKernelArg(vKernel, 1, sizeof(cl_mem), &vIndexesBuffer);
-	printStatus();
-	gStatus = clSetKernelArg(vKernel, 2, sizeof(cl_mem), &vResultBuffer);
-	printStatus();
+        cl::NDRange global(vIndexesLegth);
 
-    // int vIntValue = 0;
-    // long vLongValue = 0;
-    // gStatus = clSetKernelArg(vKernel, 3, sizeof(int), &vIntValue);
-	// printStatus();
-    // gStatus = clSetKernelArg(vKernel, 4, sizeof(long), &vLongValue);
-	// printStatus();
+        gCommandQueue.enqueueNDRangeKernel(vKernel, cl::NullRange, global, cl::NullRange);
 
-	vIndexSpaceSize[0] = vIndexesLegth;
-	vWorkGroupSize[0] = 8;
-
-    gStatus = clEnqueueNDRangeKernel(gCommandQueue, vKernel, 1, NULL, vIndexSpaceSize, vWorkGroupSize, 0, NULL, NULL );
-	printStatus();
-
-
-	gStatus = clEnqueueReadBuffer(gCommandQueue, vResultBuffer, CL_TRUE, 0, vResultSize, vResult, 0, NULL, NULL );
-	printStatus();
-
-
-    clReleaseMemObject(vStreamBuffer);
-    clReleaseMemObject(vIndexesBuffer);
-	clReleaseMemObject(vResultBuffer);
-
-    clReleaseKernel(vKernel);
+        gCommandQueue.enqueueReadBuffer(vResultBuffer, CL_TRUE, 0, vResultSize, vResult);
+    }
+    catch(cl::Error *vError)
+    {
+        PrintClError(vError);
+        exit(1);
+    }
 
     for(int i = 0; i < vResultLength; i++)
     {
@@ -432,36 +546,58 @@ Java_ocl_bridge_AbstractOclBridge_OclFilter(JNIEnv *pEnv, jobject pObj, jstring 
 
 void DisposePrograms()
 {
-    for (auto vEntry : gProgrmasList) 
-    {
-        clReleaseProgram(vEntry.second);
-    }
-    gProgrmasList.clear();
+    // for (auto vEntry : gProgrmasList) 
+    // {
+    //     clReleaseProgram(vEntry.second);
+    //     vEntry.second.
+    // }
+    // gProgrmasList.clear();
 }
 
 void DisposeDevices()
 {
-    for(auto vDevice : gDevices)
-    {
-        clReleaseDevice(vDevice);
-    }
-    gDevices.clear();
-    clReleaseDevice(gDefaultDevice);
+    // for(auto vDevice : gDevices)
+    // {
+    //     clReleaseDevice(vDevice);
+    // }
+    // gDevices.clear();
+    // clReleaseDevice(gDefaultDevice);
 }
 
 void DisposeCommandQueue()
 {
-    clReleaseCommandQueue(gCommandQueue);
+    // clReleaseCommandQueue(gCommandQueue);
 }
 
 void DisposeContext()
 {
-    clReleaseContext(gContext);
+    // clReleaseContext(gContext);
 }
 
 #pragma endregion
 
 #pragma region Kernels build and storage
+
+void CompileAndStoreOclKernels(std::string pKernelsFolder, std::vector<std::string> pKernelsFiles)
+{
+    for(auto vkernelFile: pKernelsFiles) 
+    {
+        CompileAndStoreOclKernel(pKernelsFolder, vkernelFile);
+    }
+}
+
+void CompileAndStoreOclKernel(std::string pKernelsFolder, std::string pKernelName)
+{
+    std::string vFullName(pKernelsFolder + "/" + pKernelName);
+
+    std::string vKernelName = GetKernelNameFromKernelFileName(pKernelName);
+
+    std::string vSourceCode = GetKernelSourceCode(vFullName);
+
+    cl::Program vProgram = CompileKernelProgram(vSourceCode);
+
+    StoreKernelProgram(vKernelName, vProgram);
+}
 
 std::string GetKernelNameFromKernelFileName(std::string pKernelName)
 {
@@ -509,49 +645,25 @@ std::string GetKernelSourceCode(std::string pFile)
     return vSourceCode;
 }
 
-cl_program CompileKernelProgram(std::string pSourceCode)
+cl::Program CompileKernelProgram(std::string pSourceCode)
 {
     const char* vSourceCode = pSourceCode.c_str();
 
-    cl_program vProgram = clCreateProgramWithSource(gContext, 1, (const char **)&vSourceCode, NULL, &gStatus);
-    printStatus();
+    cl::Program::Sources vSources(1, std::make_pair( vSourceCode, pSourceCode.length()+1));
+	cl::Program vProgram(gContext, vSources);
 
-    gStatus = clBuildProgram(vProgram, 1, &gDefaultDevice, NULL, NULL, NULL);
-    printStatus();
+	vProgram.build(gDevices);
 
     return vProgram;
 }
 
-void StoreKernelProgram(std::string pKernelName, cl_program pKernel)
+void StoreKernelProgram(std::string pKernelName, cl::Program pKernelProgram)
 {
-    std::unordered_map<std::string,cl_program>::const_iterator vIter = gProgrmasList.find(pKernelName);
+    std::unordered_map<std::string,cl::Program>::const_iterator vIter = gProgrmasList.find(pKernelName);
 	if(vIter == gProgrmasList.end())
 	{
-        std::cout << "StoreKernelProgram: " << pKernel << std::endl;
-        gProgrmasList[pKernelName] = pKernel;
-        std::cout << "kernels count" << gProgrmasList.size() << "\n";
+        gProgrmasList[pKernelName] = pKernelProgram;
 	}
-}
-
-void CompileAndStoreOclKernel(std::string pKernelsFolder, std::string pKernelName)
-{
-    std::string vFullName(pKernelsFolder + "/" + pKernelName);
-
-    std::string vKernelName = GetKernelNameFromKernelFileName(pKernelName);
-
-    std::string vSourceCode = GetKernelSourceCode(vFullName);
-
-    cl_program vProgram = CompileKernelProgram(vSourceCode);
-    std::cout << "CompileAndStoreOclKernel: " << vProgram << std::endl;
-    StoreKernelProgram(vKernelName, vProgram);
-}
-
-void CompileAndStoreOclKernels(std::string pKernelsFolder, std::vector<std::string> pKernelsFiles)
-{
-    for(auto vkernelFile: pKernelsFiles) 
-    {
-        CompileAndStoreOclKernel(pKernelsFolder, vkernelFile);
-    }
 }
 
 #pragma endregion
@@ -560,5 +672,10 @@ void CompileAndStoreOclKernels(std::string pKernelsFolder, std::vector<std::stri
 std::string GetStringFromJavaString(JNIEnv *pEnv, jstring pString)
 {
     return pEnv->GetStringUTFChars(pString, NULL);
+}
+
+void ReleaseJStringResources(JNIEnv *pEnv, jstring pJavaString, std::string pCppString)
+{
+	pEnv->ReleaseStringUTFChars(pJavaString, pCppString.c_str());
 }
 #pragma endregion
