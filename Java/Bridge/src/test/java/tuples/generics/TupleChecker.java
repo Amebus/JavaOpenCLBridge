@@ -5,8 +5,8 @@ import tuples.serialization.StreamWriterResult;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static testHelpers.StreamsGetter.*;
-import static testHelpers.TupleGetters.*;
+import static test.helpers.StreamsGetter.*;
+import static test.helpers.TupleGetters.*;
 
 public final class TupleChecker
 {

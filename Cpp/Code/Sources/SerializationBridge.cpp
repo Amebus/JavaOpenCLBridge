@@ -68,14 +68,13 @@ void printStatus(const cl_int status, const int line) {
 
 const char* myKernelName = "add";
 const char* myKernelSource = ""
-							"signed char fn(signed char* _datum, signed char _v)\n"
-							"{\n"
-							"\t return _datum + _v;"
-							"}\n"
+							"#define SUMA(r, a, b) r = a + b;"
+										"\n"
 							"__kernel void add(__global signed char* _data, __global signed char* _result, signed char _v)\n"
 							"{\n"
 							"\tint _gId = get_global_id(0);\n"
-							"\t_result[_gId] = fn(_data[_gId], _v);"
+							// "\t_result[_gId] = fn(_data[_gId], _v);"
+							"\tSUMA(_result[_gId], _data[_gId], _v);"
 							"\n"
 							"}"
 							"\n";
@@ -242,6 +241,9 @@ JNIEXPORT jstring JNICALL Java_serialization_SerializationBridge_toString
 JNIEXPORT jbyteArray JNICALL Java_serialization_SerializationBridge_Adds
   (JNIEnv *env, jclass cls, jbyteArray stream, jbyte valueToAdd)
 {
+
+	std::cout << "adding..." << std::endl;
+
 	int wvLength = env->GetArrayLength(stream);
 	signed char wvValueToAdd = (signed char) valueToAdd;
 	signed char* wvToModify = env->GetByteArrayElements(stream, 0);

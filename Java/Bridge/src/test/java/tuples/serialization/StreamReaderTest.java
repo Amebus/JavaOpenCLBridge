@@ -7,8 +7,8 @@ import tuples.generics.Tuple2;
 import tuples.serialization.StreamReader.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static testHelpers.StreamsGetter.*;
-import static testHelpers.Constants.*;
+import static test.helpers.StreamsGetter.*;
+import static test.helpers.Constants.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StreamReaderTest

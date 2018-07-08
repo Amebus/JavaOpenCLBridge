@@ -6,8 +6,8 @@ import tuples.serialization.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static testHelpers.StreamsGetter.*;
-import static testHelpers.TupleGetters.*;
+import static test.helpers.StreamsGetter.*;
+import static test.helpers.TupleGetters.*;
 import static tuples.generics.TupleChecker.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

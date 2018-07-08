@@ -7,6 +7,6 @@
 
 std::string GetStringFromJavaString(JNIEnv *pEnv, jstring pString);
 
-
+void ReleaseJStringResources(JNIEnv *pEnv, jstring pJavaString, std::string pCppString); 
 
 #endif //JniUtility_H

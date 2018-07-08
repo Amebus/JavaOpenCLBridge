@@ -1,9 +1,7 @@
 #define __CL_ENABLE_EXCEPTIONS
-#include "../Headers/oclBridge_AbstractOclBridge.h"
+#include "../Headers/ocl_bridge_AbstractOclBridge.h"
 #include "../Headers/OclUtility.h"
 #include "../Headers/JniUtility.h"
-//#include <CL/cl.hpp>
-#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <dirent.h>
@@ -162,30 +160,158 @@ void printStatus(const cl_int status, const int line)
     }
 }
 
-#define printStatus(status) printStatus(status, __LINE__)
+void PrintClError(cl::Error* error)
+{
+	std::cout << "Error" << std::endl;
+	std::cout << error->what() << "(" << error->err() << ")" << std::endl;
+}
 
-std::unordered_map<std::string, cl_kernel> gKernelsList;
-std::vector<cl_platform_id> gPlatforms;
-std::vector<cl_device_id> gDevices;
+std::unordered_map<std::string, cl::Program> gProgrmasList;
+//std::unordered_map<std::string, cl_program> gProgramsList;
+std::vector<cl::Platform> gPlatforms;
+std::vector<cl::Device> gDevices;
 
-cl_platform_id gPlatform;
-cl_device_id gDefaultDevice;
-cl_context gContext;
-cl_command_queue gCommandQueue;
+cl::Platform gPlatform;
+cl::Device gDefaultDevice;
+cl::Context gContext;
+cl::CommandQueue gCommandQueue;
 cl_int gStatus;
+
+#define printStatus() printStatus(gStatus, __LINE__)
 
 #pragma region dispose definition
 
-void DisposeKernels();
+void DisposePrograms();
 void DisposeDevices();
 void DisposeCommandQueue();
 void DisposeContext();
 
 #pragma endregion
 
+#pragma region Classes
+
+class OclKernelExecutionInfo
+{
+    protected:
+
+        JNIEnv *mEnv;
+        jobject mObj;
+        std::string mKernelName;
+
+        unsigned char *mStream, *mResult;
+        int* mIndexes;
+
+        int mStreamLength, mIndexesLegth, mResultLength;
+        size_t mStreamSize, mIndexesSize, mResultSize;
+
+        void SetUpStream(jbyteArray pStream)
+        {
+            mStreamLength = mEnv->GetArrayLength(pStream);
+            mStream = (unsigned char *)mEnv->GetByteArrayElements(pStream, 0);
+            mStreamSize = sizeof(unsigned char) * mStreamLength;
+        }
+
+        void SetUpIndexes(jintArray pIndexes)
+        {
+            mIndexesLegth = mEnv->GetArrayLength(pIndexes);
+            mIndexes = mEnv->GetIntArrayElements(pIndexes, 0);
+            mIndexesSize = sizeof(int) * mIndexesLegth;
+        }
+
+        virtual void SetUpResult()
+        {
+
+        };
+
+    public:
+        OclKernelExecutionInfo (JNIEnv *pEnv, jobject pObj, jstring pKernelName, jbyteArray pStream, jintArray pIndexes)
+        {
+            mEnv = pEnv;
+            mObj = pObj;
+            mKernelName = GetStringFromJavaString(mEnv, pKernelName);
+
+            SetUpStream(pStream);
+
+            SetUpIndexes(pIndexes);
+
+            SetUpResult();
+        }
+
+        virtual ~OclKernelExecutionInfo ()
+        {
+        }
+
+        std::string GetKernelName()
+        {
+            return mKernelName;
+        }
+        const char* GetCharKernelName()
+        {
+            return mKernelName.c_str();
+        }
+
+        unsigned char* GetStream()
+        {
+            return mStream;
+        }
+        size_t GetStreamSize()
+        {
+            return mStreamSize;
+        }
+        int GetStreamLength();
+
+
+        int* GetIndexes()
+        {
+            return mIndexes;
+        }
+        size_t GetIndexesSize()
+        {
+            return mIndexesSize;
+        }
+        int GetIndexesLength()
+        {
+            return mIndexesLegth;
+        }
+
+        unsigned char* GetResult()
+        {
+            return mResult;
+        }
+        size_t GetResultSize()
+        {
+            return mResultSize;
+        }
+        int GetResultLength()
+        {
+            return mResultLength;
+        }
+
+        jbooleanArray ToJBooleanArray();
+        jbyteArray ToJbyteArray();
+};
+
+class OclFilterExecutionInfo : public OclKernelExecutionInfo
+{
+    protected:
+        void SetUpResult()
+        {
+            mResultLength = mIndexesLegth;
+            mResultSize = sizeof(unsigned char) * mResultLength;
+            mResult = new unsigned char[mResultLength];
+        }
+    public:
+        OclFilterExecutionInfo (JNIEnv *pEnv, jobject pObj, jstring pKernelName, jbyteArray pStream, jintArray pIndexes)
+            : OclKernelExecutionInfo (pEnv, pObj, pKernelName, pStream, pIndexes)
+        {
+            
+        }
+};
+#pragma endregion
+
 #pragma region Java native implementation
 
-JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobject pObj)
+JNIEXPORT void Java_ocl_bridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobject pObj)
 {
     cl_uint numPlatforms = 0;
     gStatus = CL_SUCCESS;
@@ -193,7 +319,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
     // Get (in numPlatforms) the number of OpenCL platforms available
     // No platform ID will be return, since platforms is NULL
     gStatus = clGetPlatformIDs(0, NULL, &numPlatforms);
-	printStatus(gStatus);
+	printStatus();
 
 	std::cout << "numPlatforms:" << numPlatforms << '\n' << '\n';
 
@@ -202,7 +328,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
     // Now, obtains a list of numPlatforms OpenCL platforms available
     // The list of platforms available will be returned in platforms
     gStatus = clGetPlatformIDs(numPlatforms, &platforms[0], NULL);
-	printStatus(gStatus);
+	printStatus();
 
 	size_t stringLength = 0;
 	for (cl_uint i = 0; i < numPlatforms; i++)
@@ -213,7 +339,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 		// In order to read the platform's name, we first read the platform's name string length (param_value is NULL).
 		// The value returned in stringLength
 		gStatus = clGetPlatformInfo(platformId, CL_PLATFORM_NAME, 0, NULL, &stringLength);
-		printStatus(gStatus);
+		printStatus();
 
 		// Now, that we know the platform's name string length, we can allocate enough space before read vEntry
 	    std::vector<char> platformName(stringLength);
@@ -221,7 +347,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 		// Read the platform's name string
 	    // The read value returned in platformName
 	    gStatus = clGetPlatformInfo(platformId, CL_PLATFORM_NAME, stringLength, &platformName[0], NULL);
-		printStatus(gStatus);
+		printStatus();
 
 		std::cout << "\tplatformName: ";
 
@@ -236,15 +362,15 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 		// We ignore the function return value since a non-zero error code
 		// could happen if this platform doesn't support the specified device type.
 		gStatus = clGetDeviceIDs(platformId, CL_DEVICE_TYPE_ALL , 0, NULL, &numDevices);
-		printStatus(gStatus);
+		printStatus();
 
 		std::vector<cl_device_id> devices(numDevices);
 
 		gStatus = clGetDeviceIDs(platformId, CL_DEVICE_TYPE_ALL , numDevices, &devices[0], NULL);
-		printStatus(gStatus);
+		printStatus();
 
 		gStatus = clGetPlatformInfo(platformId, CL_PLATFORM_VERSION, 0, NULL, &stringLength);
-		printStatus(gStatus);
+		printStatus();
 
 		// Now, that we know the platform's version string length, we can allocate enough space before read vEntry
 	    std::vector<char> platformVersion(stringLength);
@@ -252,7 +378,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 		// Read the platform's version string
 	    // The read value returned in platformVersion
 	    gStatus = clGetPlatformInfo(platformId, CL_PLATFORM_VERSION, stringLength, &platformVersion[0], NULL);
-		printStatus(gStatus);
+		printStatus();
 
 		std::cout << "\tplatformVersion: ";
 
@@ -268,14 +394,14 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 			cl_device_id device = devices[j];
 			// Read the device's version string length (param_value is NULL).
 		    gStatus = clGetDeviceInfo(device, CL_DEVICE_VERSION, 0, NULL, &stringLength);
-			printStatus(gStatus);
+			printStatus();
 
 			std::vector<char> version(stringLength);
 
 			// Read the device's version string
 		    // The read value returned in deviceVersion
 		    gStatus = clGetDeviceInfo(device, CL_DEVICE_VERSION, stringLength, &version[0], NULL);
-			printStatus(gStatus);
+			printStatus();
 
 			std::cout << "\t\tdeviceVersion: ";
 
@@ -287,7 +413,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 
 			// Read the device's OpenCL C version string length (param_value is NULL).
 		    gStatus = clGetDeviceInfo(device, CL_DEVICE_OPENCL_C_VERSION, 0, NULL, &stringLength);
-			printStatus(gStatus);
+			printStatus();
 
 			// Now, that we know the device's OpenCL C version string length, we can allocate enough space before read vEntry
 			std::vector<char> compilerVersion(stringLength);
@@ -295,7 +421,7 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 			// Read the device's OpenCL C version string
 			// The read value returned in compilerVersion
 			gStatus = clGetDeviceInfo(device, CL_DEVICE_OPENCL_C_VERSION, stringLength, &compilerVersion[0], NULL);
-			printStatus(gStatus);
+			printStatus();
 
 			std::cout << "\t\tdeviceCompilerVersion: ";
 
@@ -312,70 +438,166 @@ JNIEXPORT void Java_oclBridge_AbstractOclBridge_ListDevices(JNIEnv *pEnv, jobjec
 	}
 }
 
-JNIEXPORT void Java_oclBridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject pObj, jstring pKernelsFolder)
+JNIEXPORT void Java_ocl_bridge_AbstractOclBridge_Initialize(JNIEnv *pEnv, jobject pObj, jstring pKernelsFolder)
 {
     //TODO improve to accepet external parameters
-    gStatus = clGetPlatformIDs(1, &gPlatform, NULL);
-    printStatus(gStatus);
-    gStatus = clGetDeviceIDs(gPlatform, CL_DEVICE_TYPE_ALL, 1, &gDefaultDevice, NULL);
-    printStatus(gStatus);
-    gContext = clCreateContext(NULL, 1, &gDefaultDevice, NULL, NULL, &gStatus);
-    printStatus(gStatus);
-    gCommandQueue = clCreateCommandQueueWithProperties(gContext, gDefaultDevice, 0, &gStatus);
-    printStatus(gStatus);
-
     std::string vKernelsFolder = GetStringFromJavaString(pEnv, pKernelsFolder);
 
     std::vector<std::string> vKernelsfiles = GetKernelsSourceFiles(vKernelsFolder);
-    
-    CompileAndStoreOclKernels(vKernelsFolder, vKernelsfiles);
+    try
+    {
+        cl::Platform::get(&gPlatforms);
+        gPlatforms[0].getDevices(CL_DEVICE_TYPE_ALL, &gDevices);
+        gDefaultDevice = gDevices[0];
+        gContext = cl::Context(gDefaultDevice);
+	    gCommandQueue = cl::CommandQueue(gContext, gDefaultDevice);
+        CompileAndStoreOclKernels(vKernelsFolder, vKernelsfiles);
+    }
+    catch(cl::Error* vError)
+    {
+        PrintClError(vError);
+        exit(1);
+    }
 }
 
-JNIEXPORT void Java_oclBridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject pObj)
+JNIEXPORT void Java_ocl_bridge_AbstractOclBridge_Dispose(JNIEnv *pEnv, jobject pObj)
 {
-    DisposeKernels();
+    DisposePrograms();
     DisposeDevices();
     
     DisposeCommandQueue();
     DisposeContext();
 }
 
+JNIEXPORT jbooleanArray JNICALL 
+Java_ocl_bridge_AbstractOclBridge_OclFilter(JNIEnv *pEnv, jobject pObj, jstring pKernelName, jbyteArray pStream, jintArray pIndexes)
+{
+    std::string vKernelName = GetStringFromJavaString(pEnv, pKernelName);
+
+    unsigned char* vStream;
+    int* vIndexes;
+
+    int vStreamLength, vIndexesLegth, vResultLength;
+    size_t vStreamSize, vIndexesSize, vResultSize;
+    OclFilterExecutionInfo *vKernelInfo = new OclFilterExecutionInfo(pEnv, pObj, pKernelName, pStream, pIndexes);
+
+    vStreamLength = pEnv->GetArrayLength(pStream);
+    vStream = (unsigned char *)pEnv->GetByteArrayElements(pStream, 0);
+    vStreamSize = sizeof(unsigned char) * vStreamLength;
+
+    vIndexesLegth = pEnv->GetArrayLength(pIndexes);
+    vIndexes = pEnv->GetIntArrayElements(pIndexes, 0);
+    vIndexesSize = sizeof(int) * vIndexesLegth;
+
+    vResultLength = vIndexesLegth;
+    vResultSize = sizeof(unsigned char) * vResultLength;
+    unsigned char* vResult = new unsigned char[vResultLength];
+
+    try
+    {
+        cl::Kernel vKernel = cl::Kernel(gProgrmasList[vKernelName], vKernelName.c_str());
+
+        cl::Buffer vStreamBuffer(gContext, CL_MEM_READ_ONLY, vStreamSize);
+        cl::Buffer vIndexesBuffer(gContext, CL_MEM_READ_ONLY, vIndexesSize);
+        cl::Buffer vResultBuffer(gContext, CL_MEM_WRITE_ONLY, vResultSize);
+
+        gCommandQueue.enqueueWriteBuffer(vStreamBuffer, CL_TRUE, 0, vStreamSize, vStream);
+        gCommandQueue.enqueueWriteBuffer(vIndexesBuffer, CL_TRUE, 0, vIndexesSize, vIndexes);
+
+        vKernel.setArg(0, vStreamBuffer);
+        vKernel.setArg(1, vIndexesBuffer);
+        vKernel.setArg(2, vResultBuffer);
+
+        // int vIntValue = 0;
+        // long vLongValue = 0;
+        // gStatus = clSetKernelArg(vKernel, 3, sizeof(int), &vIntValue);
+        // printStatus();
+        // gStatus = clSetKernelArg(vKernel, 4, sizeof(long), &vLongValue);
+        // printStatus();
+
+        cl::NDRange global(vIndexesLegth);
+
+        gCommandQueue.enqueueNDRangeKernel(vKernel, cl::NullRange, global, cl::NullRange);
+
+        gCommandQueue.enqueueReadBuffer(vResultBuffer, CL_TRUE, 0, vResultSize, vResult);
+    }
+    catch(cl::Error *vError)
+    {
+        PrintClError(vError);
+        exit(1);
+    }
+
+    for(int i = 0; i < vResultLength; i++)
+    {
+        std::cout << i << ": ";
+        printf("%d\n", vResult[i]);
+    }
+
+    jbooleanArray vRet = pEnv->NewBooleanArray(vResultLength);
+	pEnv->SetBooleanArrayRegion(vRet, 0, vResultLength, vResult);
+
+    return vRet;
+
+}
+
 #pragma endregion
 
 #pragma region Dispose implementation
 
-void DisposeKernels()
+void DisposePrograms()
 {
-    for (auto vEntry : gKernelsList) 
-    {
-        clReleaseKernel(vEntry.second);
-    }
-    gKernelsList.clear();
+    // for (auto vEntry : gProgrmasList) 
+    // {
+    //     clReleaseProgram(vEntry.second);
+    //     vEntry.second.
+    // }
+    // gProgrmasList.clear();
 }
 
 void DisposeDevices()
 {
-    for(auto vDevice : gDevices)
-    {
-        clReleaseDevice(vDevice);
-    }
-    gDevices.clear();
-    clReleaseDevice(gDefaultDevice);
+    // for(auto vDevice : gDevices)
+    // {
+    //     clReleaseDevice(vDevice);
+    // }
+    // gDevices.clear();
+    // clReleaseDevice(gDefaultDevice);
 }
 
 void DisposeCommandQueue()
 {
-    clReleaseCommandQueue(gCommandQueue);
+    // clReleaseCommandQueue(gCommandQueue);
 }
 
 void DisposeContext()
 {
-    clReleaseContext(gContext);
+    // clReleaseContext(gContext);
 }
 
 #pragma endregion
 
 #pragma region Kernels build and storage
+
+void CompileAndStoreOclKernels(std::string pKernelsFolder, std::vector<std::string> pKernelsFiles)
+{
+    for(auto vkernelFile: pKernelsFiles) 
+    {
+        CompileAndStoreOclKernel(pKernelsFolder, vkernelFile);
+    }
+}
+
+void CompileAndStoreOclKernel(std::string pKernelsFolder, std::string pKernelName)
+{
+    std::string vFullName(pKernelsFolder + "/" + pKernelName);
+
+    std::string vKernelName = GetKernelNameFromKernelFileName(pKernelName);
+
+    std::string vSourceCode = GetKernelSourceCode(vFullName);
+
+    cl::Program vProgram = CompileKernelProgram(vSourceCode);
+
+    StoreKernelProgram(vKernelName, vProgram);
+}
 
 std::string GetKernelNameFromKernelFileName(std::string pKernelName)
 {
@@ -388,7 +610,6 @@ std::vector<std::string> GetKernelsSourceFiles(std::string pKernelsFolder)
     std::cout << "Kernels Folder:" << pKernelsFolder << '\n' << '\n';
 
     DIR *vDirectory;
-    struct dirent *vFile;
 
     std::string vDot (".");
     std::string vDotDot ("..");
@@ -396,6 +617,8 @@ std::vector<std::string> GetKernelsSourceFiles(std::string pKernelsFolder)
 
     if ((vDirectory = opendir(pKernelsFolder.c_str())) != NULL) 
     {
+        struct dirent *vFile;
+
         /* print all the files and directories within directory */
         while ((vFile = readdir (vDirectory)) != NULL) 
         {
@@ -422,55 +645,25 @@ std::string GetKernelSourceCode(std::string pFile)
     return vSourceCode;
 }
 
-cl_kernel CompileKernel(std::string pSourceCode, std::string pKernelName)
+cl::Program CompileKernelProgram(std::string pSourceCode)
 {
     const char* vSourceCode = pSourceCode.c_str();
 
-    std::cout << "KernelName: " << pKernelName << "\n";
+    cl::Program::Sources vSources(1, std::make_pair( vSourceCode, pSourceCode.length()+1));
+	cl::Program vProgram(gContext, vSources);
 
-    cl_program vProgram = clCreateProgramWithSource(gContext, 1, (const char **)&vSourceCode, NULL, &gStatus);
-    printStatus(gStatus);
+	vProgram.build(gDevices);
 
-    gStatus = clBuildProgram(vProgram, 1, &gDefaultDevice, NULL, NULL, NULL);
-    printStatus(gStatus);
-
-    cl_kernel vKernel = clCreateKernel(vProgram, pKernelName.c_str(), &gStatus);
-    printStatus(gStatus);
-
-    //TODO check that the kernel run
-    clReleaseProgram(vProgram);
+    return vProgram;
 }
 
-void StoreKernel(std::string pKernelName, cl_kernel pKernel)
+void StoreKernelProgram(std::string pKernelName, cl::Program pKernelProgram)
 {
-
-    std::unordered_map<std::string,cl_kernel>::const_iterator vIter = gKernelsList.find(pKernelName);
-	if(vIter == gKernelsList.end())
+    std::unordered_map<std::string,cl::Program>::const_iterator vIter = gProgrmasList.find(pKernelName);
+	if(vIter == gProgrmasList.end())
 	{
-        gKernelsList[pKernelName] = pKernel;
-        std::cout << "kernels count" << gKernelsList.size() << "\n";
+        gProgrmasList[pKernelName] = pKernelProgram;
 	}
-}
-
-void CompileAndStoreOclKernel(std::string pKernelsFolder, std::string pKernelName)
-{
-    std::string vFullName(pKernelsFolder + "/" + pKernelName);
-
-    std::string vKernelName = GetKernelNameFromKernelFileName(pKernelName);
-
-    std::string vSourceCode = GetKernelSourceCode(vFullName);
-
-    cl_kernel vKernel = CompileKernel(vSourceCode, vKernelName);
-    
-    StoreKernel(vKernelName, vKernel);
-}
-
-void CompileAndStoreOclKernels(std::string pKernelsFolder, std::vector<std::string> pKernelsFiles)
-{
-    for(auto vkernelFile: pKernelsFiles) 
-    {
-        CompileAndStoreOclKernel(pKernelsFolder, vkernelFile);
-    }
 }
 
 #pragma endregion
@@ -479,5 +672,10 @@ void CompileAndStoreOclKernels(std::string pKernelsFolder, std::vector<std::stri
 std::string GetStringFromJavaString(JNIEnv *pEnv, jstring pString)
 {
     return pEnv->GetStringUTFChars(pString, NULL);
+}
+
+void ReleaseJStringResources(JNIEnv *pEnv, jstring pJavaString, std::string pCppString)
+{
+	pEnv->ReleaseStringUTFChars(pJavaString, pCppString.c_str());
 }
 #pragma endregion

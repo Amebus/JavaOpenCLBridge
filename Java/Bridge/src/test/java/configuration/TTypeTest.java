@@ -5,7 +5,7 @@ import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import static testHelpers.TTypesGetter.*;
+import static test.helpers.TTypesGetter.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TTypeTest
