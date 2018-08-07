@@ -1,68 +1,53 @@
 package tuples.generics;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-public class Tuple3 <T1, T2, T3> implements IOclTuple
+public class Tuple3 <T0, T1, T2> implements IOclTuple
 {
+	private T0 mT0;
 	private T1 mT1;
 	private T2 mT2;
-	private T3 mT3;
 
-	public Tuple3(T1 pT1, T2 pT2, T3 pT3)
+	public Tuple3() { }
+	
+	public Tuple3(T0 pT0, T1 pT1, T2 pT2)
 	{
-		setT1(pT1);
-		setT2(pT2);
-		setT3(pT3);
+		setField(pT0, 0);
+		setField(pT1, 1);
+		setField(pT2, 2);
 	}
 
 	@Override
-	public byte getArity()
+	public byte getArityOcl()
 	{
 		return 3;
 	}
-
-	public T1 getT1()
-	{
-		return mT1;
-	}
-
-	public T2 getT2()
-	{
-		return mT2;
-	}
-
-	public T3 getT3()
-	{
-		return mT3;
-	}
-
-	public void setT1(T1 pT1)
-	{
-		mT1 = pT1;
-	}
-
-	public void setT2(T2 pT2)
-	{
-		mT2 = pT2;
-	}
-
-	public void setT3(T3 pT3)
-	{
-		mT3 = pT3;
-	}
-
+	
 	@Override
-	public Iterator iterator()
+	public Object getFieldOcl(int pos)
 	{
-		List vList = new ArrayList(getArity());
-
-		vList.add(getT1());
-		vList.add(getT2());
-		vList.add(getT3());
-
-		return vList.iterator();
+		switch(pos) {
+			case 0: return mT0;
+			case 1: return mT1;
+			case 2: return mT2;
+			default: throw new IndexOutOfBoundsException(String.valueOf(pos));
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> void setField(T value, int pos)
+	{
+		switch(pos) {
+			case 0:
+				this.mT0 = (T0) value;
+				break;
+			case 1:
+				this.mT1 = (T1) value;
+				break;
+			case 2:
+				this.mT2 = (T2) value;
+				break;
+			default: throw new IndexOutOfBoundsException(String.valueOf(pos));
+		}
 	}
 
 	@Override

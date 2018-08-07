@@ -64,7 +64,7 @@ class StreamWriterTest
 
 		assertEquals(6, vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.INT, vStream[1]);
 	}
 
@@ -78,7 +78,7 @@ class StreamWriterTest
 
 		assertEquals(10, vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.DOUBLE, vStream[1]);
 	}
 
@@ -91,7 +91,7 @@ class StreamWriterTest
 
 		assertEquals(2 + 4 + STV_0.length(), vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.STRING, vStream[1]);
 
 		byte[] vStringLength = Arrays.copyOfRange(vStream, 2, 6);
@@ -108,7 +108,7 @@ class StreamWriterTest
 
 		assertEquals(11, vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.INT, vStream[1]);
 		assertEquals(Types.INT, vStream[2]);
 	}
@@ -121,7 +121,7 @@ class StreamWriterTest
 
 		assertEquals(15, vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.INT, vStream[1]);
 		assertEquals(Types.DOUBLE, vStream[2]);
 	}
@@ -134,7 +134,7 @@ class StreamWriterTest
 
 		assertEquals(11 + STV_2.length(), vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.INT, vStream[1]);
 		assertEquals(Types.STRING, vStream[2]);
 	}
@@ -147,7 +147,7 @@ class StreamWriterTest
 
 		assertEquals(15, vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.DOUBLE, vStream[1]);
 		assertEquals(Types.INT, vStream[2]);
 	}
@@ -160,7 +160,7 @@ class StreamWriterTest
 
 		assertEquals(19, vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.DOUBLE, vStream[1]);
 		assertEquals(Types.DOUBLE, vStream[2]);
 	}
@@ -173,7 +173,7 @@ class StreamWriterTest
 
 		assertEquals(15 + STV_2.length(), vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.DOUBLE, vStream[1]);
 		assertEquals(Types.STRING, vStream[2]);
 	}
@@ -186,7 +186,7 @@ class StreamWriterTest
 
 		assertEquals(1 + 10 + STV_1.length() + STV_2.length(), vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.STRING, vStream[1]);
 		assertEquals(Types.STRING, vStream[2]);
 	}
@@ -199,7 +199,7 @@ class StreamWriterTest
 
 		assertEquals(1 + 10 + STV_1.length(), vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.STRING, vStream[1]);
 		assertEquals(Types.INT, vStream[2]);
 	}
@@ -212,7 +212,7 @@ class StreamWriterTest
 
 		assertEquals(1 + 14 + STV_1.length(), vStream.length);
 
-		assertEquals(vTuple.getArity(), vStream[0]);
+		assertEquals(vTuple.getArityOcl(), vStream[0]);
 		assertEquals(Types.STRING, vStream[1]);
 		assertEquals(Types.DOUBLE, vStream[2]);
 	}
@@ -226,8 +226,8 @@ class StreamWriterTest
 
 		Tuple2<byte[], int[]> vResult = vStreamWriter.writeStream();
 		int vExpectedLength = 2 + vList.size() * Dimensions.INT;
-		byte[] vStream = vResult.getT1();
-		int[] vTupleIndexes = vResult.getT2();
+		byte[] vStream = vResult.getField(0);
+		int[] vTupleIndexes = vResult.getField(1);
 
 
 		assertEquals( vExpectedLength , vStream.length);

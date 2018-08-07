@@ -2,7 +2,6 @@ package flink.ocl.build.engine;
 
 public class OclKernel
 {
-	
 	private String mName;
 	private String mCode;
 	

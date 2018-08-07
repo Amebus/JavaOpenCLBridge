@@ -19,7 +19,7 @@ public final class TupleChecker
 		StreamWriterResult vWriterResult = getStreamWriterResultFrom(prmExpectedList);
 		byte[] vStream = vWriterResult.getStream();
 
-		assertEquals(vFirstTuple.getArity(), vStream[0]);
+		assertEquals(vFirstTuple.getArityOcl(), vStream[0]);
 		assertEquals(vExpectedStreamLength, vStream.length);
 
 		assertArrayEquals(getTupleExpectedPositions(prmExpectedList), vWriterResult.getPositions());

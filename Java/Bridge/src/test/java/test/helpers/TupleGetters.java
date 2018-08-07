@@ -20,13 +20,13 @@ public class TupleGetters
 		vNewList.add(null);
 		int[] vPositions = getTupleExpectedPositions(vNewList);
 		return vPositions[vPositions.length - 1];
-		// vExpectedStreamLength += vExpectedList.stream().mapToInt(x -> x.getT1().length()).sum(); only for strings
+		// vExpectedStreamLength += vExpectedList.stream().mapToInt(x -> x.getT0().length()).sum(); only for strings
 	}
 
 	public static int[] getTupleExpectedPositions(List<? extends IOclTuple> pExpectedList)
 	{
 		int[] vExpectedPositions = new int[pExpectedList.size()];
-		vExpectedPositions[0] = 1 + pExpectedList.get(0).getArity();
+		vExpectedPositions[0] = 1 + pExpectedList.get(0).getArityOcl();
 
 		for (int i = 1; i < vExpectedPositions.length; i++)
 		{
@@ -34,22 +34,42 @@ public class TupleGetters
 			vExpectedPositions[i] = vExpectedPositions[j];
 
 			int vI = i;
-			pExpectedList.get(j).forEach(x->
-											{
-												switch (x.getClass().getName())
-												{
-													case "java.lang.Double":
-														vExpectedPositions[vI] += Dimensions.DOUBLE;
-														break;
-													case "java.lang.String":
-														vExpectedPositions[vI] += ((String)x).length();
-													case "java.lang.Integer":
-														vExpectedPositions[vI] += Dimensions.INT;
-														break;
-													default:
-														throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
-												}
-											});
+			IOclTuple vOclTuple = pExpectedList.get(j);
+			Object vT;
+			for (int k = 0; k < vOclTuple.getArityOcl(); k++)
+			{
+				vT = vOclTuple.getFieldOcl(k);
+				switch (vT.getClass().getName())
+				{
+					case "java.lang.Double":
+						vExpectedPositions[vI] += Dimensions.DOUBLE;
+						break;
+					case "java.lang.String":
+						vExpectedPositions[vI] += ((String)vT).length();
+					case "java.lang.Integer":
+						vExpectedPositions[vI] += Dimensions.INT;
+						break;
+					default:
+						throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
+				}
+			}
+			
+//			pExpectedList.get(j).forEach(x->
+//											{
+//												switch (x.getClass().getName())
+//												{
+//													case "java.lang.Double":
+//														vExpectedPositions[vI] += Dimensions.DOUBLE;
+//														break;
+//													case "java.lang.String":
+//														vExpectedPositions[vI] += ((String)x).length();
+//													case "java.lang.Integer":
+//														vExpectedPositions[vI] += Dimensions.INT;
+//														break;
+//													default:
+//														throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
+//												}
+//											});
 		}
 
 		return vExpectedPositions;

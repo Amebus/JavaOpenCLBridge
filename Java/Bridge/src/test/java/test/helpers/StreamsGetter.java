@@ -25,7 +25,7 @@ public class StreamsGetter
 
 	public static byte[] getStreamFrom(List<? extends IOclTuple> pTupleList)
 	{
-		return getStreamWriterFrom(pTupleList).writeStream().getT1();
+		return getStreamWriterFrom(pTupleList).writeStream().getStream();
 	}
 
 
@@ -56,7 +56,7 @@ public class StreamsGetter
 
 	public static StreamReader getStreamReaderFrom(List<? extends IOclTuple> pTupleList)
 	{
-		return StreamReader.getStreamReader().setStream(getStreamWriterFrom(pTupleList).writeStream().getT1());
+		return StreamReader.getStreamReader().setStream(getStreamWriterFrom(pTupleList).writeStream().getStream());
 	}
 
 }

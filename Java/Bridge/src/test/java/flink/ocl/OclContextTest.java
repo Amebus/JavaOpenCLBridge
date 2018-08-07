@@ -42,7 +42,7 @@ public class OclContextTest
 		vResult.forEach(x ->
 						{
 							Tuple1<Integer> vT = (Tuple1<Integer>)x;
-							System.out.println(vT.getT1());
+							System.out.println(vT.<Integer>getField(0));
 						});
 		
 		int i = 0;

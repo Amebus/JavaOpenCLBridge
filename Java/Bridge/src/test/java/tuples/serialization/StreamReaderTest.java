@@ -60,8 +60,8 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
 	}
 
 	@Test
@@ -74,8 +74,8 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
 	}
 
 	@Test
@@ -88,8 +88,8 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
 	}
 
 	@Test
@@ -101,9 +101,9 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		Tuple2<Integer, Integer> vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
-		assertEquals(vTuple1.getT2(), vTuple2.getT2());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
+		assertEquals(vTuple1.getField(1), vTuple2.getField(1));
 	}
 
 	@Test
@@ -115,9 +115,9 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		Tuple2<Integer, Double> vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
-		assertEquals(vTuple1.getT2(), vTuple2.getT2());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
+		assertEquals(vTuple1.getField(1), vTuple2.getField(1));
 	}
 
 
@@ -130,9 +130,9 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		Tuple2<Integer, String> vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
-		assertEquals(vTuple1.getT2(), vTuple2.getT2());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
+		assertEquals(vTuple1.getField(1), vTuple2.getField(1));
 	}
 
 
@@ -145,9 +145,9 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		Tuple2<Double, Integer> vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
-		assertEquals(vTuple1.getT2(), vTuple2.getT2());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
+		assertEquals(vTuple1.getField(1), vTuple2.getField(1));
 	}
 
 
@@ -160,9 +160,9 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		Tuple2<Double, Double> vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
-		assertEquals(vTuple1.getT2(), vTuple2.getT2());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
+		assertEquals(vTuple1.getField(1), vTuple2.getField(1));
 	}
 
 
@@ -175,9 +175,9 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		Tuple2<Double, String> vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
-		assertEquals(vTuple1.getT2(), vTuple2.getT2());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
+		assertEquals(vTuple1.getField(1), vTuple2.getField(1));
 	}
 
 
@@ -190,9 +190,9 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		Tuple2<String, String> vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
-		assertEquals(vTuple1.getT2(), vTuple2.getT2());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
+		assertEquals(vTuple1.getField(1), vTuple2.getField(1));
 	}
 
 
@@ -205,9 +205,9 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		Tuple2<String, Integer> vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
-		assertEquals(vTuple1.getT2(), vTuple2.getT2());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
+		assertEquals(vTuple1.getField(1), vTuple2.getField(1));
 	}
 
 	@Test
@@ -219,8 +219,8 @@ class StreamReaderTest
 		assertTrue(vIterator.hasNext());
 		Tuple2<String, Double> vTuple2 = vIterator.nextTuple();
 
-		assertEquals(vTuple1.getArity(), vTuple2.getArity());
-		assertEquals(vTuple1.getT1(), vTuple2.getT1());
-		assertEquals(vTuple1.getT2(), vTuple2.getT2());
+		assertEquals(vTuple1.getArityOcl(), vTuple2.getArityOcl());
+		assertEquals(vTuple1.getField(0), vTuple2.getField(0));
+		assertEquals(vTuple1.getField(1), vTuple2.getField(1));
 	}
 }

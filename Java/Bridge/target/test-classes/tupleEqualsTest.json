@@ -1,17 +1,17 @@
 {
   "tupleOne": {
-    "t1": "int",
-    "t2": "string",
-    "t3": "double",
-    "t4": "char"
+    "t0": "int",
+    "t1": "string",
+    "t2": "double",
+    "t3": "char"
   },
   "tupleTwo": {
-    "t1": "int",
-    "t2": "string",
-    "t3": "int",
-    "t4": "char"
+    "t0": "int",
+    "t1": "string",
+    "t2": "int",
+    "t3": "char"
   },
   "tupleThree": {
-    "t1": "double"
+    "t0": "double"
   }
 }

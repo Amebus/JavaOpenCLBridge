@@ -140,14 +140,16 @@ public class JsonTupleDefinition extends AbstractTupleDefinition
 		{
 			return false;
 		}
-
-		EqualsBuilder vBuilder = new EqualsBuilder();
-
+		
+		if(!getName().equals(rhs.getName()))
+			return false;
+		
+		final boolean[] vResult = {true};
 		Iterator<TType> vRhsIterator = rhs.iterator();
-
-		forEach( x -> vBuilder.append(x, vRhsIterator.next()));
-
-		return vBuilder.append(getName(), rhs.getName()).isEquals();
+		
+		forEach(x -> vResult[0] &= x.equals(vRhsIterator.next()));
+		
+		return vResult[0];
 	}
 
 	@Override

@@ -17,11 +17,11 @@ public class StreamWriterResult extends Tuple2<byte[], int[]>
 
 	public byte[] getStream()
 	{
-		return super.getT1();
+		return super.getField(0);
 	}
 
 	public int[] getPositions()
 	{
-		return super.getT2();
+		return super.getField(1);
 	}
 }

@@ -1,10 +1,7 @@
 package tuples.serialization;
 
 import tuples.generics.IOclTuple;
-import tuples.generics.OclTupleIterator;
-import tuples.generics.Tuple2;
 
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -15,7 +12,6 @@ public class StreamWriter
 	private byte[] mVarTypes;
 	private int mIndex;
 
-	private OclTupleIterator mIterator;
 	private int mTempInteger;
 	private Double mTempDouble;
 	private String mTempString;
@@ -29,7 +25,7 @@ public class StreamWriter
 
 	private StreamWriter()
 	{
-		mIterator = OclTupleIterator.getIterator();
+	
 	}
 
 	public StreamWriter setTupleList(List<? extends IOclTuple> pTupleList)
@@ -47,7 +43,7 @@ public class StreamWriter
 		}
 
 		IOclTuple vTemplateTuple = mTupleList.get(0);
-		byte vArity = vTemplateTuple.getArity();
+		byte vArity = vTemplateTuple.getArityOcl();
 		int vStreamLength = 1 + vArity;
 		mVarTypes = getTypes(vTemplateTuple);
 		mIndex = vStreamLength;
@@ -56,8 +52,6 @@ public class StreamWriter
 		{
 			vStreamLength += getBytesDim(vTuple);
 		}
-
-		mIterator.resetToArity(vTemplateTuple.getArity());
 
 		final byte[] vStream = new byte[vStreamLength];
 		final int[] vTupleIndexes = new int[mTupleList.size()];
@@ -78,11 +72,13 @@ public class StreamWriter
 
 	private byte[] getTypes(IOclTuple pTuple)
 	{
-		byte[] vResult = new byte[pTuple.getArity()];
+		byte[] vResult = new byte[pTuple.getArityOcl()];
 		int vI = 0;
-
-		for (Object vT : pTuple)
+		Object vT;
+		
+		for (int i = 0; i<vResult.length; i++)
 		{
+			vT = pTuple.getFieldOcl(i);
 			switch (vT.getClass().getName())
 			{
 				case "java.lang.Integer":
@@ -103,11 +99,14 @@ public class StreamWriter
 
 	private int getBytesDim(IOclTuple pTuple)
 	{
+		byte vArity = pTuple.getArityOcl();
 		int vDim = 0;
 		int vIndex = 0;
-
-		for (Object vT : pTuple)
+		Object vT;
+		
+		for (int i = 0; i < vArity; i++)
 		{
+			vT = pTuple.getFieldOcl(i);
 			switch (mVarTypes[vIndex++])
 			{
 				case Types.DOUBLE:
@@ -125,51 +124,28 @@ public class StreamWriter
 
 	private int writeStream(IOclTuple pTuple, byte[] pStream)
 	{
+		byte vArity = pStream[0];
 		int vStartIndex = mIndex;
-		int i = 0;
-
-		mIterator.iterateOver(pTuple);
-
-		while (mIterator.hasNext())
+		
+		for (int i = 0; i < vArity; i++)
 		{
 			switch (mVarTypes[i])
 			{
 				case Types.INT:
-					mTempInteger = (int) mIterator.next();
+					mTempInteger = pTuple.getField(i);
 					insertInt(pStream);
 					break;
 				case Types.DOUBLE:
-					mTempDouble = (Double) mIterator.next();
+					mTempDouble = pTuple.getField(i);
 					insertDouble(pStream);
 					break;
 				case Types.STRING:
-					mTempString = (String) mIterator.next();
+					mTempString = pTuple.getField(i);
 					insertString(pStream);
 					break;
 			}
-			i++;
 		}
-
-
-		// for (Object vObj : pTuple)
-		// {
-		// 	switch (mVarTypes[i])
-		// 	{
-		// 		case Types.INT:
-		// 			mTempInteger = (int) vObj;
-		// 			insertInt(pStream);
-		// 			break;
-		// 		case Types.DOUBLE:
-		// 			mTempDouble = (Double) vObj;
-		// 			insertDouble(pStream);
-		// 			break;
-		// 		case Types.STRING:
-		// 			mTempString = (String) vObj;
-		// 			insertString(pStream);
-		// 			break;
-		// 	}
-		// 	i++;
-		// }
+		
 		return vStartIndex;
 	}
 

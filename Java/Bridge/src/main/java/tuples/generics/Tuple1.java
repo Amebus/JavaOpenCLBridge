@@ -1,53 +1,42 @@
 package tuples.generics;
 
-import java.util.Iterator;
-
-public class Tuple1 <T1> implements IOclTuple
+public class Tuple1 <T0> implements IOclTuple
 {
 
-	private T1 mT1;
+	private T0 mT0;
 
-	public Tuple1(T1 pT1)
+	public Tuple1() { }
+	
+	public Tuple1(T0 pT0)
 	{
-		setT1(pT1);
+		setField(pT0, 0);
 	}
 
 	@Override
-	public byte getArity()
+	public byte getArityOcl()
 	{
 		return 1;
 	}
-
-	public T1 getT1()
-	{
-		return mT1;
-	}
-
-	public void setT1(T1 pT1)
-	{
-		mT1 = pT1;
-	}
-
+	
 	@Override
-	public Iterator iterator()
+	public Object getFieldOcl(int pos)
 	{
-		return new Iterator()
-		{
-			private int mIndex = 0;
-
-			@Override
-			public boolean hasNext()
-			{
-				return mIndex == 0;
-			}
-
-			@Override
-			public Object next()
-			{
-				mIndex++;
-				return getT1();
-			}
-		};
+		switch(pos) {
+			case 0: return mT0;
+			default: throw new IndexOutOfBoundsException(String.valueOf(pos));
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> void setField(T value, int pos)
+	{
+		switch(pos) {
+			case 0:
+				this.mT0 = (T0) value;
+				break;
+			default: throw new IndexOutOfBoundsException(String.valueOf(pos));
+		}
 	}
 
 	@Override

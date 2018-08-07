@@ -1,25 +1,36 @@
 package tuples.generics;
 
-import java.util.Iterator;
-
-public interface IOclTuple extends Iterable
+public interface IOclTuple
 {
-	byte getArity();
-
+	byte getArityOcl();
+	
+	Object getFieldOcl(int pos);
+	
+	@SuppressWarnings("unchecked")
+	default <T> T getField(int pos)
+	{
+		return (T) getFieldOcl(pos);
+	}
+	
+	<T> void setField(T value, int pos);
+	
 	default boolean equals(IOclTuple pOther)
 	{
-		if (getArity() != pOther.getArity())
+		if(pOther == null)
+		{
+			return false;
+		}
+		
+		if (getArityOcl() != pOther.getArityOcl())
 		{
 			return false;
 		}
 
 		boolean vResult = true;
-
-		Iterator vIThis = iterator();
-		Iterator vIOther = pOther.iterator();
-		while (vIThis.hasNext())
+		
+		for (int i = 0; i < getArityOcl() && vResult; i++)
 		{
-			vResult &= vIThis.next().equals(vIOther.next());
+			vResult &= getField(i).equals(pOther.getField(i));
 		}
 
 		return vResult;

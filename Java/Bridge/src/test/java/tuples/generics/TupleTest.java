@@ -25,7 +25,7 @@ class TupleTest
 	{
 		Tuple1<Integer> vTuple = new Tuple1<>(null);
 
-		assertEquals(1, vTuple.getArity());
+		assertEquals(1, vTuple.getArityOcl());
 	}
 
 	@Test
@@ -34,10 +34,10 @@ class TupleTest
 		Tuple1<Integer> vTuple, vTupleB;
 
 		vTuple = new Tuple1<>(null);
-		assertEquals(null, vTuple.getT1());
+		assertEquals(null, vTuple.getField(0));
 
 		vTuple = new Tuple1<>(ITV_0);
-		assertEquals(ITV_0, vTuple.getT1());
+		assertEquals(ITV_0, vTuple.getField(0));
 
 		assertEquals(vTuple, vTuple);
 
@@ -53,10 +53,10 @@ class TupleTest
 		Tuple1<Double> vTuple, vTupleB;
 
 		vTuple = new Tuple1<>(null);
-		assertEquals(null, vTuple.getT1());
+		assertEquals(null, vTuple.getField(0));
 
 		vTuple = new Tuple1<>(DTV_0);
-		assertEquals(DTV_0, vTuple.getT1());
+		assertEquals(DTV_0, vTuple.getField(0));
 
 		vTupleB = new Tuple1<>(DTV_0);
 
@@ -70,10 +70,10 @@ class TupleTest
 		Tuple1<String> vTuple, vTupleB;
 
 		vTuple = new Tuple1<>(null);
-		assertEquals(null, vTuple.getT1());
+		assertEquals(null, vTuple.getField(0));
 
 		vTuple = new Tuple1<>(STV_0);
-		assertEquals(STV_0, vTuple.getT1());
+		assertEquals(STV_0, vTuple.getField(0));
 
 		vTupleB = new Tuple1<>(STV_0);
 
@@ -97,7 +97,7 @@ class TupleTest
 	{
 		Tuple2<Integer, Double> vTuple = new Tuple2<>(null, null);
 
-		assertEquals(2, vTuple.getArity());
+		assertEquals(2, vTuple.getArityOcl());
 	}
 
 	@Test
@@ -106,12 +106,12 @@ class TupleTest
 		Tuple2<Integer, Integer> vTuple, vTupleB;
 
 		vTuple = new Tuple2<>(null, null);
-		assertEquals(null, vTuple.getT1());
-		assertEquals(null, vTuple.getT2());
+		assertEquals(null, vTuple.getField(0));
+		assertEquals(null, vTuple.getField(1));
 
 		vTuple = new Tuple2<>(ITV_1, ITV_2);
-		assertEquals(ITV_1, vTuple.getT1());
-		assertEquals(ITV_2, vTuple.getT2());
+		assertEquals(ITV_1, vTuple.getField(0));
+		assertEquals(ITV_2, vTuple.getField(1));
 
 		assertEquals(vTuple, vTuple);
 
@@ -127,12 +127,12 @@ class TupleTest
 		Tuple2<Double, Double> vTuple, vTupleB;
 
 		vTuple = new Tuple2<>(null, null);
-		assertEquals(null, vTuple.getT1());
-		assertEquals(null, vTuple.getT2());
+		assertEquals(null, vTuple.getField(0));
+		assertEquals(null, vTuple.getField(1));
 
 		vTuple = new Tuple2<>(DTV_1, DTV_2);
-		assertEquals(DTV_1, vTuple.getT1());
-		assertEquals(DTV_2, vTuple.getT2());
+		assertEquals(DTV_1, vTuple.getField(0));
+		assertEquals(DTV_2, vTuple.getField(1));
 
 		vTupleB = new Tuple2<>(DTV_1, DTV_2);
 
@@ -146,12 +146,12 @@ class TupleTest
 		Tuple2<String, String> vTuple, vTupleB;
 
 		vTuple = new Tuple2<>(null, null);
-		assertEquals(null, vTuple.getT1());
-		assertEquals(null, vTuple.getT2());
+		assertEquals(null, vTuple.getField(0));
+		assertEquals(null, vTuple.getField(1));
 
 		vTuple = new Tuple2<>(STV_1, STV_2);
-		assertEquals(STV_1, vTuple.getT1());
-		assertEquals(STV_2, vTuple.getT2());
+		assertEquals(STV_1, vTuple.getField(0));
+		assertEquals(STV_2, vTuple.getField(1));
 
 		vTupleB = new Tuple2<>(STV_1, STV_2);
 

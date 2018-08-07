@@ -187,10 +187,10 @@ public class StreamReader implements Iterable<IOclTuple>
 		@Override
 		public IOclTuple next()
 		{
-			Tuple1 vTuple = new Tuple1(null);
+			Tuple1 vTuple = new Tuple1();
 			Object[] vValues = readValuesFromStream();
 
-			vTuple.setT1(vValues[0]);
+			vTuple.setField(vValues[0], 0);
 
 			return vTuple;
 		}
@@ -213,11 +213,11 @@ public class StreamReader implements Iterable<IOclTuple>
 		@Override
 		public IOclTuple next()
 		{
-			Tuple2 vTuple = new Tuple2(null, null);
+			Tuple2 vTuple = new Tuple2();
 			Object[] vValues = readValuesFromStream();
 
-			vTuple.setT1(vValues[0]);
-			vTuple.setT2(vValues[1]);
+			vTuple.setField(vValues[0], 0);
+			vTuple.setField(vValues[1], 1);
 
 			return vTuple;
 		}
@@ -240,12 +240,12 @@ public class StreamReader implements Iterable<IOclTuple>
 		@Override
 		public IOclTuple next()
 		{
-			Tuple3 vTuple = new Tuple3(null, null, null);
+			Tuple3 vTuple = new Tuple3();
 			Object[] vValues = readValuesFromStream();
-
-			vTuple.setT1(vValues[0]);
-			vTuple.setT2(vValues[1]);
-			vTuple.setT3(vValues[2]);
+			
+			vTuple.setField(vValues[0], 0);
+			vTuple.setField(vValues[1], 1);
+			vTuple.setField(vValues[2], 1);
 
 			return vTuple;
 		}
