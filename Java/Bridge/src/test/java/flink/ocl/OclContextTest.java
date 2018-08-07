@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import test.helpers.Constants;
 import tuples.generics.IOclTuple;
-import tuples.generics.Tuple1;
+import tuples.generics.Tuple1Ocl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +30,10 @@ public class OclContextTest
 		
 		List<IOclTuple> vTuples = new ArrayList<>();
 		
-		vTuples.add(new Tuple1<>(0));
-		vTuples.add(new Tuple1<>(1));
-		vTuples.add(new Tuple1<>(2));
-		vTuples.add(new Tuple1<>(3));
+		vTuples.add(new Tuple1Ocl<>(0));
+		vTuples.add(new Tuple1Ocl<>(1));
+		vTuples.add(new Tuple1Ocl<>(2));
+		vTuples.add(new Tuple1Ocl<>(3));
 		
 		List<? extends IOclTuple> vResult = vContext.filter("filterFunction", vTuples);
 
@@ -41,7 +41,7 @@ public class OclContextTest
 
 		vResult.forEach(x ->
 						{
-							Tuple1<Integer> vT = (Tuple1<Integer>)x;
+							Tuple1Ocl<Integer> vT = (Tuple1Ocl<Integer>)x;
 							System.out.println(vT.<Integer>getField(0));
 						});
 		

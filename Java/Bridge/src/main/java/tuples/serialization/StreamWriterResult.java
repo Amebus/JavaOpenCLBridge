@@ -1,8 +1,8 @@
 package tuples.serialization;
 
-import tuples.generics.Tuple2;
+import tuples.generics.Tuple2Ocl;
 
-public class StreamWriterResult extends Tuple2<byte[], int[]>
+public class StreamWriterResult extends Tuple2Ocl<byte[], int[]>
 {
 	public StreamWriterResult(byte[] pBytes, int[] pInts)
 	{

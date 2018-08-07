@@ -53,23 +53,6 @@ public class TupleGetters
 						throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
 				}
 			}
-			
-//			pExpectedList.get(j).forEach(x->
-//											{
-//												switch (x.getClass().getName())
-//												{
-//													case "java.lang.Double":
-//														vExpectedPositions[vI] += Dimensions.DOUBLE;
-//														break;
-//													case "java.lang.String":
-//														vExpectedPositions[vI] += ((String)x).length();
-//													case "java.lang.Integer":
-//														vExpectedPositions[vI] += Dimensions.INT;
-//														break;
-//													default:
-//														throw new IllegalArgumentException("Object type not recognized, unable to serialize it");
-//												}
-//											});
 		}
 
 		return vExpectedPositions;
@@ -84,153 +67,153 @@ public class TupleGetters
 	{
 		List<IOclTuple> vList = new ArrayList<>();
 
-		vList.add(new Tuple1<>(new UnsupportedT()));
+		vList.add(new Tuple1Ocl<>(new UnsupportedT()));
 
 		return vList;
 	}
 
 	public static int QUANTITY = 4;
 
-	public static List<Tuple1<Integer>> getIntegerTupleList()
+	public static List<Tuple1Ocl<Integer>> getIntegerTupleList()
 	{
-		List<Tuple1<Integer>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple1Ocl<Integer>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple1<>(Constants.ITV_1));
-		vResult.add(new Tuple1<>(Constants.ITV_2));
-		vResult.add(new Tuple1<>(Constants.ITV_3));
-		vResult.add(new Tuple1<>(Constants.ITV_4));
+		vResult.add(new Tuple1Ocl<>(Constants.ITV_1));
+		vResult.add(new Tuple1Ocl<>(Constants.ITV_2));
+		vResult.add(new Tuple1Ocl<>(Constants.ITV_3));
+		vResult.add(new Tuple1Ocl<>(Constants.ITV_4));
 
 		return vResult;
 	}
 
-	public static List<Tuple1<Double>> getDoubleTupleList()
+	public static List<Tuple1Ocl<Double>> getDoubleTupleList()
 	{
-		List<Tuple1<Double>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple1Ocl<Double>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple1<>(Constants.DTV_1));
-		vResult.add(new Tuple1<>(Constants.DTV_2));
-		vResult.add(new Tuple1<>(Constants.DTV_3));
-		vResult.add(new Tuple1<>(Constants.DTV_4));
+		vResult.add(new Tuple1Ocl<>(Constants.DTV_1));
+		vResult.add(new Tuple1Ocl<>(Constants.DTV_2));
+		vResult.add(new Tuple1Ocl<>(Constants.DTV_3));
+		vResult.add(new Tuple1Ocl<>(Constants.DTV_4));
 
 		return vResult;
 	}
 
-	public static List<Tuple1<String>> getStringTupleList()
+	public static List<Tuple1Ocl<String>> getStringTupleList()
 	{
-		List<Tuple1<String>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple1Ocl<String>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple1<>(Constants.STV_1));
-		vResult.add(new Tuple1<>(Constants.STV_2));
-		vResult.add(new Tuple1<>(Constants.STV_3));
-		vResult.add(new Tuple1<>(Constants.STV_4));
+		vResult.add(new Tuple1Ocl<>(Constants.STV_1));
+		vResult.add(new Tuple1Ocl<>(Constants.STV_2));
+		vResult.add(new Tuple1Ocl<>(Constants.STV_3));
+		vResult.add(new Tuple1Ocl<>(Constants.STV_4));
 
 		return vResult;
 	}
 
-	public static List<Tuple2<Integer, Integer>> getIntegerIntegerTupleList()
+	public static List<Tuple2Ocl<Integer, Integer>> getIntegerIntegerTupleList()
 	{
-		List<Tuple2<Integer, Integer>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple2Ocl<Integer, Integer>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(Constants.ITV_1, Constants.ITV_4));
-		vResult.add(new Tuple2<>(Constants.ITV_2, Constants.ITV_3));
-		vResult.add(new Tuple2<>(Constants.ITV_3, Constants.ITV_2));
-		vResult.add(new Tuple2<>(Constants.ITV_4, Constants.ITV_1));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_1, Constants.ITV_4));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_2, Constants.ITV_3));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_3, Constants.ITV_2));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_4, Constants.ITV_1));
 
 		return vResult;
 	}
 
-	public static List<Tuple2<Integer, Double>> getIntegerDoubleTupleList()
+	public static List<Tuple2Ocl<Integer, Double>> getIntegerDoubleTupleList()
 	{
-		List<Tuple2<Integer, Double>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple2Ocl<Integer, Double>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(Constants.ITV_1, Constants.DTV_4));
-		vResult.add(new Tuple2<>(Constants.ITV_2, Constants.DTV_3));
-		vResult.add(new Tuple2<>(Constants.ITV_3, Constants.DTV_2));
-		vResult.add(new Tuple2<>(Constants.ITV_4, Constants.DTV_1));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_1, Constants.DTV_4));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_2, Constants.DTV_3));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_3, Constants.DTV_2));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_4, Constants.DTV_1));
 
 		return vResult;
 	}
 
-	public static List<Tuple2<Integer, String>> getIntegerStringTupleList()
+	public static List<Tuple2Ocl<Integer, String>> getIntegerStringTupleList()
 	{
-		List<Tuple2<Integer, String>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple2Ocl<Integer, String>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(Constants.ITV_1, Constants.STV_4));
-		vResult.add(new Tuple2<>(Constants.ITV_2, Constants.STV_3));
-		vResult.add(new Tuple2<>(Constants.ITV_3, Constants.STV_2));
-		vResult.add(new Tuple2<>(Constants.ITV_4, Constants.STV_1));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_1, Constants.STV_4));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_2, Constants.STV_3));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_3, Constants.STV_2));
+		vResult.add(new Tuple2Ocl<>(Constants.ITV_4, Constants.STV_1));
 
 		return vResult;
 	}
 
-	public static List<Tuple2<Double, Double>> getDoubleDoubleTupleList()
+	public static List<Tuple2Ocl<Double, Double>> getDoubleDoubleTupleList()
 	{
-		List<Tuple2<Double, Double>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple2Ocl<Double, Double>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(Constants.DTV_1, Constants.DTV_4));
-		vResult.add(new Tuple2<>(Constants.DTV_2, Constants.DTV_3));
-		vResult.add(new Tuple2<>(Constants.DTV_3, Constants.DTV_2));
-		vResult.add(new Tuple2<>(Constants.DTV_4, Constants.DTV_1));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_1, Constants.DTV_4));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_2, Constants.DTV_3));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_3, Constants.DTV_2));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_4, Constants.DTV_1));
 
 		return vResult;
 	}
 
-	public static List<Tuple2<Double, Integer>> getDoubleIntegerTupleList()
+	public static List<Tuple2Ocl<Double, Integer>> getDoubleIntegerTupleList()
 	{
-		List<Tuple2<Double, Integer>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple2Ocl<Double, Integer>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(Constants.DTV_1, Constants.ITV_4));
-		vResult.add(new Tuple2<>(Constants.DTV_2, Constants.ITV_3));
-		vResult.add(new Tuple2<>(Constants.DTV_3, Constants.ITV_2));
-		vResult.add(new Tuple2<>(Constants.DTV_4, Constants.ITV_1));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_1, Constants.ITV_4));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_2, Constants.ITV_3));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_3, Constants.ITV_2));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_4, Constants.ITV_1));
 
 		return vResult;
 	}
 
-	public static List<Tuple2<Double, String>> getDoubleStringTupleList()
+	public static List<Tuple2Ocl<Double, String>> getDoubleStringTupleList()
 	{
-		List<Tuple2<Double, String>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple2Ocl<Double, String>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(Constants.DTV_1, Constants.STV_4));
-		vResult.add(new Tuple2<>(Constants.DTV_2, Constants.STV_3));
-		vResult.add(new Tuple2<>(Constants.DTV_3, Constants.STV_2));
-		vResult.add(new Tuple2<>(Constants.DTV_4, Constants.STV_1));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_1, Constants.STV_4));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_2, Constants.STV_3));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_3, Constants.STV_2));
+		vResult.add(new Tuple2Ocl<>(Constants.DTV_4, Constants.STV_1));
 
 		return vResult;
 	}
 
-	public static List<Tuple2<String, String>> getStringStringTupleList()
+	public static List<Tuple2Ocl<String, String>> getStringStringTupleList()
 	{
-		List<Tuple2<String, String>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple2Ocl<String, String>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(Constants.STV_1, Constants.STV_4));
-		vResult.add(new Tuple2<>(Constants.STV_2, Constants.STV_3));
-		vResult.add(new Tuple2<>(Constants.STV_3, Constants.STV_2));
-		vResult.add(new Tuple2<>(Constants.STV_4, Constants.STV_1));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_1, Constants.STV_4));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_2, Constants.STV_3));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_3, Constants.STV_2));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_4, Constants.STV_1));
 
 		return vResult;
 	}
 
-	public static List<Tuple2<String, Integer>> getStringIntegerTupleList()
+	public static List<Tuple2Ocl<String, Integer>> getStringIntegerTupleList()
 	{
-		List<Tuple2<String, Integer>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple2Ocl<String, Integer>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(Constants.STV_1, Constants.ITV_4));
-		vResult.add(new Tuple2<>(Constants.STV_2, Constants.ITV_3));
-		vResult.add(new Tuple2<>(Constants.STV_3, Constants.ITV_2));
-		vResult.add(new Tuple2<>(Constants.STV_4, Constants.ITV_1));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_1, Constants.ITV_4));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_2, Constants.ITV_3));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_3, Constants.ITV_2));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_4, Constants.ITV_1));
 
 		return vResult;
 	}
 
-	public static List<Tuple2<String, Double>> getStringDoubleTupleList()
+	public static List<Tuple2Ocl<String, Double>> getStringDoubleTupleList()
 	{
-		List<Tuple2<String, Double>> vResult = new ArrayList<>(QUANTITY);
+		List<Tuple2Ocl<String, Double>> vResult = new ArrayList<>(QUANTITY);
 
-		vResult.add(new Tuple2<>(Constants.STV_1, Constants.DTV_4));
-		vResult.add(new Tuple2<>(Constants.STV_2, Constants.DTV_3));
-		vResult.add(new Tuple2<>(Constants.STV_3, Constants.DTV_2));
-		vResult.add(new Tuple2<>(Constants.STV_4, Constants.DTV_1));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_1, Constants.DTV_4));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_2, Constants.DTV_3));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_3, Constants.DTV_2));
+		vResult.add(new Tuple2Ocl<>(Constants.STV_4, Constants.DTV_1));
 
 		return vResult;
 	}

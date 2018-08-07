@@ -1,21 +1,22 @@
 package tuples.generics;
 
-public class Tuple1 <T0> implements IOclTuple
+public class Tuple2Ocl<T0, T1> implements IOclTuple
 {
-
 	private T0 mT0;
+	private T1 mT1;
 
-	public Tuple1() { }
+	public Tuple2Ocl() { }
 	
-	public Tuple1(T0 pT0)
+	public Tuple2Ocl(T0 pT0, T1 pT1)
 	{
 		setField(pT0, 0);
+		setField(pT1, 1);
 	}
 
 	@Override
 	public byte getArityOcl()
 	{
-		return 1;
+		return 2;
 	}
 	
 	@Override
@@ -23,6 +24,7 @@ public class Tuple1 <T0> implements IOclTuple
 	{
 		switch(pos) {
 			case 0: return mT0;
+			case 1: return mT1;
 			default: throw new IndexOutOfBoundsException(String.valueOf(pos));
 		}
 	}
@@ -35,6 +37,9 @@ public class Tuple1 <T0> implements IOclTuple
 			case 0:
 				this.mT0 = (T0) value;
 				break;
+			case 1:
+				this.mT1 = (T1) value;
+				break;
 			default: throw new IndexOutOfBoundsException(String.valueOf(pos));
 		}
 	}
@@ -45,4 +50,6 @@ public class Tuple1 <T0> implements IOclTuple
 		return pOther != null &&
 			   (pOther == this || pOther instanceof IOclTuple && equals((IOclTuple) pOther));
 	}
+
 }
+

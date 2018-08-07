@@ -3,8 +3,8 @@
 // import org.junit.jupiter.api.Test;
 // import org.junit.jupiter.api.TestInstance;
 // import scala.Int;
-// import scala.Tuple1;
-// import scala.Tuple2;
+// import scala.Tuple1Ocl;
+// import scala.Tuple2Ocl;
 //
 // import static org.junit.jupiter.api.Assertions.*;
 //
@@ -51,7 +51,7 @@
 // 		OclTuple1<Double> wvDoubleOclTuple1 = new OclTuple1<>(10.4);
 // 		OclTuple1<Character> wvCharacterOclTuple1 = new OclTuple1<>('CreateKernel');
 // 		OclTuple1<String> wvStringOclTuple1 = new OclTuple1<>("Ciao");
-// 		Tuple1<Integer> wvIntTuple1 = new Tuple1<>(10);
+// 		Tuple1Ocl<Integer> wvIntTuple1 = new Tuple1Ocl<>(10);
 //
 // 		assertTrue(wvIntegerOclTuple1.canEqual(wvIntegerOclTuple1));
 // 		assertTrue(wvIntegerOclTuple1.canEqual(wvDoubleOclTuple1));

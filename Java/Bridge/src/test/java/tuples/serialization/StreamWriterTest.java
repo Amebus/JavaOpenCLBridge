@@ -2,8 +2,8 @@ package tuples.serialization;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import tuples.generics.Tuple1;
-import tuples.generics.Tuple2;
+import tuples.generics.Tuple1Ocl;
+import tuples.generics.Tuple2Ocl;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -58,7 +58,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple1_Integer_Ok()
 	{
-		Tuple1<Integer> vTuple = new Tuple1<>(ITV_0);
+		Tuple1Ocl<Integer> vTuple = new Tuple1Ocl<>(ITV_0);
 		
 		byte[] vStream = getStreamFrom(vTuple);
 
@@ -72,7 +72,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple1_Double_Ok()
 	{
-		Tuple1<Double> vTuple = new Tuple1<>(DTV_0);
+		Tuple1Ocl<Double> vTuple = new Tuple1Ocl<>(DTV_0);
 		
 		byte[] vStream = getStreamFrom(vTuple);
 
@@ -85,7 +85,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple1_String_Ok()
 	{
-		Tuple1<String> vTuple = new Tuple1<>(STV_0);
+		Tuple1Ocl<String> vTuple = new Tuple1Ocl<>(STV_0);
 		
 		byte[] vStream = getStreamFrom(vTuple);
 
@@ -102,7 +102,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple2_IntegerInteger_Ok()
 	{
-		Tuple2<Integer, Integer> vTuple = new Tuple2<>(ITV_1, ITV_2);
+		Tuple2Ocl<Integer, Integer> vTuple = new Tuple2Ocl<>(ITV_1, ITV_2);
 		
 		byte[] vStream = getStreamFrom(vTuple);
 
@@ -116,7 +116,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple2_IntegerDouble_Ok()
 	{
-		Tuple2<Integer, Double> vTuple = new Tuple2<>(ITV_1, DTV_2);
+		Tuple2Ocl<Integer, Double> vTuple = new Tuple2Ocl<>(ITV_1, DTV_2);
 		byte[] vStream = getStreamFrom(vTuple);
 
 		assertEquals(15, vStream.length);
@@ -129,7 +129,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple2_IntegerString_Ok()
 	{
-		Tuple2<Integer, String> vTuple = new Tuple2<>(ITV_1, STV_2);
+		Tuple2Ocl<Integer, String> vTuple = new Tuple2Ocl<>(ITV_1, STV_2);
 		byte[] vStream = getStreamFrom(vTuple);
 
 		assertEquals(11 + STV_2.length(), vStream.length);
@@ -142,7 +142,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple2_DoubleInteger_Ok()
 	{
-		Tuple2<Double, Integer> vTuple = new Tuple2<>(DTV_1, ITV_2);
+		Tuple2Ocl<Double, Integer> vTuple = new Tuple2Ocl<>(DTV_1, ITV_2);
 		byte[] vStream = getStreamFrom(vTuple);
 
 		assertEquals(15, vStream.length);
@@ -155,7 +155,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple2_DoubleDouble_Ok()
 	{
-		Tuple2<Double, Double> vTuple = new Tuple2<>(DTV_1, DTV_2);
+		Tuple2Ocl<Double, Double> vTuple = new Tuple2Ocl<>(DTV_1, DTV_2);
 		byte[] vStream = getStreamFrom(vTuple);
 
 		assertEquals(19, vStream.length);
@@ -168,7 +168,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple2_DoubleString_Ok()
 	{
-		Tuple2<Double, String> vTuple = new Tuple2<>(DTV_1, STV_2);
+		Tuple2Ocl<Double, String> vTuple = new Tuple2Ocl<>(DTV_1, STV_2);
 		byte[] vStream = getStreamFrom(vTuple);
 
 		assertEquals(15 + STV_2.length(), vStream.length);
@@ -181,7 +181,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple2_StringString_Ok()
 	{
-		Tuple2<String, String> vTuple = new Tuple2<>(STV_1, STV_2);
+		Tuple2Ocl<String, String> vTuple = new Tuple2Ocl<>(STV_1, STV_2);
 		byte[] vStream = getStreamFrom(vTuple);
 
 		assertEquals(1 + 10 + STV_1.length() + STV_2.length(), vStream.length);
@@ -194,7 +194,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple2_StringInteger_Ok()
 	{
-		Tuple2<String, Integer> vTuple = new Tuple2<>(STV_1, ITV_2);
+		Tuple2Ocl<String, Integer> vTuple = new Tuple2Ocl<>(STV_1, ITV_2);
 		byte[] vStream = getStreamFrom(vTuple);
 
 		assertEquals(1 + 10 + STV_1.length(), vStream.length);
@@ -207,7 +207,7 @@ class StreamWriterTest
 	@Test
 	void WriteTuple2_StringDouble_Ok()
 	{
-		Tuple2<String, Double> vTuple = new Tuple2<>(STV_1, DTV_2);
+		Tuple2Ocl<String, Double> vTuple = new Tuple2Ocl<>(STV_1, DTV_2);
 		byte[] vStream = getStreamFrom(vTuple);
 
 		assertEquals(1 + 14 + STV_1.length(), vStream.length);
@@ -220,11 +220,11 @@ class StreamWriterTest
 	@Test
 	void WriteMultipleTuple1_Integer_Ok()
 	{
-		List<Tuple1<Integer>> vList = getIntegerTupleList();
+		List<Tuple1Ocl<Integer>> vList = getIntegerTupleList();
 
 		StreamWriter vStreamWriter = getStreamWriterFrom(vList);
 
-		Tuple2<byte[], int[]> vResult = vStreamWriter.writeStream();
+		Tuple2Ocl<byte[], int[]> vResult = vStreamWriter.writeStream();
 		int vExpectedLength = 2 + vList.size() * Dimensions.INT;
 		byte[] vStream = vResult.getField(0);
 		int[] vTupleIndexes = vResult.getField(1);
@@ -235,6 +235,5 @@ class StreamWriterTest
 
 		assertEquals( 1, vStream[0]);
 		assertEquals( Types.INT, vStream[1]);
-
 	}
 }
